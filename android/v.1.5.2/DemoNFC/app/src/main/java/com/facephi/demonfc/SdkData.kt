@@ -25,7 +25,7 @@ object SdkData {
 
     // ************** DATA **************
 
-    const val CUSTOMER_ID: String = "demo-NFC-android@facephi.com"
+    const val CUSTOMER_ID: String = "email@email.com"
     val OPERATION_TYPE = OperationType.ONBOARDING
     private const val SELPHID_RESOURCES = "resources-selphid-2-0.zip"
 

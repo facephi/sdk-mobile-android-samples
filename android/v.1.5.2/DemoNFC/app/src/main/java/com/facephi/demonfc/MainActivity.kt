@@ -135,5 +135,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onDestroy() {
+        SDKController.closeSession()
+        super.onDestroy()
+    }
 }
 

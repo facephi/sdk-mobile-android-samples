@@ -9,7 +9,6 @@ The components used are:
 - Core
 - Sdk
 - NFC
-- Tracking
 - SelphId
 
 ## 2. Demo App Detail
@@ -42,14 +41,16 @@ artifactory.user=TUS_CREDENCIALES_USER
 artifactory.token=TUS_CREDENCIALES_TOKEN
 ```
 
-The library dependencies can be imported directly into gradle:
+The library dependencies can be imported directly into gradle (from libs):
 
 ```
-implementation "com.facephi.androidsdk:core:$versions.core"
-implementation "com.facephi.androidsdk:sdk:$versions.sdk"
-implementation "com.facephi.androidsdk:voice_component:$versions.nfc_component"
-implementation "com.facephi.androidsdk:selphid_component:$versions.selphid_component"
-implementation "com.facephi.androidsdk:tracking_component:$versions.tracking_component"
+    implementation (libs.facephi.sdk)
+    implementation (libs.facephi.core)
+    implementation (libs.facephi.selphid)
+    implementation (libs.facephi.nfc){
+        exclude group : "org.bouncycastle", module : "bcprov-jdk15on"
+        exclude group : "org.bouncycastle", module : "jetified-bcprov-jdk15on-1.68"
+    }
 
 ```
 
@@ -71,29 +72,27 @@ if (BuildConfig.DEBUG) {
 
 /*   INIT WITH STRING   */
 
- SDKController.initSdk(
-          application,
-          "LICENSE",
-          TrackingController()
-  ) {
-     when (it) {
-          is SdkResult.Success -> Timber.d("APP: INIT SDK: OK")
-          is SdkResult.Error -> Timber.d("APP: INIT SDK: KO - ${it.error}")
-       }
-   }
+SDKController.initSdk(
+    sdkApplication = SdkApplication(application),
+    environmentLicensingData = SdkData.environmentLicensingData,
+) { result ->
+    when (result) {
+        is SdkResult.Success -> Napier.d("APP: INIT SDK: OK")
+        is SdkResult.Error -> Napier.d("APP: INIT SDK: KO - ${result.error}")
+    }
+}
   
 /*   INIT WITH EnvironmentLicensingData   */
 
- SDKController.initSdk(
-          application,
-          SdkData.environmentLicensingData,
-          TrackingController()
-  ) {
-  when (it) {
-          is SdkResult.Success -> Timber.d("APP: INIT SDK: OK")
-          is SdkResult.Error -> Timber.d("APP: INIT SDK: KO - ${it.error}")
-          }
-   }
+SDKController.initSdk(
+    sdkApplication = SdkApplication(application),
+    license = SdkData.LICENSE,
+) { result ->
+    when (result) {
+        is SdkResult.Success -> Napier.d("APP: INIT SDK: OK")
+        is SdkResult.Error -> Napier.d("APP: INIT SDK: KO - ${result.error}")
+    }
+}
         
 ```
 
@@ -108,18 +107,24 @@ To start an ONBOARDING or AUTHENTICATION operation, a new operation must be crea
 2. customerId: User ID if available
 3. steps: List of steps of the operation if they have been previously defined
 
-In this demo the process is carried out in a button:
+In this demo the process is carried out in a button (viewModel.newOperation):
 
 ```
-        SDKController.newOperation(
-                operationType = SdkData.OPERATION_TYPE,
-                customerId = SdkData.CUSTOMER_ID
-            ) { sdkResult ->
-                when (sdkResult) {
-                    is SdkResult.Success -> log("INIT OPERATION OK")
-                    is SdkResult.Error -> log("INIT OPERATION ERROR: ${sdkResult.error}")
-                }
-            }
+SDKController.newOperation(
+    operationType = SdkData.OPERATION_TYPE,
+    customerId = SdkData.CUSTOMER_ID,
+) {
+    when (it) {
+        is SdkResult.Success -> {
+            Napier.d("APP: NEW OPERATION OK")
+            debugLogs("NEW OPERATION: OK")
+        }
+        is SdkResult.Error -> {
+            Napier.d("APP: NEW OPERATION ERROR: ${it.error}")
+            debugLogs("NEW OPERATION: KO - ${it.error}")
+        }
+    }
+}
 ```
 
 
@@ -129,14 +134,25 @@ Capturing chip information (ViewModel):
 
 ```
 SDKController.launch(
-    NFCController(SdkData.nfcConfiguration) {
+    NfcController(componentData = nfcConfigurationData,
+        debugLogs = {
+            Napier.d("APP: Logs: $it")
+            debugLogs("NFC: Logs: $it")
+        },
+        state = { state ->
+            Napier.d("APP: NFC  State: ${state.name}")
+            debugLogs("NFC: State: ${state.name}")
+        }) {
         when (it) {
             is SdkResult.Success -> {
-                // OK
-                it.data
-                
+                Napier.d("APP: NFC OK")
+                debugLogs("NFC: OK")
+                debugLogs("VALIDATIONS: ${it.data.nfcValidations}")
             }
-            is SdkResult.Error -> // KO: it.error
+            is SdkResult.Error -> {
+                Napier.d("APP: NFC ERROR - ${it.error}")
+                debugLogs("NFC: ERROR - ${it.error}")
+            }
         }
     }
 )
