@@ -1,4 +1,4 @@
-# DEMO CLASSIC ONBOARDING
+# DEMO VIDEO ID
 
 
 ## 1. Introduction
@@ -8,8 +8,7 @@ The components used are:
 
 - Core
 - Sdk
-- Selphi
-- SelphID
+- VideoId
 - Tracking
 
 ## 2. Demo App Detail
@@ -54,8 +53,7 @@ The library dependencies can be imported directly into gradle (from libs):
 ```
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
-    implementation (libs.facephi.selphid)
-    implementation (libs.facephi.selphi)
+    implementation (libs.facephi.videoid)
     implementation (libs.facephi.tracking)
 
 ```
@@ -135,7 +133,7 @@ To start an ONBOARDING or AUTHENTICATION operation, a new operation must be crea
 2. customerId: User ID if available
 3. steps: List of steps of the operation if they have been previously defined
 
-In this demo the process is carried out in a Fragment button:
+In this demo the process is carried out in a button:
 
 ```
 SDKController.newOperation(
@@ -156,50 +154,22 @@ SDKController.newOperation(
 ```
 
 
-#### 2.2.3Face capture
+#### 2.2.3 Video capture
 
-Facial capture is done through Selfi.
-In this demo the process is carried out in a Fragment button:
+Video capture is done through VideoIdController.
+In this demo the process is carried out in a button:
 
 ```
 SDKController.launch(
-    SelphiController(SdkData.selphiConfiguration) {
+    VideoIdController(SdkData.videoIdConfiguration) {
         when (it) {
             is SdkResult.Success -> {
-                Napier.d("APP: SELPHI OK")
-                logs.add("SELPHI OK")
-                selphiFace = it.data.bestImageBmp!!.bitmap.toBase64() ?: ""
-                //liveness(selphiFace)
+                Napier.d("APP: VIDEO OK")
+                logs.add("VIDEO OK")
             }
             is SdkResult.Error -> {
-                logs.add("SELPHI ERROR ${it.error}")
-                Napier.d("APP: SELPHI ERROR: ${it.error.name}")
-            }
-        }
-    }
-)
-```
-
-#### 2.2.3 Document Capture
-
-Document capture is done through SelphID.
-In this demo the process is carried out in a Fragment button:
-
-```
-SDKController.launch(
-    SelphIDController(SdkData.selphIDConfiguration) { sdkResult ->
-        when (sdkResult) {
-            is SdkResult.Success -> {
-                Napier.d("APP: SELPHID OK")
-                logs.add("SELPHID OK")
-                /*if (selphiFace.isNotEmpty()) {
-                    matchingFacial(selphiFace,
-                        sdkResult.data.tokenFaceImage)
-                }*/
-            }
-            is SdkResult.Error -> {
-                Napier.d("APP: SELPHID ERROR: ${sdkResult.error.name}")
-                logs.add("SELPHID ERROR: ${sdkResult.error.name}")
+                logs.add("VIDEO ERROR ${it.error}")
+                Napier.d("APP: VIDEO ERROR: ${it.error.name}")
             }
         }
     }
@@ -240,36 +210,12 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ```
 
-- For Selphi the name of the resource ZIP file (which will be in the application's assets folder) and the configuration data:
+- IMPORTANT: The applicationId of the application must match the one requested in the license
 ```
-const val SELPHI_RESOURCES = ".....zip"
-
-val selphiConfiguration = SelphiConfigurationData(
-        ...,
-        resourcesPath = SELPHI_RESOURCES
-    )
+applicationId = "..."
 ```
 
-- For SelphID the name of the resource ZIP file (which will be in the application's assets folder) and the configuration data:
-```
-const val SELPHID_RESOURCES = "...zip"
-
-val selphIDConfiguration = SelphIDConfigurationData(
-       ...,
-        resourcesPath = SELPHID_RESOURCES
-    )
-```
-
-- In the case of using the verification services (liveness and matching), the call to the service must be entered
-
-- IMPORTANT: The bundleId of the application must match the one requested in the license
-
-### 2.3 Verification services
-
-If the client has access to the verification service, they can use Liveness and MatchingFacial. To do this, it will be necessary to have previously done facial and document recognition.
-
-
-### 2.4 Steps to start the demo
+### 2.3 Steps to start the demo
 
 The steps to follow to start the demo are:
 
@@ -292,5 +238,4 @@ The steps to follow to start the demo are:
 4. Depending on how the license was added, adapt the value of the variable:
    const val LICENSE_ONLINE = false
 
-   And verify that the POSTs of the repository are correct.
 
