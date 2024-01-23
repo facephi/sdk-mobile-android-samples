@@ -1,4 +1,4 @@
-package com.facephi.demovideoid
+package com.facephi.onboarding
 
 import android.app.Application
 import androidx.compose.foundation.Image
@@ -11,8 +11,12 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,11 +25,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.facephi.core.results.enums.FinishStatus
-import com.facephi.demovideoid.ui.composables.BaseButton
-import com.facephi.demovideoid.ui.composables.BaseTextButton
+import com.facephi.onboarding.ui.composables.BaseButton
+import com.facephi.onboarding.ui.composables.BaseTextButton
+import com.facephi.onboarding.utils.toBase64
 import com.facephi.sdk.SDKController
+import com.facephi.selphi_component.SelphiController
+import com.facephi.selphid_component.SelphIDController
 import com.facephi.tracking_component.TrackingController
-import com.facephi.video_id_component.VideoIdController
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +45,13 @@ fun MainScreen(
 
     val logs = remember { mutableStateListOf<String>() }
 
+    var selphiFace by rememberSaveable {
+        mutableStateOf("")
+    }
+
     LaunchedEffect(Unit) {
+
+        SDKController.enableDebugMode()
 
         CoroutineScope(Dispatchers.IO).launch {
             if (SdkData.LICENSE_ONLINE) {
@@ -85,7 +97,6 @@ fun MainScreen(
                 logs.add("Tracking Error: ${it.name}")
             }
 
-            SDKController.enableDebugMode()
         }
 
     }
@@ -107,42 +118,45 @@ fun MainScreen(
         )
 
         BaseButton(modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.demo_new_operation),
+            text = stringResource(id = R.string.onboarding_new_operation),
             onClick = {
                 SDKController.newOperation(
                     operationType = SdkData.OPERATION_TYPE,
                     customerId = SdkData.CUSTOMER_ID,
                 ) {
                     when (it.finishStatus) {
+                        FinishStatus.STATUS_OK -> {
+                            Napier.d("APP: NEW OPERATION OK")
+                            logs.add("NEW OPERATION OK")
+                        }
+
                         FinishStatus.STATUS_ERROR -> {
                             Napier.d("APP: NEW OPERATION ERROR ${it.errorType.name}")
                             logs.add("NEW OPERATION ERROR ${it.errorType.name}")
                         }
 
-                        FinishStatus.STATUS_OK -> {
-                            Napier.d("APP: NEW OPERATION OK")
-                            logs.add("NEW OPERATION OK")
-                        }
                     }
                 }
 
             })
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.demo_launch_video),
+        BaseButton(modifier = Modifier.padding(top = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_selphi),
             onClick = {
                 SDKController.launch(
-                    VideoIdController(SdkData.videoIdConfiguration) {
+                    SelphiController(SdkData.selphiConfiguration) {
                         when (it.finishStatus) {
                             FinishStatus.STATUS_OK -> {
-                                Napier.d("APP: VIDEO OK")
-                                logs.add("VIDEO OK")
+                                Napier.d("APP: SELPHI OK")
+                                logs.add("SELPHI OK")
 
+                                selphiFace = it.data?.bestImageBmp?.toBase64() ?: ""
+                                //liveness(selphiFace)
                             }
 
                             FinishStatus.STATUS_ERROR -> {
-                                logs.add("VIDEO ERROR ${it.errorType.name}")
-                                Napier.d("APP: VIDEO ERROR: ${it.errorType.name}")
+                                logs.add("SELPHI ERROR ${it.errorType.name}")
+                                Napier.d("APP: SELPHI ERROR: ${it.errorType.name}")
                             }
                         }
                     }
@@ -150,6 +164,32 @@ fun MainScreen(
 
             })
 
+
+        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_selphi),
+            onClick = {
+                SDKController.launch(
+                    SelphIDController(SdkData.selphIDConfiguration) {
+                        when (it.finishStatus) {
+                            FinishStatus.STATUS_OK -> {
+                                Napier.d("APP: SELPHID OK")
+                                logs.add("SELPHID OK")
+
+                                /*if (selphiFace.isNotEmpty()) {
+                                    matchingFacial(selphiFace,
+                                        sdkResult.data.tokenFaceImage)
+
+                                }*/
+                            }
+
+                            FinishStatus.STATUS_ERROR -> {
+                                Napier.d("APP: SELPHID ERROR: ${it.errorType.name}")
+                                logs.add("SELPHID ERROR: ${it.errorType.name}")
+                            }
+                        }
+                    }
+                )
+            })
 
         if (!logs.isEmpty()) {
             Divider(color = Color.LightGray, thickness = 1.dp)
