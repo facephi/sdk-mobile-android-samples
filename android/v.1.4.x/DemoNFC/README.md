@@ -73,24 +73,24 @@ if (BuildConfig.DEBUG) {
 /*   INIT WITH STRING   */
 
 SDKController.initSdk(
-    sdkApplication = SdkApplication(application),
-    environmentLicensingData = SdkData.environmentLicensingData,
+    application = application,
+    license = SdkData.LICENSE,
 ) { result ->
-    when (result) {
-        is SdkResult.Success -> Napier.d("APP: INIT SDK: OK")
-        is SdkResult.Error -> Napier.d("APP: INIT SDK: KO - ${result.error}")
+    when (result.finishStatus) {
+        FinishStatus.STATUS_OK -> Napier.d("APP: INIT SDK: OK")
+        FinishStatus.STATUS_ERROR -> Napier.d("APP: INIT SDK: KO - ${result.errorType.name}")
     }
 }
   
 /*   INIT WITH EnvironmentLicensingData   */
 
 SDKController.initSdk(
-    sdkApplication = SdkApplication(application),
-    license = SdkData.LICENSE,
+    application = application,
+    environmentLicensingData = SdkData.environmentLicensingData,
 ) { result ->
-    when (result) {
-        is SdkResult.Success -> Napier.d("APP: INIT SDK: OK")
-        is SdkResult.Error -> Napier.d("APP: INIT SDK: KO - ${result.error}")
+    when (result.finishStatus) {
+        FinishStatus.STATUS_OK -> Napier.d("APP: INIT SDK: OK")
+        FinishStatus.STATUS_ERROR -> Napier.d("APP: INIT SDK: KO - ${result.errorType.name}")
     }
 }
         
@@ -114,14 +114,14 @@ SDKController.newOperation(
     operationType = SdkData.OPERATION_TYPE,
     customerId = SdkData.CUSTOMER_ID,
 ) {
-    when (it) {
-        is SdkResult.Success -> {
+    when (it.finishStatus) {
+        FinishStatus.STATUS_OK -> {
             Napier.d("APP: NEW OPERATION OK")
             debugLogs("NEW OPERATION: OK")
         }
-        is SdkResult.Error -> {
-            Napier.d("APP: NEW OPERATION ERROR: ${it.error}")
-            debugLogs("NEW OPERATION: KO - ${it.error}")
+        FinishStatus.STATUS_ERROR -> {
+            Napier.d("APP: NEW OPERATION ERROR: ${it.errorType.name}")
+            debugLogs("NEW OPERATION: KO - ${it.errorType.name}")
         }
     }
 }
@@ -135,23 +135,19 @@ Capturing chip information (ViewModel):
 ```
 SDKController.launch(
     NfcController(componentData = nfcConfigurationData,
-        debugLogs = {
-            Napier.d("APP: Logs: $it")
-            debugLogs("NFC: Logs: $it")
-        },
         state = { state ->
             Napier.d("APP: NFC  State: ${state.name}")
             debugLogs("NFC: State: ${state.name}")
         }) {
-        when (it) {
-            is SdkResult.Success -> {
+        when (it.finishStatus) {
+            FinishStatus.STATUS_OK -> {
                 Napier.d("APP: NFC OK")
                 debugLogs("NFC: OK")
-                debugLogs("VALIDATIONS: ${it.data.nfcValidations}")
+                debugLogs("VALIDATIONS: ${it.data?.nfcValidations}"
             }
-            is SdkResult.Error -> {
-                Napier.d("APP: NFC ERROR - ${it.error}")
-                debugLogs("NFC: ERROR - ${it.error}")
+            FinishStatus.STATUS_ERROR -> {
+                Napier.d("APP: NFC ERROR - ${it.errorType.name}")
+                debugLogs("NFC: ERROR - ${it.errorType.name}")
             }
         }
     }
@@ -166,8 +162,8 @@ Capturing the document first and the chip information later (ViewModel):
 ```
 SDKController.launch(
     SelphIDController(SdkData.getSelphIdConfig(docType)){
-        when (it) {
-            is SdkResult.Success -> {
+        when (it.finishStatus) {
+            FinishStatus.STATUS_OK -> {
                 val birthDate = it.data.personalData?.birthDate.orEmpty()
                 val expirationDate = it.data.personalData?.expiryDate.orEmpty()
                 val nfcKey = it.data.personalData?.nfcKey.orEmpty()
@@ -184,13 +180,13 @@ SDKController.launch(
                                     showReadingScreen = true
                                 )
                         ) {
-                            when (it) {
-                                is SdkResult.Success -> {
+                            when (it.finishStatus) {
+                                FinishStatus.STATUS_OK -> {
                                 // OK
                                 it.data
                 
                                 }
-                                is SdkResult.Error -> // KO: it.error
+                                FinishStatus.STATUS_ERROR -> // KO: it.error
                             }
                      }
                })
@@ -198,7 +194,7 @@ SDKController.launch(
               }
                 
             }
-            is SdkResult.Error -> // KO: it.error
+            FinishStatus.STATUS_ERROR -> // KO: it.error
         }
     }
 )
