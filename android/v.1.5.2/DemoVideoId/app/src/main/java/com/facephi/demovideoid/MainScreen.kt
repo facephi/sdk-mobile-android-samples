@@ -129,7 +129,7 @@ fun MainScreen(
 
             })
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
+        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = R.string.demo_launch_video),
             onClick = {
                 SDKController.launch(

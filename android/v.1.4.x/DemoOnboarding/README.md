@@ -79,18 +79,18 @@ if (BuildConfig.DEBUG) {
 /*   INIT WITH STRING   */
 
 SDKController.initSdk(
-    sdkApplication = sdkApplication,
+    application = application,
     license = SdkData.LICENSE,
     trackingController = TrackingController()
 ) { result ->
-    when (result) {
-        is SdkResult.Success -> {
+    when (result.finishStatus) {
+        FinishStatus.STATUS_OK -> {
             Napier.d("APP: INIT SDK: OK")
             logs.add("INIT SDK OK")
         }
-        is SdkResult.Error -> {
-            Napier.d("APP: INIT SDK ERROR - ${result.error}")
-            logs.add("INIT SDK ERROR: ${result.error}")
+        FinishStatus.STATUS_ERROR -> {
+            Napier.d("APP: INIT SDK ERROR - ${result.errorType.name}")
+            logs.add("INIT SDK ERROR: ${result.errorType.name}")
         }
     }
 }
@@ -98,18 +98,18 @@ SDKController.initSdk(
 /*   INIT WITH EnvironmentLicensingData   */
 
 SDKController.initSdk(
-    sdkApplication = sdkApplication,
+    application = application,
     environmentLicensingData = SdkData.environmentLicensingData,
     trackingController = TrackingController()
 ) { result ->
-    when (result) {
-        is SdkResult.Success -> {
+    when (result.finishStatus) {
+        FinishStatus.STATUS_OK -> {
             Napier.d("APP: INIT SDK: OK")
             logs.add("INIT SDK OK")
         }
-        is SdkResult.Error -> {
-            Napier.d("APP: INIT SDK: KO - ${result.error}")
-            logs.add("INIT SDK ERROR: ${result.error}")
+        FinishStatus.STATUS_ERROR -> {
+            Napier.d("APP: INIT SDK: KO - ${result.errorType.name}")
+            logs.add("INIT SDK ERROR: ${result.errorType.name}")
         }
     }
 }
@@ -118,9 +118,9 @@ SDKController.initSdk(
  
 To get tracking errors:
 ```
-SDKController.launch(TrackingErrorController {
+SDKController.setupTrackingError {
     logs.add("Tracking Error: ${it.name}")
-})
+}
 ```
 
 
@@ -142,14 +142,14 @@ SDKController.newOperation(
     operationType = SdkData.OPERATION_TYPE,
     customerId = SdkData.CUSTOMER_ID,
 ) {
-    when (it) {
-        is SdkResult.Error -> {
-            Napier.d("APP: NEW OPERATION ERROR ${it.error}")
-            logs.add("NEW OPERATION ERROR ${it.error}")
-        }
-        is SdkResult.Success -> {
+    when (it.finishStatus) {
+        FinishStatus.STATUS_OK -> {
             Napier.d("APP: NEW OPERATION OK")
             logs.add("NEW OPERATION OK")
+        }
+        FinishStatus.STATUS_ERROR -> {
+            Napier.d("APP: NEW OPERATION ERROR ${it.errorType.name}")
+            logs.add("NEW OPERATION ERROR ${it.errorType.name}")
         }
     }
 }
@@ -164,16 +164,16 @@ In this demo the process is carried out in a Fragment button:
 ```
 SDKController.launch(
     SelphiController(SdkData.selphiConfiguration) {
-        when (it) {
-            is SdkResult.Success -> {
+        when (it.finishStatus) {
+            FinishStatus.STATUS_OK -> {
                 Napier.d("APP: SELPHI OK")
                 logs.add("SELPHI OK")
-                selphiFace = it.data.bestImageBmp!!.bitmap.toBase64() ?: ""
+                selphiFace = it.data?.bestImageBmp?.toBase64() ?: ""
                 //liveness(selphiFace)
             }
-            is SdkResult.Error -> {
-                logs.add("SELPHI ERROR ${it.error}")
-                Napier.d("APP: SELPHI ERROR: ${it.error.name}")
+            FinishStatus.STATUS_ERROR -> {
+                logs.add("SELPHI ERROR ${it.errorType.name}")
+                Napier.d("APP: SELPHI ERROR: ${it.errorType.name}")
             }
         }
     }
@@ -187,9 +187,9 @@ In this demo the process is carried out in a Fragment button:
 
 ```
 SDKController.launch(
-    SelphIDController(SdkData.selphIDConfiguration) { sdkResult ->
-        when (sdkResult) {
-            is SdkResult.Success -> {
+    SelphIDController(SdkData.selphIDConfiguration) {
+        when (it.finishStatus) {
+            FinishStatus.STATUS_OK -> {
                 Napier.d("APP: SELPHID OK")
                 logs.add("SELPHID OK")
                 /*if (selphiFace.isNotEmpty()) {
@@ -197,9 +197,9 @@ SDKController.launch(
                         sdkResult.data.tokenFaceImage)
                 }*/
             }
-            is SdkResult.Error -> {
-                Napier.d("APP: SELPHID ERROR: ${sdkResult.error.name}")
-                logs.add("SELPHID ERROR: ${sdkResult.error.name}")
+            FinishStatus.STATUS_ERROR -> {
+                Napier.d("APP: SELPHID ERROR: ${it.errorType.name}")
+                logs.add("SELPHID ERROR: ${it.errorType.name}")
             }
         }
     }
