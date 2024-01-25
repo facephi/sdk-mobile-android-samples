@@ -166,7 +166,7 @@ fun MainScreen(
 
 
         BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_selphi),
+            text = stringResource(id = R.string.onboarding_launch_selphid),
             onClick = {
                 SDKController.launch(
                     SelphIDController(SdkData.selphIDConfiguration) {
