@@ -77,8 +77,5 @@ dependencies {
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
-    implementation (libs.facephi.nfc){
-        exclude group : "org.bouncycastle", module : "bcprov-jdk15on"
-        exclude group : "org.bouncycastle", module : "jetified-bcprov-jdk15on-1.68"
-    }
+    implementation (libs.facephi.nfc)
 }

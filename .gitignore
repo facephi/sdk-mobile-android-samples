@@ -1,3 +1,9 @@
 
 .DS_Store
 .npmrc
+
+android/v.1.4.x/DemoNFC/.idea/
+
+android/v.1.4.x/DemoOnboarding/.idea/
+
+android/v.1.5.2/DemoOnboarding/.idea/
