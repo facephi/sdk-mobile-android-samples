@@ -2,6 +2,7 @@ package com.facephi.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -22,7 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.onboarding.ui.composables.BaseButton
@@ -189,6 +194,17 @@ fun MainScreen(
                     }
                 )
             })
+
+        Text(
+            modifier = Modifier.fillMaxWidth()
+                .padding(bottom = 8.dp),
+            text = "Version 1.5.2",
+            style =  TextStyle(
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+            )
+        )
 
         if (!logs.isEmpty()) {
             Divider(color = Color.LightGray, thickness = 1.dp)
