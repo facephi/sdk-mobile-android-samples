@@ -26,8 +26,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.model.DocumentType
@@ -112,6 +116,16 @@ fun MainScreen(
             }
         )
 
+        Text(
+            modifier = Modifier.fillMaxWidth()
+                .padding(bottom = 8.dp),
+            text = "Version 1.5.2",
+            style =  TextStyle(
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+            )
+        )
 
         if (!logs.isEmpty()) {
             Divider(color = Color.LightGray, thickness = 1.dp)

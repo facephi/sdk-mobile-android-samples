@@ -27,8 +27,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.SdkData
@@ -159,6 +163,17 @@ fun DataScreen(
                     logs.add("NFC: INVALID DATA")
                 }
             }
+        )
+
+        Text(
+            modifier = Modifier.fillMaxWidth()
+                .padding(bottom = 8.dp),
+            text = "Version 1.4.0",
+            style =  TextStyle(
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+            )
         )
 
         if (!logs.isEmpty()) {
