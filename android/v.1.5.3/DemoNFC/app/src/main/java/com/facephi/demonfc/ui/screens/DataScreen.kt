@@ -237,7 +237,8 @@ fun DataScreen(
                     copyToClipboard(context, logs.joinToString(separator = "\n"))
                     onSendEmail(logs.joinToString(separator = "\n"))
                 },
-            text = logs.joinToString(separator = "\n")
+            text = logs.joinToString(separator = "\n"),
+            color = colorResource(id = R.color.sdkBodyTextColor),
         )
     }
 

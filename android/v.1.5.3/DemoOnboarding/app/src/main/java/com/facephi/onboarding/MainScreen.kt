@@ -219,7 +219,8 @@ fun MainScreen(
         Text(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp),
-            text = logs.joinToString(separator = "\n")
+            text = logs.joinToString(separator = "\n"),
+            color = colorResource(id = R.color.sdkBodyTextColor),
         )
     }
 
