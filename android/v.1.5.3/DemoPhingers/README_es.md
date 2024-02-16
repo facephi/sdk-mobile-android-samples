@@ -1,4 +1,4 @@
-# DEMO VOZ
+# DEMO PHINGERS
 
 
 ## 1. Introducción
@@ -8,8 +8,9 @@ Los componentes utilizados son:
 
 - Core
 - Sdk
-- NFC
+- Phingers
 - Tracking
+
 
 ## 2. Detalle de la aplicación demo
 
@@ -41,13 +42,13 @@ artifactory.user=TUS_CREDENCIALES_USER
 artifactory.token=TUS_CREDENCIALES_TOKEN
 ```
 
-Las dependencias de las librerías se podrán importar directamente en el gradle (libs):
+Las dependencias de las librerías se podrán importar directamente en el gradle:
 
 ```
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
+    implementation (libs.facephi.phingers)
     implementation (libs.facephi.tracking)
-    implementation (libs.facephi.voice)
 
 ```
 
@@ -74,9 +75,9 @@ if (BuildConfig.DEBUG) {
           "LICENSE",
           TrackingController()
   ) {
-     when (it) {
-          is SdkResult.Success -> Timber.d("APP: INIT SDK: OK")
-          is SdkResult.Error -> Timber.d("APP: INIT SDK: KO - ${it.error}")
+     when (it.finishStatus) {
+          FinishStatus.STATUS_OK -> Timber.d("APP: INIT SDK: OK")
+          FinishStatus.STATUS_ERROR -> Timber.d("APP: INIT SDK: KO - ${it.errorType.name}")
        }
    }
   
@@ -87,13 +88,14 @@ if (BuildConfig.DEBUG) {
           SdkData.environmentLicensingData,
           TrackingController()
   ) {
-  when (it) {
-          is SdkResult.Success -> Timber.d("APP: INIT SDK: OK")
-          is SdkResult.Error -> Timber.d("APP: INIT SDK: KO - ${it.error}")
+  when (it.finishStatus) {
+          FinishStatus.STATUS_OK -> Timber.d("APP: INIT SDK: OK")
+          FinishStatus.STATUS_ERROR -> Timber.d("APP: INIT SDK: KO - ${it.errorType.name}")
           }
    }
         
 ```
+
 
 La clase **SdkData** almacena todos los datos necesarios en el SDK. (Apartado 2.2.5)
 
@@ -104,7 +106,7 @@ Para comenzar una operación de ONBOARDING o AUTHENTICATION se tiene que crear u
 
 1. operationType: Indica si se va a hacer un proceso de ONBOARDING o de AUTHENTICATION
 2. customerId: Id del usuario si se tiene
-3. steps: Lista de pasos de la operación si se han definido previamente
+3. steps: Lista de pasos de la operación si se han definido previamente (puede ser nulo)
 
 En esta demo el proceso se realiza en un botón del Fragment:
 
@@ -113,41 +115,42 @@ En esta demo el proceso se realiza en un botón del Fragment:
                 operationType = SdkData.OPERATION_TYPE,
                 customerId = SdkData.CUSTOMER_ID
             ) { sdkResult ->
-                when (sdkResult) {
-                    is SdkResult.Success -> log("INIT OPERATION OK")
-                    is SdkResult.Error -> log("INIT OPERATION ERROR: ${sdkResult.error}")
+                when (sdkResult.finishStatus) {
+                    FinishStatus.STATUS_OK -> log("INIT OPERATION OK")
+                    FinishStatus.STATUS_ERROR -> log("INIT OPERATION ERROR: ${sdkResult.errorType.name}")
                 }
             }
 ```
 
 
-#### 2.2.3 Captura de VOZ
+#### 2.2.3 Lanzamiento de la captura de huella
 
-La captura facial se realiza a través de Selphi. 
-En esta demo el proceso se realiza en un botón del Fragment:
+En esta demo el proceso se realiza en un botón:
 
 ```
 SDKController.launch(
-    VoiceController(SdkData.voiceConfiguration) {
-        when (it) {
-            is SdkResult.Success -> {
-                // OK
-                it.data
-                
+    PhingersController(SdkData.phingersConfiguration) {
+        when (it.finishStatus) {
+            FinishStatus.STATUS_OK -> {
+                Timber.d("APP: CAPTURE FINISH OK")
+                logs.add("CAPTURE FINISH OK")
             }
-            is SdkResult.Error -> // KO: it.error
+            FinishStatus.STATUS_ERROR -> {
+                Timber.d("APP: CAPTURE ERROR - ${it.errorType.name}")
+                logs.add("CAPTURE ERROR: ${it.errorType.name}")
+            }
         }
     }
 )
 ```
 
 
-#### 2.2.3 Cierre de sesión
+#### 2.2.4 Cierre de sesión
 
 Cuando se finalice el uso del SDK se deberá cerrar sesión:
 
 ```
-SDKController.closeSession()
+        SDKController.closeSession()
 ```
 #### 2.2.5 Datos necesarios para el uso del SDK
 
@@ -176,12 +179,25 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ```
 
+- Si se quiere tener una configuración diferente hacer modificaciones en:
+```
+val phingersConfiguration = PhingersConfigurationData()
 
-- IMPORTANTE: El bundleId de la aplicación debe coincidir con el que se ha solicitado en la licencia
+```
 
-### 2.3 Servicios de verificación
 
-Si el cliente tiene acceso a los servición de verificación podrá hacer uso de ellos. 
+- IMPORTANTE: El bundleId de la aplicación debe coincidir con el que se ha solicitado en la licencia. En gradle:
+
+```
+ defaultConfig {
+        applicationId "..."
+
+```
+
+### 2.3 Personalización
+
+Los ficheros para la personalización se encuentran en la parte de recursos: sdk_style
+Y los textos internos en el fichero de strings.
 
 ### 2.4 Pasos para iniciar la demo
 
@@ -206,4 +222,3 @@ Los pasos a seguir para iniciar la demo son:
 4. Dependiendo de cómo se haya añadido la licencia adaptar el valor de la variable:
       const val LICENSE_ONLINE = false
   
-5. Si se van a hacer uso de los servicios de verificación, completar el código del manager.

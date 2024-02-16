@@ -1,15 +1,16 @@
-# DEMO VOICE
+# DEMO PHINGERS
 
 
-## 1. Introduction
+## 1. Introducción
 
 In this demo you can carry out an onboarding process using the Facephi SDK.
 The components used are:
 
 - Core
 - Sdk
-- Voice
+- Phingers
 - Tracking
+
 
 ## 2. Demo application
 
@@ -36,6 +37,7 @@ maven {
 
 Users must be provided by Facephi and included in the local.properties:
 
+
 ```
 artifactory.user=TUS_CREDENCIALES_USER
 artifactory.token=TUS_CREDENCIALES_TOKEN
@@ -46,8 +48,8 @@ The library dependencies can be imported directly into gradle (from libs):
 ```
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
+    implementation (libs.facephi.phingers)
     implementation (libs.facephi.tracking)
-    implementation (libs.facephi.voice)
 
 ```
 
@@ -74,9 +76,9 @@ if (BuildConfig.DEBUG) {
           "LICENSE",
           TrackingController()
   ) {
-     when (it) {
-          is SdkResult.Success -> Timber.d("APP: INIT SDK: OK")
-          is SdkResult.Error -> Timber.d("APP: INIT SDK: KO - ${it.error}")
+     when (it.finishStatus) {
+          FinishStatus.STATUS_OK -> Timber.d("APP: INIT SDK: OK")
+          FinishStatus.STATUS_ERROR -> Timber.d("APP: INIT SDK: KO - ${it.errorType.name}")
        }
    }
   
@@ -87,9 +89,9 @@ if (BuildConfig.DEBUG) {
           SdkData.environmentLicensingData,
           TrackingController()
   ) {
-  when (it) {
-          is SdkResult.Success -> Timber.d("APP: INIT SDK: OK")
-          is SdkResult.Error -> Timber.d("APP: INIT SDK: KO - ${it.error}")
+  when (it.finishStatus) {
+          FinishStatus.STATUS_OK -> Timber.d("APP: INIT SDK: OK")
+          FinishStatus.STATUS_ERROR -> Timber.d("APP: INIT SDK: KO - ${it.errorType.name}")
           }
    }
         
@@ -114,35 +116,35 @@ To start an ONBOARDING or AUTHENTICATION operation, a new operation must be crea
 
 In this demo the process is carried out in a button:
 
-
 ```
         SDKController.newOperation(
                 operationType = SdkData.OPERATION_TYPE,
                 customerId = SdkData.CUSTOMER_ID
             ) { sdkResult ->
-                when (sdkResult) {
-                    is SdkResult.Success -> log("INIT OPERATION OK")
-                    is SdkResult.Error -> log("INIT OPERATION ERROR: ${sdkResult.error}")
+                when (sdkResult.finishStatus) {
+                    FinishStatus.STATUS_OK -> log("INIT OPERATION OK")
+                    FinishStatus.STATUS_ERROR -> log("INIT OPERATION ERROR: ${sdkResult.errorType.name}")
                 }
             }
 ```
 
 
-#### 2.2.3 Voice capture
+#### 2.2.3 Fingerprint capture
 
-Voice capture is done through VoiceController.
 In this demo the process is carried out in a button:
 
 ```
 SDKController.launch(
-    VoiceController(SdkData.voiceConfiguration) {
-        when (it) {
-            is SdkResult.Success -> {
-                // OK
-                it.data
-                
+    PhingersController(SdkData.phingersConfiguration) {
+        when (it.finishStatus) {
+            FinishStatus.STATUS_OK -> {
+                Timber.d("APP: CAPTURE FINISH OK")
+                logs.add("CAPTURE FINISH OK")
             }
-            is SdkResult.Error -> // KO: it.error
+            FinishStatus.STATUS_ERROR -> {
+                Timber.d("APP: CAPTURE ERROR - ${it.errorType.name}")
+                logs.add("CAPTURE ERROR: ${it.errorType.name}")
+            }
         }
     }
 )

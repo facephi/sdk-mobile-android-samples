@@ -1,12 +1,16 @@
-package com.facephi.onboarding
+package com.facephi.demophingers
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,19 +28,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
-import com.facephi.onboarding.ui.composables.BaseButton
-import com.facephi.onboarding.ui.composables.BaseTextButton
-import com.facephi.onboarding.utils.toBase64
+import com.facephi.demophingers.ui.composables.BaseButton
+import com.facephi.demophingers.ui.composables.BaseTextButton
+import com.facephi.demophingers.ui.composables.DropdownCaptureOrientationMenu
+import com.facephi.phingers_component.PhingersController
+import com.facephi.phingers_component.data.configuration.CaptureOrientation
+import com.facephi.phingers_component.data.configuration.PhingersConfigurationData
 import com.facephi.sdk.SDKController
-import com.facephi.selphi_component.SelphiController
-import com.facephi.selphid_component.SelphIDController
 import com.facephi.tracking_component.TrackingController
 import com.facephi.tracking_component.TrackingErrorController
 import io.github.aakira.napier.Napier
@@ -44,6 +45,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen(
     sdkApplication: SdkApplication,
@@ -52,13 +54,19 @@ fun MainScreen(
 
     val logs = remember { mutableStateListOf<String>() }
 
-    var selphiFace by rememberSaveable {
-        mutableStateOf("")
+    var showTutorial by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var captureOrientation by rememberSaveable {
+        mutableStateOf(CaptureOrientation.LEFT)
     }
 
     LaunchedEffect(Unit) {
 
         CoroutineScope(Dispatchers.IO).launch {
+            SDKController.enableDebugMode()
+
             if (SdkData.LICENSE_ONLINE) {
                 SDKController.initSdk(
                     sdkApplication = sdkApplication,
@@ -102,7 +110,6 @@ fun MainScreen(
                 logs.add("Tracking Error: ${it.name}")
             })
 
-            SDKController.enableDebugMode()
         }
 
     }
@@ -113,113 +120,111 @@ fun MainScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.ic_demo_logo),
-            contentDescription = null,
-            contentScale = ContentScale.None,
+            contentDescription = "Logo",
+            contentScale = ContentScale.Fit,
             modifier = Modifier
-                .padding(8.dp)
+                .padding(16.dp)
                 .height(75.dp)
         )
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.onboarding_new_operation),
-            onClick = {
-                SDKController.newOperation(
-                    operationType = SdkData.OPERATION_TYPE,
-                    customerId = SdkData.CUSTOMER_ID,
-                ) {
-                    when (it) {
-                        is SdkResult.Error -> {
-                            Napier.d("APP: NEW OPERATION ERROR ${it.error}")
-                            logs.add("NEW OPERATION ERROR ${it.error}")
-                        }
+        BaseButton(modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = R.string.phingers_demo_new_operation), onClick = {
+            Napier.d("APP: LAUNCH NEW OPERATION")
 
-                        is SdkResult.Success -> {
-                            Napier.d("APP: NEW OPERATION OK")
-                            logs.add("NEW OPERATION OK")
-                        }
+            logs.clear()
+
+            SDKController.newOperation(
+                operationType = SdkData.OPERATION_TYPE,
+                customerId = SdkData.CUSTOMER_ID,
+            ) {
+                when (it) {
+                    is SdkResult.Success -> {
+                        Napier.d("APP: NEW OPERATION OK")
+                        logs.add("NEW OPERATION: OK")
+                    }
+
+                    is SdkResult.Error -> {
+                        Napier.d("APP: NEW OPERATION ERROR: ${it.error}")
+                        logs.add("NEW OPERATION: KO - ${it.error}")
                     }
                 }
+            }
+        })
 
-            })
-
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_selphi),
+        BaseButton(
+            text = stringResource(id = R.string.phingers_demo_launch_capture),
             onClick = {
+                val data = PhingersConfigurationData(
+                    showTutorial = showTutorial,
+                    reticleOrientation = captureOrientation
+                )
+
                 SDKController.launch(
-                    SelphiController(SdkData.selphiConfiguration) {
+                    PhingersController(data) {
                         when (it) {
                             is SdkResult.Success -> {
-                                Napier.d("APP: SELPHI OK")
-                                logs.add("SELPHI OK")
-
-                                selphiFace = it.data.bestImageBmp!!.bitmap.toBase64() ?: ""
-                                //liveness(selphiFace)
+                                Napier.d("APP: CAPTURE FINISH OK")
+                                logs.add("CAPTURE FINISH OK")
                             }
 
                             is SdkResult.Error -> {
-                                logs.add("SELPHI ERROR ${it.error}")
-                                Napier.d("APP: SELPHI ERROR: ${it.error.name}")
+                                Napier.d("APP: CAPTURE ERROR - ${it.error.name}")
+                                logs.add("CAPTURE ERROR: ${it.error.name}")
                             }
                         }
                     }
                 )
+            }
+        )
 
-            })
-
-
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_selphid),
-            onClick = {
-                SDKController.launch(
-                    SelphIDController(SdkData.selphIDConfiguration) { sdkResult ->
-                        when (sdkResult) {
-                            is SdkResult.Success -> {
-                                Napier.d("APP: SELPHID OK")
-                                logs.add("SELPHID OK")
-
-                                /*if (selphiFace.isNotEmpty()) {
-                                    matchingFacial(selphiFace,
-                                        sdkResult.data.tokenFaceImage)
-
-                                }*/
-                            }
-
-                            is SdkResult.Error -> {
-                                Napier.d("APP: SELPHID ERROR: ${sdkResult.error.name}")
-                                logs.add("SELPHID ERROR: ${sdkResult.error.name}")
-                            }
-                        }
-                    }
-                )
-            })
 
         Text(
-            modifier = Modifier.fillMaxWidth()
-                .padding(bottom = 8.dp),
-            text = "Version 1.5.2",
-            style =  TextStyle(
-                fontWeight = FontWeight.Normal,
-                textAlign = TextAlign.Center,
-                fontSize = 16.sp,
-            )
+            modifier = Modifier.padding(16.dp),
+            text = stringResource(id = R.string.phingers_demo_capture_orientation)
         )
+
+        DropdownCaptureOrientationMenu(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+        ) {
+            captureOrientation = it
+        }
+
+
+        Row() {
+            Checkbox(
+                checked = showTutorial,
+                onCheckedChange = {
+                    showTutorial = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                modifier = Modifier.padding(16.dp),
+                text = stringResource(id = R.string.phingers_demo_show_tutorial)
+            )
+        }
 
         if (!logs.isEmpty()) {
             Divider(color = Color.LightGray, thickness = 1.dp)
             BaseTextButton(
                 enabled = true,
-                text = "Clear logs",
+                text = stringResource(id = R.string.phingers_demo_clear_logs),
                 onClick = {
                     logs.clear()
                 })
         }
 
+
         Text(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp),
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             text = logs.joinToString(separator = "\n"),
             color = colorResource(id = R.color.sdkBodyTextColor),
         )

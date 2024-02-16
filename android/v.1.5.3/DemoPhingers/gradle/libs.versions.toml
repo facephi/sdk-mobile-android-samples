@@ -1,0 +1,9 @@
+# Facephi SDK Dependencies
+[versions]
+facephiVersion              = "1.5.3"
+
+[libraries]
+facephi-core = { module = "com.facephi.androidsdk:core", version.ref = "facephiVersion" }
+facephi-sdk = { module = "com.facephi.androidsdk:sdk", version.ref = "facephiVersion" }
+facephi-tracking = { module = "com.facephi.androidsdk:tracking_component", version.ref = "facephiVersion" }
+facephi-phingers = { module = "com.facephi.androidsdk:phingers_component", version.ref = "facephiVersion" }
