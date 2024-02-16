@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -144,7 +145,8 @@ fun MainScreen(
                     copyToClipboard(context, logs.joinToString(separator = "\n"))
                     onSendEmail(logs.joinToString(separator = "\n"))
                 },
-            text = logs.joinToString(separator = "\n")
+            text = logs.joinToString(separator = "\n"),
+            color = colorResource(id = R.color.sdkBodyTextColor),
         )
     }
 
