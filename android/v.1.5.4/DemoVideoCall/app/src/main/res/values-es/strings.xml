@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DemoVideoCall</string>
+    <string name="demo_new_operation" >Nueva operación</string>
+    <string name="demo_launch_video">Lanzar video call</string>
+</resources>
