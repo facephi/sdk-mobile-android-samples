@@ -43,7 +43,7 @@ import com.facephi.demonfc.ui.composables.DropdownScreenMenuBox
 import com.facephi.demonfc.utils.validNfcDate
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import io.github.aakira.napier.Napier
-
+import androidx.compose.ui.res.colorResource
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable

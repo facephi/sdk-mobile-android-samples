@@ -52,10 +52,6 @@ fun MainScreen(
 
     val logs = remember { mutableStateListOf<String>() }
 
-    var selphiFace by rememberSaveable {
-        mutableStateOf("")
-    }
-
     LaunchedEffect(Unit) {
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -155,8 +151,6 @@ fun MainScreen(
                                 Napier.d("APP: SELPHI OK")
                                 logs.add("SELPHI OK")
 
-                                selphiFace = it.data.bestImageBmp!!.bitmap.toBase64() ?: ""
-                                //liveness(selphiFace)
                             }
 
                             is SdkResult.Error -> {
@@ -179,12 +173,7 @@ fun MainScreen(
                             is SdkResult.Success -> {
                                 Napier.d("APP: SELPHID OK")
                                 logs.add("SELPHID OK")
-
-                                /*if (selphiFace.isNotEmpty()) {
-                                    matchingFacial(selphiFace,
-                                        sdkResult.data.tokenFaceImage)
-
-                                }*/
+                                
                             }
 
                             is SdkResult.Error -> {
