@@ -51,10 +51,6 @@ fun MainScreen(
 
     val logs = remember { mutableStateListOf<String>() }
 
-    var selphiFace by rememberSaveable {
-        mutableStateOf("")
-    }
-
     LaunchedEffect(Unit) {
 
         SDKController.enableDebugMode()
@@ -156,8 +152,6 @@ fun MainScreen(
                                 Napier.d("APP: SELPHI OK")
                                 logs.add("SELPHI OK")
 
-                                selphiFace = it.data?.bestImageBmp?.toBase64() ?: ""
-                                //liveness(selphiFace)
                             }
 
                             FinishStatus.STATUS_ERROR -> {
@@ -181,11 +175,6 @@ fun MainScreen(
                                 Napier.d("APP: SELPHID OK")
                                 logs.add("SELPHID OK")
 
-                                /*if (selphiFace.isNotEmpty()) {
-                                    matchingFacial(selphiFace,
-                                        sdkResult.data.tokenFaceImage)
-
-                                }*/
                             }
 
                             FinishStatus.STATUS_ERROR -> {
