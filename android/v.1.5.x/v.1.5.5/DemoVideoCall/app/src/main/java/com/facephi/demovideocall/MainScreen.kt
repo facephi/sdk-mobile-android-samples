@@ -160,7 +160,7 @@ fun MainScreen(
         Text(
             modifier = Modifier.fillMaxWidth()
                 .padding(bottom = 8.dp),
-            text = "Version 1.5.4",
+            text = "Version 1.5.5",
             style =  TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
