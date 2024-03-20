@@ -1,6 +1,6 @@
 # Facephi SDK Dependencies
 [versions]
-facephiVersion              = "2.0.0-SNAPSHOT"
+facephiVersion              = "2.0.0"
 
 [libraries]
 facephi-core = { module = "com.facephi.androidsdk:core", version.ref = "facephiVersion" }
