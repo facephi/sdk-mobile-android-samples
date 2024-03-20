@@ -72,10 +72,16 @@ fun MainScreen(
             })
 
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+        BaseButton(modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_selphid),
             onClick = {
                 viewModel.launchSelphId()
+            })
+
+        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_template),
+            onClick = {
+                viewModel.generateTemplateRawFromBitmap()
             })
 
         Text(

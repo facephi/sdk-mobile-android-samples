@@ -6,4 +6,5 @@
     <string name="onboarding_new_operation">Nueva Operación</string>
     <string name="onboarding_launch_selphi">Lanzar Selphi</string>
     <string name="onboarding_launch_selphid">Lanzar SelphID</string>
+    <string name="onboarding_launch_template">Lanzar generación plantilla</string>
 </resources>

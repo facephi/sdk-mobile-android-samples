@@ -3,9 +3,11 @@ package com.facephi.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
+import com.facephi.core.data.SdkImage
 import com.facephi.core.data.SdkResult
 import com.facephi.onboarding.utils.toBase64
 import com.facephi.sdk.SDKController
+import com.facephi.selphi_component.RawTemplateController
 import com.facephi.selphi_component.SelphiController
 import com.facephi.selphid_component.SelphIDController
 import com.facephi.tracking_component.TrackingErrorController
@@ -84,6 +86,17 @@ class MainViewModel : ViewModel() {
                     }
                 }
                 is SdkResult.Error -> log("SelphID: Error - ${result.error.name}")
+            }
+        }
+    }
+
+    fun generateTemplateRawFromBitmap(){
+        viewModelScope.launch {
+            ImageData.documentFace?.let {
+                when (val result = SDKController.launch(RawTemplateController(SdkImage(it)))){
+                    is SdkResult.Success -> log("Template generated size: ${result.data.size}")
+                    is SdkResult.Error -> log("Template: Error - ${result.error.name}")
+                }
             }
         }
     }
