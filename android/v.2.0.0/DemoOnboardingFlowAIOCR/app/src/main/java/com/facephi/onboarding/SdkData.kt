@@ -6,7 +6,11 @@ import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
 import com.facephi.sdk.data.SdkConfigurationData
+import com.facephi.sdk.data.flow.FlowConfigurationData
+import com.facephi.selphi_component.FSelphiController
+import com.facephi.selphi_component.FSignatureSelphiController
 import com.facephi.selphi_component.data.configuration.SelphiConfigurationData
+import com.facephi.selphid_component.FSelphIDController
 import com.facephi.selphid_component.data.configuration.SelphIDConfigurationData
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
@@ -40,6 +44,8 @@ object SdkData {
         } else {
             LicensingOffline(LICENSE)
         },
+        iaModels = false,
+        activateFlow = true,
         trackingController = TrackingController()
     )
 
@@ -67,5 +73,14 @@ object SdkData {
         generateRawImages = false,
         resourcesPath = SELPHID_RESOURCES,
         )
+
+    val flowConfigurationData = FlowConfigurationData(
+        id = "...",
+        controllers = listOf(
+            FSelphiController(), FSelphIDController(),
+            FSignatureSelphiController()
+        ),
+        customerId = "f-demo_onboarding@email.com"
+    )
 
 }

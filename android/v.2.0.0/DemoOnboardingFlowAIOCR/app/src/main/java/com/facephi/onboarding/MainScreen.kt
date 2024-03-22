@@ -12,10 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +38,6 @@ fun MainScreen(
 ) {
 
     val logs = viewModel.logs.collectAsState()
-    var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -67,13 +62,11 @@ fun MainScreen(
         BaseButton(modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_new_operation),
             onClick = {
-                newOperationClicked = true
                 viewModel.newOperation()
             })
 
         BaseButton(modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_selphi),
-            enabled = newOperationClicked,
             onClick = {
                viewModel.launchSelphi()
             })
@@ -81,14 +74,24 @@ fun MainScreen(
 
         BaseButton(modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_selphid),
-            enabled = newOperationClicked,
             onClick = {
                 viewModel.launchSelphId()
             })
 
+        BaseButton(modifier = Modifier.padding(top = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_flow),
+            onClick = {
+                viewModel.launchFlow()
+            })
+
+        BaseButton(modifier = Modifier.padding(top = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_flow_next),
+            onClick = {
+                viewModel.launchNextFlowStep()
+            })
+
         BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_template),
-            enabled = newOperationClicked,
             onClick = {
                 viewModel.generateTemplateRawFromBitmap()
             })
@@ -138,7 +141,7 @@ fun MainScreen(
                     .padding(16.dp)
                     .height(150.dp),
                 bitmap = it.asImageBitmap(),
-                contentDescription = "Document face Face",
+                contentDescription = "Document Face",
                 contentScale = ContentScale.Fit,
             )
         }
