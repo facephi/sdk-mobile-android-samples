@@ -40,7 +40,7 @@ object SdkData {
         } else {
             LicensingOffline(LICENSE)
         },
-        trackingController = TrackingController()
+        trackingController = TrackingController() // or null
     )
 
     // SELPHI DATA

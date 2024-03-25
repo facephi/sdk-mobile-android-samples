@@ -77,7 +77,6 @@ En la clse SdkData:
 
 ```
 val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-        url = "https://....",
         apiKey = "....."
     )
 ```
@@ -134,7 +133,6 @@ Los pasos a seguir para iniciar la demo son:
    
 3. En el fichero SdkData añadir o los datos del servicio del que se va a obtener la licencia o la licencia en String:
       val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-         url = "https://...",
          apiKey = "..."
       )
       

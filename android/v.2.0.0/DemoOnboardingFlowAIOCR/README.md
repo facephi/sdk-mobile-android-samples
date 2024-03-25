@@ -136,7 +136,6 @@ The steps to follow to start the demo are:
 
 3. In the SdkData file add either the data of the service from which the license is to be obtained or the license in String:
       val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-         url = "https://...",
          apiKey = "..."
       )
       
