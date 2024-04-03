@@ -63,6 +63,10 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ### 2.2 Using the SDK
 
+The SDK documentation:
+
+https://facephi.github.io/sdk-mobile-documentation/
+
 #### 2.2.1 SDK Initialization
 
 The SDK will be used through the [SDKController] object. This object needs to be initialized only once.
@@ -169,7 +173,6 @@ In the SdkData class:
 
 ```
 val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-        url = "https://....",
         apiKey = "....."
     )
 ```
@@ -227,7 +230,6 @@ The steps to follow to start the demo are:
 
 3. In the SdkData file add either the data of the service from which the license is to be obtained or the license in String:
       val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-         url = "https://...",
          apiKey = "..."
       )
       

@@ -62,6 +62,10 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ### 2.2 Uso del SDK
 
+Documentación del SDK:
+
+https://facephi.github.io/sdk-mobile-documentation/
+
 #### 2.2.1 Inicialización del SDK
 
 El SDK se utilizará a través del objeto [SDKController]. Este objeto necesita inicializarse una única vez. 
@@ -166,7 +170,6 @@ En la clse SdkData:
 
 ```
 val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-        url = "https://....",
         apiKey = "....."
     )
 ```
@@ -223,7 +226,6 @@ Los pasos a seguir para iniciar la demo son:
    
 3. En el fichero SdkData añadir o los datos del servicio del que se va a obtener la licencia o la licencia en String:
       val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-         url = "https://...",
          apiKey = "..."
       )
       
