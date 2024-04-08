@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">DemoOnboarding</string>
-    <string name="onboarding_init_message">SDK initialization...</string>
-    <string name="onboarding_init_error">SDK initialization ERROR: </string>
-    <string name="onboarding_new_operation" >New Operation</string>
-    <string name="onboarding_launch_selphi">Launch Selphi</string>
-    <string name="onboarding_launch_selphid">Launch SelphID</string>
-    <string name="onboarding_launch_template">Launch generate template</string>
-</resources>
