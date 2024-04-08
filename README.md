@@ -1,10 +1,5 @@
-# Facephi SDK Mobile samples
+# Facephi SDK Mobile samples - 2.0.X
 
 In this repository are the programming examples for using the Facephi Mobile SDK.
 
-There is one folder per platform:
-
-- Android
-- ...
-
-Within each platform folder are the examples divided by SDK version.
+[SDK Mobile documentation](https://facephi.github.io/sdk-mobile-documentation/)

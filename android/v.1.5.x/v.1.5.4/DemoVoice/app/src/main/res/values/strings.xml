@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name" translatable="false">Demo Voice ID</string>
-    <string name="new_operation">New Operation</string>
-    <string name="voice_tutorial">Show tutorial</string>
-    <string name="clear_logs">Clear logs</string>
-    <string name="voice_enroll">Voice enrollment</string>
-    <string name="voice_auth">Voice authentication</string>
-    <string name="voice_play">Play voice audios</string>
-</resources>
