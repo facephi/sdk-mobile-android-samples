@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">DemoVideoId</string>
-    <string name="demo_new_operation" >Nueva operación</string>
-    <string name="demo_launch_video">Lanzar Video ID</string>
-</resources>
