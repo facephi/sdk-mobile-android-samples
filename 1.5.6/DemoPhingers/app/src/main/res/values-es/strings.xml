@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phingers_component_left_hand">Prepara tu mano izquierda para la captura</string>
+    <string name="phingers_component_right_hand">Prepara tu mano derecha para la captura</string>
+    <string name="phingers_component_action_text">Tomar huellas</string>
+    <string name="phingers_component_capture_phingers">Mantenga los dedos firmes</string>
+    <string name="phingers_component_capture_thumb">Mantenga el dedo firmes</string>
+    <string name="phingers_component_capture_phingers_not_focus">Mueva los dedos hasta que estén enfocados</string>
+    <string name="phingers_component_capture_thumb_not_focus">Mova o dedo até que esteja focado</string>
+    <string name="phingers_demo_capture_orientation">Orientación de la captura:</string>
+    <string name="phingers_demo_new_operation">Nueva operación</string>
+    <string name="phingers_demo_launch_capture">Lanzar captura</string>
+    <string name="phingers_demo_launch_matching">Lanzar matching</string>
+    <string name="phingers_demo_show_tutorial">Mostrar tutorial:</string>
+    <string name="phingers_demo_clear_logs">Limpiar logs</string>
+</resources>

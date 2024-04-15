@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_operation">Nueva operación</string>
+    <string name="voice_tutorial">Mostrar tutorial</string>
+    <string name="clear_logs">Limpiar logs</string>
+    <string name="voice_enroll">Registro de voz</string>
+    <string name="voice_auth">Autenticación de voz</string>
+    <string name="voice_play">Reproducir audios grabados</string>
+</resources>

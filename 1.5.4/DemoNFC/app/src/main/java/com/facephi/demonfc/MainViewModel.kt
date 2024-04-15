@@ -57,7 +57,7 @@ class MainViewModel: ViewModel() {
                                     expirationDate = expirationDate, // "dd/MM/yyyy",
                                     enableDebugMode = true,
                                     showTutorial = true,
-                                    https://github.com/facephi/sdk-android/pull/552 = skipPACE
+                                    skipPACE = skipPACE
                                 ),
                             debugLogs = debugLogs
                             )
