@@ -91,7 +91,8 @@ fun MainScreen(
 
         Text(
             modifier = Modifier.padding(16.dp),
-            text = stringResource(id = R.string.phingers_demo_capture_orientation)
+            text = stringResource(id = R.string.phingers_demo_capture_orientation),
+            color = colorResource(id = R.color.sdkBodyTextColor)
         )
 
         DropdownCaptureOrientationMenu(
@@ -115,9 +116,16 @@ fun MainScreen(
             )
             Text(
                 modifier = Modifier.padding(16.dp),
-                text = stringResource(id = R.string.phingers_demo_show_tutorial)
+                text = stringResource(id = R.string.phingers_demo_show_tutorial),
+                color = colorResource(id = R.color.sdkBodyTextColor)
             )
         }
+
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = "Version 2.0.0",
+            color = colorResource(id = R.color.sdkBodyTextColor)
+        )
 
         if (logs.value.isNotEmpty()) {
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)

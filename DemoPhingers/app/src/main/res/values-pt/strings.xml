@@ -11,6 +11,6 @@
     <string name="phingers_demo_new_operation">Nova operação</string>
     <string name="phingers_demo_launch_capture">Lançar a captura</string>
     <string name="phingers_demo_launch_matching">Lançar matching</string>
-    <string name="phingers_demo_show_tutorial">Mostrar tutorial:</string>
+    <string name="phingers_demo_show_tutorial">Mostrar tutorial</string>
     <string name="phingers_demo_clear_logs">Limpar registros</string>
 </resources>
