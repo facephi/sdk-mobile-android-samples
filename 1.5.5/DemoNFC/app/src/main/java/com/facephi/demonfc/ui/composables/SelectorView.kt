@@ -1,11 +1,14 @@
 package com.facephi.demonfc.ui.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -14,7 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.facephi.demonfc.R
 import com.facephi.demonfc.model.DocumentType
 import com.facephi.demonfc.model.ShowScreen
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
@@ -44,12 +49,18 @@ fun DropdownScreenMenuBox(modifier : Modifier = Modifier, newSelection: (ShowScr
             )
 
             ExposedDropdownMenu(
+                modifier = Modifier.background(color = colorResource(
+                    id = com.facephi.sdk_composables.R.color.sdkBackgroundColor
+                )),
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
                 list.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item.name) },
+                        text = { Text(
+                            text = item.name,
+                            color = colorResource(id = R.color.sdkBodyTextColor))
+                               },
                         onClick = {
                             selectedText = item
                             expanded = false
@@ -86,12 +97,18 @@ fun DropdownDocumentMenuBox(modifier : Modifier = Modifier, newSelection: (Docum
             )
 
             ExposedDropdownMenu(
+                modifier = Modifier.background(color = colorResource(
+                    id = com.facephi.sdk_composables.R.color.sdkBackgroundColor
+                )),
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
                 list.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item.name) },
+                        text = {
+                            Text(text = item.name,
+                                color = colorResource(id = R.color.sdkBodyTextColor))
+                               },
                         onClick = {
                             selectedText = item
                             expanded = false

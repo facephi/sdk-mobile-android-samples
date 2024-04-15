@@ -140,6 +140,7 @@ fun DataScreen(
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
             text = stringResource(id = R.string.nfc_show_screen),
+            color = colorResource(id = R.color.sdkBodyTextColor)
         )
 
         DropdownScreenMenuBox(
@@ -217,7 +218,8 @@ fun DataScreen(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
-            )
+            ),
+            color = colorResource(id = R.color.sdkBodyTextColor)
         )
 
         if (!logs.isEmpty()) {
