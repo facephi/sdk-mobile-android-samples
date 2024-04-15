@@ -57,6 +57,7 @@ class MainViewModel: ViewModel() {
                                     expirationDate = expirationDate, // "dd/MM/yyyy",
                                     enableDebugMode = true,
                                     showTutorial = true,
+                                    skipPACE = skipPACE
                                 ),
                             debugLogs = debugLogs
                             )

@@ -80,7 +80,7 @@ object SdkData {
             birthDate = birthDate, // "dd/MM/yyyy"
             expirationDate = expirationDate, // "dd/MM/yyyy",
             enableDebugMode = true,
-            onlyBAC = skipPACE,
+            skipPACE = skipPACE,
             showTutorial = when (showScreen) {
                 ShowScreen.SHOW_DIAGNOSTIC-> false
                 ShowScreen.SHOW_TUTORIAL, ShowScreen.SHOW_TUTORIAL_AND_DIAGNOSTIC -> {
