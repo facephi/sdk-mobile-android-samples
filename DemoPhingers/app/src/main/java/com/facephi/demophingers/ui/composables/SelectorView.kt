@@ -1,5 +1,6 @@
 package com.facephi.demophingers.ui.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
@@ -14,7 +15,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.facephi.demophingers.R
 import com.facephi.demophingers.ui.theme.DemoPhingersTheme
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
 
@@ -43,12 +46,17 @@ fun DropdownCaptureOrientationMenu(modifier : Modifier = Modifier, newSelection:
             )
 
             ExposedDropdownMenu(
+                modifier = Modifier.background(color = colorResource(
+                    id = R.color.sdkBackgroundColor
+                )),
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
                 list.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item.name) },
+                        text = {
+                            Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor))
+                               },
                         onClick = {
                             selectedText = item
                             expanded = false
