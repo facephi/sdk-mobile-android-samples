@@ -83,6 +83,7 @@ fun MainScreen(
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
             text = stringResource(id = R.string.nfc_select_document),
+            color = colorResource(id = R.color.sdkBodyTextColor)
         )
 
         DropdownDocumentMenuBox(
@@ -120,12 +121,13 @@ fun MainScreen(
         Text(
             modifier = Modifier.fillMaxWidth()
                 .padding(bottom = 8.dp),
-            text = "Version 1.5.5",
+            text = "Version 2.0.0",
             style =  TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
-            )
+            ),
+            color = colorResource(id = R.color.sdkBodyTextColor)
         )
 
         if (!logs.isEmpty()) {
