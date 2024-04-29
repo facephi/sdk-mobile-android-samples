@@ -72,4 +72,5 @@ dependencies {
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
+    implementation (libs.facephi.verifications)
 }

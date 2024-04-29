@@ -90,7 +90,9 @@ fun MainScreen(
             text = stringResource(id = R.string.onboarding_launch_template),
             enabled = newOperationClicked,
             onClick = {
-                viewModel.generateTemplateRawFromBitmap()
+                ImageData.selphiBestImage?.let {
+                    viewModel.generateTemplateRawFromBitmap(it)
+                }
             })
 
         Text(
@@ -121,7 +123,7 @@ fun MainScreen(
             )
         }
 
-        ImageData.selphiFace?.let {
+        ImageData.selphiBestImage?.let {
             Image(
                 modifier = Modifier
                     .padding(16.dp)
