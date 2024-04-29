@@ -1,5 +1,6 @@
 package com.facephi.onboarding
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
@@ -55,10 +56,10 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Success -> {
                     log("Selphi: OK")
                     result.data.bestImage?.bitmap?.let {
-                        ImageData.selphiFace = it
-                        ImageData.selphiFaceB64 = it.toBase64() ?: ""
+                        ImageData.selphiBestImage = it
                     }
                 }
+
                 is SdkResult.Error -> log("Selphi: Error - ${result.error.name}")
             }
         }
@@ -71,9 +72,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Success -> {
                     log("SelphID: OK")
                     if (result.data.tokenFaceImage.isNotEmpty()) {
-                        ImageData.tokenFaceImage = result.data.tokenFaceImage
+                        ImageData.documentTokenFaceImage = result.data.tokenFaceImage
                     }
-                    result.data.faceImage?.bitmap .let {
+                    result.data.faceImage?.bitmap.let {
                         ImageData.documentFace = it
                     }
 
@@ -85,23 +86,22 @@ class MainViewModel : ViewModel() {
                         ImageData.documentBack = it
                     }
                 }
+
                 is SdkResult.Error -> log("SelphID: Error - ${result.error.name}")
             }
         }
     }
 
-    fun generateTemplateRawFromBitmap(){
+    fun generateTemplateRawFromBitmap(bitmap: Bitmap) {
         viewModelScope.launch {
-            ImageData.documentFace?.let {
-                when (val result = SDKController.launch(RawTemplateController(SdkImage(it)))){
-                    is SdkResult.Success -> log("Template generated size: ${result.data.size}")
-                    is SdkResult.Error -> log("Template: Error - ${result.error.name}")
-                }
+            when (val result = SDKController.launch(RawTemplateController(SdkImage(bitmap)))) {
+                is SdkResult.Success -> log("Template generated: ${result.data}")
+                is SdkResult.Error -> log("Template: Error - ${result.error.name}")
             }
         }
     }
 
-    private fun log(message: String){
+    private fun log(message: String) {
         viewModelScope.launch {
             val data = _logs.value + "\n" + message
             _logs.emit(data)
@@ -109,7 +109,7 @@ class MainViewModel : ViewModel() {
 
     }
 
-    fun clearLogs(){
+    fun clearLogs() {
         viewModelScope.launch {
             _logs.emit("")
             ImageData.clear()
