@@ -33,7 +33,7 @@ object SdkData {
     const val SELPHI_RESOURCES = "resources-selphi-2-0.zip"
     const val SELPHID_RESOURCES = "resources-selphid-2-0.zip"
 
-    val BASE_URL = ""
+    const val BASE_URL = ""
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,
