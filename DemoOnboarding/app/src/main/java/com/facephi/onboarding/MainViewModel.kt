@@ -137,8 +137,13 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             val extraData = when (val result = SDKController.launch(ExtraDataController())) {
                 is SdkResult.Success -> result.data
-                is SdkResult.Error -> ""
+                is SdkResult.Error -> {
+                    log("EXTRA_DATA: Error - ${result.error}")
+                    ""
+                }
             }
+
+            if (extraData.isEmpty()) return@launch
 
             // LIVENESS WITH BASE64 IMAGE
 
