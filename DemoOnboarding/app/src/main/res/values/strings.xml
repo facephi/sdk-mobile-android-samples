@@ -6,4 +6,5 @@
     <string name="onboarding_launch_selphi">Launch Selphi</string>
     <string name="onboarding_launch_selphid">Launch SelphID</string>
     <string name="onboarding_launch_template">Launch generate template</string>
+    <string name="onboarding_launch_verifications">Launch verifications</string>
 </resources>
