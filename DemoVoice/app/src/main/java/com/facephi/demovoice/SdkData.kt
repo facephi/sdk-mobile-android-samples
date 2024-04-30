@@ -20,12 +20,13 @@ object SdkData {
         apiKey = "..."
     )
 
-    const val LICENSE = "{..."
+    const val LICENSE = "..."
 
     // ************** DATA **************
 
     const val CUSTOMER_ID: String = "demo_voice-android@email.com"
     val OPERATION_TYPE = OperationType.ONBOARDING
+    const val BASE_URL = ""
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,

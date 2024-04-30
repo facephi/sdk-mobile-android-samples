@@ -6,4 +6,8 @@
     <string name="voice_enroll">Voice enrollment</string>
     <string name="voice_auth">Voice authentication</string>
     <string name="voice_play">Play voice audios</string>
+    <string name="voice_verifications">Launch verifications</string>
+    <string name="voice_phrase_1">Full ID card number</string>
+    <string name="voice_phrase_2">Launch verifications</string>
+    <string name="voice_phrase_3">Full address</string>
 </resources>

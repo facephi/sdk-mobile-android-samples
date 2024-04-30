@@ -38,6 +38,7 @@ import com.facephi.demovoice.media.AppMediaPlayer
 import com.facephi.demovoice.media.AudioFileManager
 import com.facephi.demovoice.ui.composables.BaseButton
 import com.facephi.demovoice.ui.composables.BaseTextButton
+import com.facephi.voice_component.data.configuration.VoiceConfigurationData
 import io.github.aakira.napier.Napier
 
 
@@ -52,6 +53,7 @@ fun MainScreen(
     val context = LocalContext.current
     var showScreen by rememberSaveable { mutableStateOf(true) }
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
+
 
     var isPlaying by rememberSaveable {
         mutableStateOf(false)
@@ -72,6 +74,16 @@ fun MainScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        val enrollPhrases = arrayOf(
+            stringResource(id = R.string.voice_phrase_1),
+            stringResource(id = R.string.voice_phrase_2),
+            stringResource(id = R.string.voice_phrase_3),
+        )
+
+        val authPhrases = arrayOf(
+            stringResource(id = R.string.voice_phrase_1)
+        )
+
         Image(
             painter = painterResource(id = R.drawable.ic_demo_logo),
             contentDescription = "Logo",
@@ -94,7 +106,12 @@ fun MainScreen(
             onClick = {
                 Napier.d("APP: LAUNCH VOICE ENROLL")
 
-                viewModel.launchVoiceEnroll(showScreen){ audioArray ->
+                viewModel.launchVoiceEnroll(
+                    VoiceConfigurationData(
+                    phrases = enrollPhrases,
+                    showTutorial = showScreen)
+                )
+                { audioArray ->
                     audios.clear()
                     if (audioArray.isNotEmpty()){
                         audioArray.forEachIndexed { index, element ->
@@ -119,7 +136,11 @@ fun MainScreen(
             enabled = newOperationClicked,
             onClick = {
                 Napier.d("APP: LAUNCH VOICE AUTH")
-                viewModel.launchVoiceAuth(showScreen)
+                viewModel.launchVoiceAuth(
+                    VoiceConfigurationData(
+                        phrases = authPhrases,
+                        showTutorial = showScreen)
+                )
             }
         )
 
@@ -175,6 +196,15 @@ fun MainScreen(
                 )
             }
         }
+
+        BaseButton(
+            text = stringResource(id = R.string.voice_verifications),
+            enabled = newOperationClicked,
+            onClick = {
+                Napier.d("APP: LAUNCH VERIFICATIONS")
+                viewModel.launchVerifications(context)
+            }
+        )
 
         Row() {
             Checkbox(
