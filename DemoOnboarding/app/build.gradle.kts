@@ -7,6 +7,10 @@ android {
     namespace = "com.facephi.onboarding"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "..."
         minSdk = 24
@@ -18,6 +22,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField( "String", "LIBRARY_VERSION", "\"${libs.versions.facephiVersion.get()}\"")
     }
 
     buildTypes {

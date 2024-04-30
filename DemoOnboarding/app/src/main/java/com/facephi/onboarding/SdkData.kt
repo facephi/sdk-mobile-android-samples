@@ -18,7 +18,7 @@ object SdkData {
 
     // ************** LICENSE **************
 
-    const val LICENSE_ONLINE = true
+    const val LICENSE_ONLINE = false
 
     val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
         apiKey = "..."
@@ -32,6 +32,8 @@ object SdkData {
     val OPERATION_TYPE = OperationType.ONBOARDING
     const val SELPHI_RESOURCES = "resources-selphi-2-0.zip"
     const val SELPHID_RESOURCES = "resources-selphid-2-0.zip"
+
+    val BASE_URL = ""
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,

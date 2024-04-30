@@ -1,6 +1,8 @@
 package com.facephi.onboarding
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
@@ -11,15 +13,23 @@ import com.facephi.sdk.SDKController
 import com.facephi.selphi_component.RawTemplateController
 import com.facephi.selphi_component.SelphiController
 import com.facephi.selphid_component.SelphIDController
+import com.facephi.tracking_component.ExtraDataController
 import com.facephi.tracking_component.TrackingErrorController
+import com.facephi.verifications_component.VerificationController
+import com.facephi.verifications_component.data.configuration.LivenessWithImageRequest
+import com.facephi.verifications_component.data.configuration.LivenessWithTemplateRequest
+import com.facephi.verifications_component.data.configuration.MatchingDocumentWithFaceImageRequest
+import com.facephi.verifications_component.data.configuration.MatchingDocumentWithFaceTemplateRequest
+import com.facephi.verifications_component.data.result.VerificationsResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class MainViewModel : ViewModel() {
-
     private val _logs = MutableStateFlow("")
     val logs = _logs.asStateFlow()
+
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
             SDKController.enableDebugMode()
@@ -58,6 +68,10 @@ class MainViewModel : ViewModel() {
                     result.data.bestImage?.bitmap?.let {
                         ImageData.selphiBestImage = it
                     }
+                    result.data.bestImageTokenized?.let {
+                        ImageData.selphiBestImageTokenized = it
+                    }
+
                 }
 
                 is SdkResult.Error -> log("Selphi: Error - ${result.error.name}")
@@ -113,6 +127,117 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             _logs.emit("")
             ImageData.clear()
+        }
+
+    }
+
+    fun launchVerifications(context: Context) {
+        val verificationController = VerificationController(context)
+
+        viewModelScope.launch {
+            val extraData = when (val result = SDKController.launch(ExtraDataController())) {
+                is SdkResult.Success -> result.data
+                is SdkResult.Error -> ""
+            }
+
+            // LIVENESS WITH BASE64 IMAGE
+
+            ImageData.selphiBestImage?.toBase64()?.takeIf { it.isNotBlank() }?.let { bestImageB64 ->
+                val response = verificationController.livenessWithImage(
+                    LivenessWithImageRequest(
+                        image = bestImageB64,
+                        extraData = extraData
+                    ), baseUrl = SdkData.BASE_URL
+                )
+                when (response) {
+
+                    is VerificationsResult.Error -> {
+                        log("** livenessWithImage: Error - ${response.error}\n")
+                    }
+
+                    is VerificationsResult.Success -> {
+                        log("** livenessWithImage: OK - ${response.data}\n")
+                    }
+                }
+
+
+            }
+
+            // LIVENESS WITH TOKENIZED IMAGE
+
+            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }?.let { bestImageTokenized ->
+                val response = verificationController.livenessWithTemplate(
+                    LivenessWithTemplateRequest(
+                        tokenImage = bestImageTokenized,
+                        extraData = Base64.encodeToString(
+                            UUID.randomUUID().toString().toByteArray(), Base64.NO_WRAP
+                        )
+                    ), baseUrl = SdkData.BASE_URL
+                )
+                when (response) {
+                    is VerificationsResult.Error -> {
+                        log("** livenessWithTemplate: Error - ${response.error}\n")
+                    }
+
+                    is VerificationsResult.Success -> {
+                        log("** livenessWithTemplate: OK - ${response.data}\n")
+                    }
+                }
+
+
+            }
+
+            // MATCHING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
+
+            ImageData.selphiBestImage?.toBase64()?.takeIf { it.isNotBlank() }?.let { bestImageB64 ->
+                ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
+                    ?.let { documentTokenFaceImage ->
+                        val response = verificationController.matchingDocumentWithFaceImage(
+                            request = MatchingDocumentWithFaceImageRequest(
+                                image = bestImageB64,
+                                documentTemplate = documentTokenFaceImage,
+                                extraData = Base64.encodeToString(
+                                    UUID.randomUUID().toString().toByteArray(), Base64.NO_WRAP
+                                )
+                            ),
+                            baseUrl = SdkData.BASE_URL
+                        )
+                        when (response) {
+                            is VerificationsResult.Error -> {
+                                log("** matchingDocumentWithFaceImage: Error - ${response.error}\n")
+                            }
+
+                            is VerificationsResult.Success -> {
+                                log("** matchingDocumentWithFaceImage: OK - ${response.data}\n")
+                            }
+                        }
+                    }
+            }
+
+            // MATCHING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
+
+            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }?.let { bestImageTokenized ->
+                ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
+                    ?.let { documentTokenFaceImage ->
+                        val response = verificationController.matchingDocumentWithFaceTemplate(
+                            request = MatchingDocumentWithFaceTemplateRequest(
+                                faceTemplate = bestImageTokenized,
+                                documentTemplate = documentTokenFaceImage,
+                                extraData = extraData
+                            ),
+                            baseUrl = SdkData.BASE_URL
+                        )
+                        when (response) {
+                            is VerificationsResult.Error -> {
+                                log("** matchingDocumentWithFaceTemplate: Error - ${response.error}\n")
+                            }
+
+                            is VerificationsResult.Success -> {
+                                log("** matchingDocumentWithFaceTemplate: OK - ${response.data}\n")
+                            }
+                        }
+                    }
+            }
         }
 
     }
