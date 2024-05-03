@@ -123,7 +123,7 @@ fun MainScreen(
 
         Text(
             modifier = Modifier.padding(16.dp),
-            text = "Version 2.0.0",
+            text = BuildConfig.LIBRARY_VERSION,
             color = colorResource(id = R.color.sdkBodyTextColor)
         )
 
