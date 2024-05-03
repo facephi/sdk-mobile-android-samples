@@ -54,6 +54,15 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
 
+Para el componente de NFC es necesario añadir en el gradle:
+
+```
+   packaging {
+        resources {
+            pickFirsts.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+        }
+    }
+```
 
 ### 2.2 Uso del SDK
 
