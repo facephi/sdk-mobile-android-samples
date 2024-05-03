@@ -54,6 +54,16 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
 
+For the NFC component it is necessary to add in gradle:
+
+```
+   packaging {
+        resources {
+            pickFirsts.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+        }
+    }
+```
+
 
 ### 2.2 Using the SDK
 
