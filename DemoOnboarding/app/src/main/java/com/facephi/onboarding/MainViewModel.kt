@@ -109,7 +109,7 @@ class MainViewModel : ViewModel() {
     fun generateTemplateRawFromBitmap(bitmap: Bitmap) {
         viewModelScope.launch {
             when (val result = SDKController.launch(RawTemplateController(SdkImage(bitmap)))) {
-                is SdkResult.Success -> log("Template generated: ${result.data}")
+                is SdkResult.Success -> log("Template generated. Length: ${result.data.length}")
                 is SdkResult.Error -> log("Template: Error - ${result.error.name}")
             }
         }
