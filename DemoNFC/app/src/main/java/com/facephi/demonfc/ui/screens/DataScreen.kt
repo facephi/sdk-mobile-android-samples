@@ -44,6 +44,7 @@ import com.facephi.demonfc.utils.validNfcDate
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import io.github.aakira.napier.Napier
 import androidx.compose.ui.res.colorResource
+import com.facephi.demonfc.BuildConfig
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -213,7 +214,7 @@ fun DataScreen(
         Text(
             modifier = Modifier.fillMaxWidth()
                 .padding(bottom = 8.dp),
-            text = "Version 2.0.0",
+            text = BuildConfig.LIBRARY_VERSION,
             style =  TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,

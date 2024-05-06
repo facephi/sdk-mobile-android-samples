@@ -4,18 +4,18 @@ import android.graphics.Bitmap
 
 object ImageData {
     fun clear() {
-        selphiFace = null
+        selphiBestImage = null
+        selphiBestImageTokenized = null
         documentFace = null
         documentFront = null
         documentBack = null
-        tokenFaceImage = null
-        selphiFaceB64 = null
+        documentTokenFaceImage = null
     }
 
-    var selphiFace: Bitmap? = null
-    var selphiFaceB64: String? = null
+    var selphiBestImage: Bitmap? = null
+    var selphiBestImageTokenized: String? = null
     var documentFace: Bitmap? = null
     var documentFront: Bitmap? = null
     var documentBack: Bitmap? = null
-    var tokenFaceImage: String? = null
+    var documentTokenFaceImage: String? = null
 }

@@ -87,7 +87,7 @@ fun MainScreen(
         Text(
             modifier = Modifier.fillMaxWidth()
                 .padding(bottom = 8.dp),
-            text = "Version 2.0.0",
+            text = BuildConfig.LIBRARY_VERSION,
             style =  TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,

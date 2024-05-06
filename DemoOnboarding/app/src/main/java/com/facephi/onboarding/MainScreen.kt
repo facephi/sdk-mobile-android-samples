@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +41,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel()
 ) {
+    val context = LocalContext.current
 
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
@@ -86,17 +88,26 @@ fun MainScreen(
                 viewModel.launchSelphId()
             })
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+        BaseButton(modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_template),
             enabled = newOperationClicked,
             onClick = {
-                viewModel.generateTemplateRawFromBitmap()
+                ImageData.selphiBestImage?.let {
+                    viewModel.generateTemplateRawFromBitmap(it)
+                }
+            })
+
+        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_verifications),
+            enabled = newOperationClicked,
+            onClick = {
+                viewModel.launchVerifications(context)
             })
 
         Text(
             modifier = Modifier.fillMaxWidth()
                 .padding(bottom = 8.dp),
-            text = "Version 2.0.0",
+            text = BuildConfig.LIBRARY_VERSION,
             style =  TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
@@ -121,7 +132,7 @@ fun MainScreen(
             )
         }
 
-        ImageData.selphiFace?.let {
+        ImageData.selphiBestImage?.let {
             Image(
                 modifier = Modifier
                     .padding(16.dp)
