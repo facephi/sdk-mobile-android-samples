@@ -44,7 +44,7 @@ object SdkData {
         } else {
             LicensingOffline(LICENSE)
         },
-        iaModels = false,
+        aiModels = false,
         activateFlow = true,
         trackingController = TrackingController()
     )
