@@ -77,7 +77,7 @@ fun MainScreen(
         val enrollPhrases = arrayOf(
             stringResource(id = R.string.voice_phrase_1),
             stringResource(id = R.string.voice_phrase_2),
-            stringResource(id = R.string.voice_phrase_3),
+            stringResource(id = R.string.voice_phrase_2),
         )
 
         val authPhrases = arrayOf(
