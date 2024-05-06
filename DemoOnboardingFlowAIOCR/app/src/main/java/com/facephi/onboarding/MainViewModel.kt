@@ -7,7 +7,6 @@ import com.facephi.core.data.SdkImage
 import com.facephi.core.data.SdkResult
 import com.facephi.onboarding.utils.toBase64
 import com.facephi.sdk.FlowController
-import com.facephi.sdk.GetOperationIdController
 import com.facephi.sdk.SDKController
 import com.facephi.sdk.data.flow.FlowKeys
 import com.facephi.selphi_component.RawTemplateController
@@ -20,7 +19,6 @@ import com.facephi.selphid_component.data.result.SelphIDResult
 import com.facephi.selphid_component.data.result.getSelphIDError
 import com.facephi.selphid_component.data.result.getSelphIDResult
 import com.facephi.tracking_component.TrackingErrorController
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -91,9 +89,9 @@ class MainViewModel : ViewModel() {
 
     fun generateTemplateRawFromBitmap(){
         viewModelScope.launch {
-            ImageData.documentFace?.let {
+            ImageData.selphiBestImage?.let {
                 when (val result = SDKController.launch(RawTemplateController(SdkImage(it)))){
-                    is SdkResult.Success -> log("Template generated size: ${result.data.size}")
+                    is SdkResult.Success -> log("Template generated. Length: ${result.data.length}")
                     is SdkResult.Error -> log("Template: Error - ${result.error.name}")
                 }
             }
@@ -180,8 +178,8 @@ class MainViewModel : ViewModel() {
 
     private fun saveSelphiData(selphiResult: SelphiResult){
         selphiResult.bestImage?.bitmap?.let {
-            ImageData.selphiFace = it
-            ImageData.selphiFaceB64 = it.toBase64() ?: ""
+            ImageData.selphiBestImage = it
+            ImageData.selphiBestImageB64 = it.toBase64() ?: ""
         }
     }
 

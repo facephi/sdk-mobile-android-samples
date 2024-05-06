@@ -124,7 +124,7 @@ fun MainScreen(
             )
         }
 
-        ImageData.selphiFace?.let {
+        ImageData.selphiBestImage?.let {
             Image(
                 modifier = Modifier
                     .padding(16.dp)
