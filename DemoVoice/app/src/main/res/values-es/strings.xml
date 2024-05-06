@@ -8,6 +8,5 @@
     <string name="voice_play">Reproducir audios grabados</string>
     <string name="voice_verifications">Lanzar verificaciones</string>
     <string name="voice_phrase_1">DNI con letra</string>
-    <string name="voice_phrase_2">Dirección completa</string>
-    <string name="voice_phrase_3">Repetir DNI con letra</string>
+    <string name="voice_phrase_2">Repetir el DNI con letra</string>
 </resources>
