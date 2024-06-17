@@ -5,16 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
+import com.facephi.demovoice.repository.VerificationsApi
+import com.facephi.demovoice.repository.request.VoiceAuthenticationRequest
+import com.facephi.demovoice.repository.request.VoiceEnrollRequest
 import com.facephi.sdk.SDKController
-import com.facephi.tracking_component.ExtraDataController
-import com.facephi.tracking_component.TrackingErrorController
-import com.facephi.verifications_component.VerificationController
-import com.facephi.verifications_component.data.configuration.VoiceAuthenticationRequest
-import com.facephi.verifications_component.data.configuration.VoiceEnrollRequest
-import com.facephi.verifications_component.data.result.VerificationsResult
 import com.facephi.voice_component.VoiceController
 import com.facephi.voice_component.data.configuration.VoiceConfigurationData
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -37,9 +33,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
             }
 
-            SDKController.launch(TrackingErrorController {
+            /*SDKController.launch(TrackingErrorController {
                 log("Tracking Error: ${it.name}")
-            })
+            })*/
         }
     }
 
@@ -106,10 +102,11 @@ class MainViewModel : ViewModel() {
     }
 
     fun launchVerifications(context: Context) {
-        val verificationController = VerificationController(context)
+        val verificationController = VerificationsApi(context, SdkData.API_KEY)
 
         viewModelScope.launch {
-            val extraData = when (val result = SDKController.launch(ExtraDataController())) {
+            // If Tracking Component is used
+            /*val extraData = when (val result = SDKController.launch(ExtraDataController())) {
                 is SdkResult.Success -> result.data
                 is SdkResult.Error -> {
                     log("EXTRA_DATA: Error - ${result.error}")
@@ -119,28 +116,27 @@ class MainViewModel : ViewModel() {
 
             if (extraData.isEmpty()) return@launch
 
+            val operationId = SDKController.launch(GetOperationIdController()).orEmpty()
+
+            if (operationId.isEmpty()) return@launch
+
+            val trackingData = TrackingData(
+                extraData = extraData,
+                operationId = operationId
+            )
+
+             */
+
             // VOICE ENROLL
 
             enrollTokenizedAudios.takeIf { it.isNotEmpty() }?.let { enrollAudios ->
                 val response = verificationController.voiceEnroll(
-                    VoiceEnrollRequest(
+                    request = VoiceEnrollRequest(
                         audios = enrollAudios,
-                        extraData = extraData
+                        extraData = ""//extraData
                     ), baseUrl = SdkData.BASE_URL
                 )
-                when (response) {
-
-                    is VerificationsResult.Error -> {
-                        log("** voiceEnroll: Error - ${response.error}\n")
-                    }
-
-                    is VerificationsResult.Success -> {
-                        log("** voiceEnroll: OK - ${response.data}\n")
-                        response.data.template?.takeIf { it.isNotBlank() }?.let {
-                            enrollTemplate = it
-                        }
-                    }
-                }
+                log("** voiceEnroll: ${response}\n")
             }
 
             // VOICE AUTHENTICATION
@@ -149,23 +145,13 @@ class MainViewModel : ViewModel() {
                 authTokenizedAudio.takeIf { it.isNotEmpty() }?.let { tokenizedAudio ->
 
                     val response = verificationController.voiceAuthentication(
-                        VoiceAuthenticationRequest(
+                        request = VoiceAuthenticationRequest(
                             audio = tokenizedAudio,
                             template = template,
-                            extraData = extraData
+                            extraData = ""//extraData
                         ), baseUrl = SdkData.BASE_URL
                     )
-                    when (response) {
-
-                        is VerificationsResult.Error -> {
-                            log("** voiceAuthentication: Error - ${response.error}\n")
-                        }
-
-                        is VerificationsResult.Success -> {
-                            log("** voiceAuthentication: OK - ${response.data}\n")
-                        }
-                    }
-
+                    log("** voiceAuthentication: ${response}\n")
                 }
             }
 

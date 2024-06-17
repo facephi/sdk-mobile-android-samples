@@ -18,7 +18,6 @@ import com.facephi.selphid_component.SelphIDController
 import com.facephi.selphid_component.data.result.SelphIDResult
 import com.facephi.selphid_component.data.result.getSelphIDError
 import com.facephi.selphid_component.data.result.getSelphIDResult
-import com.facephi.tracking_component.TrackingErrorController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -41,9 +40,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
             }
 
-            SDKController.launch(TrackingErrorController {
+            /*SDKController.launch(TrackingErrorController {
                 log("Tracking Error: ${it.name}")
-            })
+            })*/
         }
     }
 

@@ -75,5 +75,5 @@ dependencies {
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
     implementation (libs.facephi.videocall)
-    implementation (libs.facephi.tracking)
+    //implementation (libs.facephi.tracking)
 }

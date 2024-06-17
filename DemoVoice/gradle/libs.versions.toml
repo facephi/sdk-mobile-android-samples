@@ -7,4 +7,3 @@ facephi-core = { module = "com.facephi.androidsdk:core", version.ref = "facephiV
 facephi-sdk = { module = "com.facephi.androidsdk:sdk", version.ref = "facephiVersion" }
 facephi-tracking = { module = "com.facephi.androidsdk:tracking_component", version.ref = "facephiVersion" }
 facephi-voice = { module = "com.facephi.androidsdk:voice_component", version.ref = "facephiVersion" }
-facephi-verifications = { module = "com.facephi.androidsdk:verifications_component", version.ref = "facephiVersion" }

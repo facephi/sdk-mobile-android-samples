@@ -77,5 +77,5 @@ dependencies {
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
     implementation (libs.facephi.videoid)
-    implementation (libs.facephi.tracking)
+    //implementation (libs.facephi.tracking)
 }

@@ -24,6 +24,10 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> Napier.d("INIT SDK ERROR: ${result.error}")
             }
 
+            /*SDKController.launch(TrackingErrorController {
+                Napier.d("Tracking Error: ${it.name}")
+            })*/
+
         }
     }
 

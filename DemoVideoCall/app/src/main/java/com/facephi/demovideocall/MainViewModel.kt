@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.sdk.SDKController
-import com.facephi.tracking_component.TrackingErrorController
 import com.facephi.videocall_component.VideoCallController
 import com.facephi.videocall_component.process.recording.VideoCallScreenSharingManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,9 +31,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
             }
 
-            SDKController.launch(TrackingErrorController {
+           /* SDKController.launch(TrackingErrorController {
                 log("Tracking Error: ${it.name}")
-            })
+            })*/
         }
     }
 

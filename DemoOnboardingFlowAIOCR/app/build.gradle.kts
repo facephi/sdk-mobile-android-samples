@@ -76,5 +76,5 @@ dependencies {
     implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
-    implementation (libs.facephi.tracking)
+    //implementation (libs.facephi.tracking)
 }

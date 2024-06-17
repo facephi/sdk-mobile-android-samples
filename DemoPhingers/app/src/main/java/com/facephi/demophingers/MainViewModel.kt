@@ -8,7 +8,6 @@ import com.facephi.phingers_component.PhingersController
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
 import com.facephi.phingers_component.data.configuration.PhingersConfigurationData
 import com.facephi.sdk.SDKController
-import com.facephi.tracking_component.TrackingErrorController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -27,9 +26,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
             }
 
-            SDKController.launch(TrackingErrorController {
+            /*SDKController.launch(TrackingErrorController {
                 log("Tracking Error: ${it.name}")
-            })
+            })*/
         }
     }
 
