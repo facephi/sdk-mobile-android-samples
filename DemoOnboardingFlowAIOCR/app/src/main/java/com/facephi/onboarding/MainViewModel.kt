@@ -29,7 +29,10 @@ class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow("")
     val logs = _logs.asStateFlow()
     fun initSdk(sdkApplication: SdkApplication) {
-        SDKController.enableDebugMode()
+        if (BuildConfig.DEBUG){
+            SDKController.enableDebugMode()
+        }
+
         viewModelScope.launch {
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {

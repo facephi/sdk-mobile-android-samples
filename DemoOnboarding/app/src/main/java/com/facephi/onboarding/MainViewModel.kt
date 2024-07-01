@@ -26,7 +26,9 @@ class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            SDKController.enableDebugMode()
+            if (BuildConfig.DEBUG){
+                SDKController.enableDebugMode()
+            }
 
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {

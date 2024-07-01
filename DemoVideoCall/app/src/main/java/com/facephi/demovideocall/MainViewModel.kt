@@ -23,7 +23,9 @@ class MainViewModel : ViewModel() {
             log("Screen sharing state: ${it.name}")
         }
         viewModelScope.launch {
-            SDKController.enableDebugMode()
+            if (BuildConfig.DEBUG){
+                SDKController.enableDebugMode()
+            }
 
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {
