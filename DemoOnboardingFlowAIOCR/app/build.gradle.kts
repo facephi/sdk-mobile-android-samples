@@ -1,6 +1,10 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -27,11 +31,13 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -44,9 +50,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -55,26 +58,23 @@ android {
 }
 
 dependencies {
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    implementation(compose.ui)
+    implementation(compose.preview)
+    implementation(compose.material3)
+    debugImplementation(compose.uiTooling)
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    // SDK
+    // Ktor Client Http
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+
+    // SDK Facephi
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
-    implementation (libs.facephi.tracking)
+    //implementation (libs.facephi.tracking)
 }

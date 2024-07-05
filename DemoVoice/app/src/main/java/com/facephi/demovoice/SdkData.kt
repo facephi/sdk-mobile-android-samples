@@ -7,7 +7,6 @@ import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
 import com.facephi.sdk.data.SdkConfigurationData
-import com.facephi.tracking_component.TrackingController
 import com.facephi.voice_component.data.configuration.VoiceConfigurationData
 
 object SdkData {
@@ -27,6 +26,7 @@ object SdkData {
     const val CUSTOMER_ID: String = "demo_voice-android@email.com"
     val OPERATION_TYPE = OperationType.ONBOARDING
     const val BASE_URL = ""
+    const val API_KEY = ""
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,
@@ -35,7 +35,7 @@ object SdkData {
         } else {
             LicensingOffline(LICENSE)
         },
-        trackingController = TrackingController() // or null
+        trackingController = null // or TrackingController()
     )
 
     // VOICE DATA

@@ -38,7 +38,8 @@ object SdkData {
             LicensingOnline(environmentLicensingData)
         } else {
             LicensingOffline(LICENSE)
-        }
+        },
+        trackingController = null // or TrackingController()
     )
 
     fun getSelphIdConfig(docType: DocumentType): SelphIDConfigurationData {

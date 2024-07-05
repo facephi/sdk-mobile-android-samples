@@ -6,7 +6,6 @@ import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
 import com.facephi.sdk.data.SdkConfigurationData
-import com.facephi.tracking_component.TrackingController
 import com.facephi.videocall_component.data.configuration.VideoCallConfigurationData
 
 object SdkData {
@@ -33,7 +32,7 @@ object SdkData {
         } else {
             LicensingOffline(LICENSE)
         },
-        trackingController = TrackingController() // or null
+        trackingController = null // or TrackingController()
     )
 
     val videoCallConfiguration = VideoCallConfigurationData()

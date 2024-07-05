@@ -12,7 +12,6 @@ import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
 import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import com.facephi.selphid_component.data.configuration.SelphIDTimeout
-import com.facephi.tracking_component.TrackingController
 
 object SdkData {
 
@@ -34,6 +33,7 @@ object SdkData {
     const val SELPHID_RESOURCES = "resources-selphid-2-0.zip"
 
     const val BASE_URL = ""
+    const val API_KEY = ""
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,
@@ -42,7 +42,7 @@ object SdkData {
         } else {
             LicensingOffline(LICENSE)
         },
-        trackingController = TrackingController() // or null
+        trackingController = null // or TrackingController()
     )
 
     // SELPHI DATA
