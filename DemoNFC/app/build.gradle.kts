@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.facephi.demovideoid"
+    namespace = "com.facephi.demonfc"
     compileSdk = 34
 
     buildFeatures {
@@ -26,14 +26,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
         buildConfigField( "String", "LIBRARY_VERSION", "\"${libs.versions.facephiVersion.get()}\"")
-
     }
 
     buildTypes {
         release {
-            //isDebuggable = true
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
@@ -56,6 +53,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            pickFirsts.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
         }
     }
 }
@@ -70,13 +68,17 @@ dependencies {
     debugImplementation(compose.uiTooling)
 
     // Ktor Client Http
-    //implementation(libs.ktor.client.okhttp)
-    //implementation(libs.ktor.serialization.kotlinx.json)
-    //implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
 
-    // SDK
+    // SDK Facephi
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
-    implementation (libs.facephi.videoid)
+    implementation (libs.facephi.selphid)
+    implementation (libs.facephi.nfc){
+        exclude(group = "org.bouncycastle", module = "bcprov-jdk15on")
+        exclude(group = "org.bouncycastle", module = "jetified-bcprov-jdk15on-1.68")
+    }
     //implementation (libs.facephi.tracking)
 }

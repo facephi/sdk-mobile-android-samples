@@ -16,13 +16,19 @@ class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            SDKController.enableDebugMode()
+            if (BuildConfig.DEBUG){
+                SDKController.enableDebugMode()
+            }
 
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {
                 is SdkResult.Success -> Napier.d("INIT SDK OK")
                 is SdkResult.Error -> Napier.d("INIT SDK ERROR: ${result.error}")
             }
+
+            /*SDKController.launch(TrackingErrorController {
+                Napier.d("Tracking Error: ${it.name}")
+            })*/
 
         }
     }

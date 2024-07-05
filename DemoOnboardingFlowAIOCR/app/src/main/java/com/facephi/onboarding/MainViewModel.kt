@@ -18,7 +18,6 @@ import com.facephi.selphid_component.SelphIDController
 import com.facephi.selphid_component.data.result.SelphIDResult
 import com.facephi.selphid_component.data.result.getSelphIDError
 import com.facephi.selphid_component.data.result.getSelphIDResult
-import com.facephi.tracking_component.TrackingErrorController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -30,7 +29,10 @@ class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow("")
     val logs = _logs.asStateFlow()
     fun initSdk(sdkApplication: SdkApplication) {
-        SDKController.enableDebugMode()
+        if (BuildConfig.DEBUG){
+            SDKController.enableDebugMode()
+        }
+
         viewModelScope.launch {
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {
@@ -41,9 +43,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
             }
 
-            SDKController.launch(TrackingErrorController {
+            /*SDKController.launch(TrackingErrorController {
                 log("Tracking Error: ${it.name}")
-            })
+            })*/
         }
     }
 

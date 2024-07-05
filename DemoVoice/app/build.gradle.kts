@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.facephi.demovideoid"
+    namespace = "com.facephi.demovoice"
     compileSdk = 34
 
     buildFeatures {
@@ -26,14 +26,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
         buildConfigField( "String", "LIBRARY_VERSION", "\"${libs.versions.facephiVersion.get()}\"")
-
     }
 
     buildTypes {
         release {
-            //isDebuggable = true
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
@@ -70,13 +67,13 @@ dependencies {
     debugImplementation(compose.uiTooling)
 
     // Ktor Client Http
-    //implementation(libs.ktor.client.okhttp)
-    //implementation(libs.ktor.serialization.kotlinx.json)
-    //implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
 
-    // SDK
+    // SDK Facephi
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
-    implementation (libs.facephi.videoid)
+    implementation (libs.facephi.voice)
     //implementation (libs.facephi.tracking)
 }

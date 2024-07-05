@@ -16,7 +16,6 @@ import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
 import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import com.facephi.selphid_component.data.configuration.SelphIDTimeout
-import com.facephi.tracking_component.TrackingController
 
 object SdkData {
 
@@ -46,7 +45,7 @@ object SdkData {
         },
         aiModels = false,
         activateFlow = true,
-        trackingController = TrackingController()
+        trackingController = null // or TrackingController()
     )
 
     // SELPHI DATA
