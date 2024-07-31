@@ -6,7 +6,7 @@ compose-plugin = "1.6.11"
 
 activityComposeVersion = "1.9.0"
 coreKtxVersion = "1.13.1"
-facephiVersion = "2.0.2"
+facephiVersion = "2.0.3"
 lifecycleRuntimeKtxVersion = "2.8.2"
 ktorVersion = "2.3.11"
 
