@@ -104,6 +104,12 @@ class MainViewModel : ViewModel() {
     }
 
     fun launchVerifications(context: Context) {
+
+        if (SdkData.API_KEY.isEmpty() || SdkData.BASE_URL.isEmpty()) {
+            log("DATA is empty")
+            return
+        }
+        
         val verificationController = VerificationsApi(context, SdkData.API_KEY)
 
         viewModelScope.launch {
