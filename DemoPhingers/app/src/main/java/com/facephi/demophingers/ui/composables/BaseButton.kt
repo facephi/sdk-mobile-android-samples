@@ -88,27 +88,3 @@ fun BaseTextButton(
         )
     }
 }
-
-@Composable
-fun OutlinedButton(
-    text: String,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    shape: Shape = RoundedCornerShape(dimensionResource(R.dimen.sdk_buttons_corner_dimen)),
-    onClick: () -> Unit,
-) {
-    androidx.compose.material.OutlinedButton(
-        onClick = { onClick() },
-        enabled = enabled,
-        shape = shape,
-        modifier = modifier,
-    ) {
-        Text(
-            text = text.uppercase(),
-            fontFamily = appFontFamily,
-            textAlign = TextAlign.Center,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
-    }
-}

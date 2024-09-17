@@ -3,9 +3,9 @@ package com.facephi.demonfc.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -23,7 +23,7 @@ import com.facephi.demonfc.model.ShowScreen
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
 
 
-@ExperimentalMaterialApi
+@ExperimentalMaterial3Api
 @Composable
 fun DropdownScreenMenuBox(modifier : Modifier = Modifier, newSelection: (ShowScreen)-> Unit) {
     val list = listOf(ShowScreen.SHOW_TUTORIAL, ShowScreen.SHOW_DIAGNOSTIC, ShowScreen.SHOW_TUTORIAL_AND_DIAGNOSTIC)
@@ -70,7 +70,7 @@ fun DropdownScreenMenuBox(modifier : Modifier = Modifier, newSelection: (ShowScr
     }
 }
 
-@ExperimentalMaterialApi
+@ExperimentalMaterial3Api
 @Composable
 fun DropdownDocumentMenuBox(modifier : Modifier = Modifier, newSelection: (DocumentType)-> Unit) {
     val list = listOf(DocumentType.ID_CARD, DocumentType.PASSPORT, DocumentType.FOREIGN_CARD)
@@ -118,7 +118,7 @@ fun DropdownDocumentMenuBox(modifier : Modifier = Modifier, newSelection: (Docum
 }
 
 
-@ExperimentalMaterialApi
+@ExperimentalMaterial3Api
 @Preview
 @Composable
 fun NewDropdownMenuBoxPreview() {

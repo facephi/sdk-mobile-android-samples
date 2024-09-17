@@ -3,10 +3,10 @@ package com.facephi.demophingers.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,7 +22,7 @@ import com.facephi.demophingers.ui.theme.DemoPhingersTheme
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
 
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownCaptureOrientationMenu(modifier : Modifier = Modifier, newSelection: (CaptureOrientation)-> Unit) {
     val list = listOf(CaptureOrientation.LEFT, CaptureOrientation.RIGHT, CaptureOrientation.THUMB_PORTRAIT)
@@ -71,7 +71,6 @@ fun DropdownCaptureOrientationMenu(modifier : Modifier = Modifier, newSelection:
 
 
 
-@ExperimentalMaterialApi
 @Preview
 @Composable
 fun NewDropdownMenuBoxPreview() {

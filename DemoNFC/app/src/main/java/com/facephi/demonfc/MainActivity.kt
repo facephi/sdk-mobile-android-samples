@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -28,7 +28,6 @@ import com.facephi.demonfc.ui.screens.DisclaimerScreen
 import com.facephi.demonfc.ui.screens.TabScreen
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
 import com.facephi.sdk.SDKController
-import com.facephi.sdk_composables.R
 import io.github.aakira.napier.Napier
 
 class MainActivity : ComponentActivity() {
@@ -48,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
             DemoNFCTheme {
                 Scaffold(
-                    backgroundColor = colorResource(
+                    containerColor = colorResource(
                         id = R.color.sdkBackgroundColor
                     ),
                     topBar = {
@@ -57,7 +56,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Image(
-                                painter = painterResource(id = com.facephi.demonfc.R.drawable.ic_demo_logo),
+                                painter = painterResource(id = R.drawable.ic_demo_logo),
                                 contentDescription = "Logo",
                                 contentScale = ContentScale.None,
                                 modifier = Modifier

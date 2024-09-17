@@ -68,6 +68,6 @@ object SdkData {
         timeout = SelphIDTimeout.LONG,
         generateRawImages = false,
         resourcesPath = SELPHID_RESOURCES,
-        )
+    )
 
 }

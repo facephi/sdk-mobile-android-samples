@@ -66,9 +66,11 @@ dependencies {
     implementation(compose.material3)
     debugImplementation(compose.uiTooling)
 
+    implementation(libs.napier)
+    implementation(libs.lifecycle.viewmodel.compose)
+
     // SDK Facephi
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.phingers)
     //implementation (libs.facephi.tracking)
 }

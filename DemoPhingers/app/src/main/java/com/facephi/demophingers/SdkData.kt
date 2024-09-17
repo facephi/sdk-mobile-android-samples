@@ -10,7 +10,6 @@ import com.facephi.sdk.data.SdkConfigurationData
 
 
 object SdkData {
-
     // ************** LICENSE **************
 
     const val LICENSE_ONLINE = false

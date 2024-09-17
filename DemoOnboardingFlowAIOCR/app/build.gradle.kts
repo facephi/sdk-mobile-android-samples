@@ -65,10 +65,10 @@ dependencies {
     implementation(compose.preview)
     implementation(compose.material3)
     debugImplementation(compose.uiTooling)
+    implementation(libs.lifecycle.viewmodel.compose)
 
     // SDK Facephi
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
     //implementation (libs.facephi.tracking)
