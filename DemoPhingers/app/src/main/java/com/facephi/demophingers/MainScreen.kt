@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -35,7 +34,6 @@ import com.facephi.demophingers.ui.composables.BaseTextButton
 import com.facephi.demophingers.ui.composables.DropdownCaptureOrientationMenu
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen(
     sdkApplication: SdkApplication,

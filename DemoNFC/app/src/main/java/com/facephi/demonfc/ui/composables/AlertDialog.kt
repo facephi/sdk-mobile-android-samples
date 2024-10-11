@@ -10,7 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import com.facephi.sdk_composables.dialogs.AlertDialogData
+import com.facephi.demonfc.model.AlertDialogData
 
 
 @Composable
@@ -21,7 +21,7 @@ fun AlertDialog(
     onConfirm: () -> Unit
 ) {
     if (show) {
-        androidx.compose.material.AlertDialog(
+        androidx.compose.material3.AlertDialog(
             onDismissRequest = onDismiss,
             properties = DialogProperties(
                 dismissOnBackPress = false,

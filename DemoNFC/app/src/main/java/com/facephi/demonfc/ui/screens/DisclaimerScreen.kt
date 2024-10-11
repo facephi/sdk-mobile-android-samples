@@ -23,13 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.facephi.demonfc.R
+import com.facephi.demonfc.model.AlertDialogData
 import com.facephi.demonfc.ui.composables.AlertDialog
 import com.facephi.demonfc.ui.composables.BaseButton
 import com.facephi.demonfc.ui.composables.HtmlTextView
 import com.facephi.demonfc.ui.composables.OutlinedButton
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
-import com.facephi.sdk_composables.dialogs.AlertDialogData
-import io.ktor.util.toUpperCasePreservingASCIIRules
 
 @Composable
 fun DisclaimerScreen(
@@ -117,8 +116,8 @@ fun DisclaimerScreen(
             dialogData = AlertDialogData(
                 stringResource(id = R.string.nfc_close_session_title),
                 stringResource(id = R.string.nfc_close_session_desc),
-                stringResource(id = R.string.nfc_close_session).toUpperCasePreservingASCIIRules(),
-                stringResource(id = R.string.nfc_cancel).toUpperCasePreservingASCIIRules(),
+                stringResource(id = R.string.nfc_close_session).uppercase(),
+                stringResource(id = R.string.nfc_cancel).uppercase(),
             ),
             onDismiss = {
                 showAlert = false

@@ -66,10 +66,10 @@ dependencies {
     implementation(compose.preview)
     implementation(compose.material3)
     debugImplementation(compose.uiTooling)
+    implementation(libs.napier)
 
     // SDK Facephi
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.nfc){
         exclude(group = "org.bouncycastle", module = "bcprov-jdk15on")

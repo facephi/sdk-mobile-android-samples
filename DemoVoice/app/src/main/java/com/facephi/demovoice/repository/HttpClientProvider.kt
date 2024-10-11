@@ -12,10 +12,8 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
-@OptIn(ExperimentalSerializationApi::class)
 object HttpClientProvider {
     private var applicationContext: Context? = null
     val client: HttpClient by lazy {

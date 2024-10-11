@@ -97,7 +97,7 @@ fun OutlinedButton(
     onClick: () -> Unit,
     textColor: Color = Color.DarkGray
 ) {
-    androidx.compose.material.OutlinedButton(
+    androidx.compose.material3.OutlinedButton(
         onClick = { onClick() },
         enabled = enabled,
         shape = shape,

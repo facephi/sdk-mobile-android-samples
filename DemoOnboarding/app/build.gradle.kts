@@ -73,8 +73,11 @@ dependencies {
 
     // SDK Facephi
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
     //implementation (libs.facephi.tracking)
+
+    implementation(libs.napier)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.lifecycle.viewmodel.compose)
 }

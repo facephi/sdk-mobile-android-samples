@@ -18,10 +18,8 @@ import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import com.facephi.selphid_component.data.configuration.SelphIDTimeout
 
 object SdkData {
-
     // ************** LICENSE **************
-
-    const val LICENSE_ONLINE = true
+    const val LICENSE_ONLINE = false
 
     val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
         apiKey = "..."
