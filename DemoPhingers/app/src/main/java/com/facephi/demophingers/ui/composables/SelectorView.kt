@@ -1,8 +1,10 @@
 package com.facephi.demophingers.ui.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -24,7 +26,10 @@ import com.facephi.phingers_component.data.configuration.CaptureOrientation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropdownCaptureOrientationMenu(modifier : Modifier = Modifier, newSelection: (CaptureOrientation)-> Unit) {
+fun DropdownCaptureOrientationMenu(
+    modifier: Modifier = Modifier,
+    newSelection: (CaptureOrientation) -> Unit
+) {
     val list = listOf(CaptureOrientation.LEFT, CaptureOrientation.RIGHT, CaptureOrientation.THUMB_PORTRAIT)
 
     var expanded by remember { mutableStateOf(false) }
@@ -33,30 +38,28 @@ fun DropdownCaptureOrientationMenu(modifier : Modifier = Modifier, newSelection:
     Box(modifier) {
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
+            onExpandedChange = { expanded = !expanded }
         ) {
             TextField(
                 value = selectedText.name,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()  // Asegura que el menú se ancle al campo
+                    .clickable { expanded = true }  // Abre el menú al hacer clic
             )
 
             ExposedDropdownMenu(
-                modifier = Modifier.background(color = colorResource(
-                    id = R.color.sdkBackgroundColor
-                )),
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .background(color = colorResource(id = R.color.sdkBackgroundColor))
             ) {
                 list.forEach { item ->
                     DropdownMenuItem(
-                        text = {
-                            Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor))
-                               },
+                        text = { Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor)) },
                         onClick = {
                             selectedText = item
                             expanded = false
