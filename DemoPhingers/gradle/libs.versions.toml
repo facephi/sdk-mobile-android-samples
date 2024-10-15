@@ -11,7 +11,7 @@ android_material_version = '1.12.0'
 
 napierVersion = "2.7.1"
 # FACEPHI SDK VERSION
-facephiVersion = "0.1.3-SNAPSHOT"
+facephiVersion = "2.1.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
