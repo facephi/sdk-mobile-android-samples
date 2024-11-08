@@ -1,8 +1,10 @@
 package com.facephi.demonfc.ui.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -34,30 +36,28 @@ fun DropdownScreenMenuBox(modifier : Modifier = Modifier, newSelection: (ShowScr
     Box(modifier) {
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
+            onExpandedChange = { expanded = !expanded }
         ) {
             TextField(
                 value = selectedText.name,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()  // Asegura que el menú se ancle al campo
+                    .clickable { expanded = true }  // Abre el menú al hacer clic
             )
 
             ExposedDropdownMenu(
-                modifier = Modifier.background(color = colorResource(
-                    id = R.color.sdkBackgroundColor
-                )),
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .background(color = colorResource(id = R.color.sdkBackgroundColor))
             ) {
                 list.forEach { item ->
                     DropdownMenuItem(
-                        text = {
-                            Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor))
-                               },
+                        text = { Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor)) },
                         onClick = {
                             selectedText = item
                             expanded = false
@@ -81,30 +81,28 @@ fun DropdownDocumentMenuBox(modifier : Modifier = Modifier, newSelection: (Docum
     Box(modifier) {
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
+            onExpandedChange = { expanded = !expanded }
         ) {
             TextField(
                 value = selectedText.name,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()  // Asegura que el menú se ancle al campo
+                    .clickable { expanded = true }  // Abre el menú al hacer clic
             )
 
             ExposedDropdownMenu(
-                modifier = Modifier.background(color = colorResource(
-                    id = R.color.sdkBackgroundColor
-                )),
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .background(color = colorResource(id = R.color.sdkBackgroundColor))
             ) {
                 list.forEach { item ->
                     DropdownMenuItem(
-                        text = {
-                            Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor))
-                               },
+                        text = { Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor)) },
                         onClick = {
                             selectedText = item
                             expanded = false
