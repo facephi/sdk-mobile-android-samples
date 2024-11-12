@@ -5,6 +5,7 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.demonfc.model.DocumentType
 import com.facephi.demonfc.model.ShowScreen
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
+import com.facephi.nfc_component.data.configuration.NfcDocumentType
 import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
@@ -86,7 +87,8 @@ object SdkData {
                      birthDate: String,
                      expirationDate: String,
                      showScreen: ShowScreen,
-                     skipPACE: Boolean
+                     skipPACE: Boolean,
+                     docType: DocumentType
     ): NfcConfigurationData {
         return NfcConfigurationData(
             documentNumber = support, // Num soport.
@@ -99,6 +101,15 @@ object SdkData {
                 ShowScreen.SHOW_TUTORIAL, ShowScreen.SHOW_TUTORIAL_AND_DIAGNOSTIC -> {
                     true
                 }},
+            documentType = getNfcDocType(docType)
         )
+    }
+
+    fun getNfcDocType(docType: DocumentType): NfcDocumentType {
+        return when (docType) {
+            DocumentType.ID_CARD -> NfcDocumentType.ID_CARD
+            DocumentType.PASSPORT -> NfcDocumentType.PASSPORT
+            DocumentType.FOREIGN_CARD -> NfcDocumentType.FOREIGN_CARD
+        }
     }
 }
