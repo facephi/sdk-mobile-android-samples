@@ -14,7 +14,7 @@
     <color name="sdkTopIconsColor">#243760</color>
     <color name="sdkButtonTextColor">#FFFFFF</color>
     <!-- SDK BUTTONS -->
-    <dimen name="sdk_buttons_corner_dimen">10dp</dimen>
+    <dimen name="sdk_buttons_corner_dimen">32dp</dimen>
     <!-- SDK LOGO -->
     <!-- <drawable name="sdk_logo">@drawable/ic_demo_logo</drawable> -->
 </resources>
