@@ -76,7 +76,8 @@ class MainViewModel : ViewModel() {
                                 expirationDate = expirationDate, // "dd/MM/yyyy",
                                 enableDebugMode = true,
                                 showTutorial = true,
-                                skipPACE = skipPACE
+                                skipPACE = skipPACE,
+                                documentType = SdkData.getNfcDocType(docType)
                             ),
                             debugLogs = debugLogs
                         )

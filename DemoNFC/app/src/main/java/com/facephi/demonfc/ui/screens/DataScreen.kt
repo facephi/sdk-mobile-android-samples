@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -45,6 +46,8 @@ import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import io.github.aakira.napier.Napier
 import androidx.compose.ui.res.colorResource
 import com.facephi.demonfc.BuildConfig
+import com.facephi.demonfc.model.DocumentType
+import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -76,6 +79,10 @@ fun DataScreen(
 
     var showScreen by rememberSaveable {
         mutableStateOf(ShowScreen.SHOW_TUTORIAL_AND_DIAGNOSTIC)
+    }
+
+    var documentType by rememberSaveable {
+        mutableStateOf(DocumentType.ID_CARD)
     }
 
     Column(
@@ -152,6 +159,22 @@ fun DataScreen(
             showScreen = it
         }
 
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.nfc_select_document),
+            color = colorResource(id = R.color.sdkBodyTextColor)
+        )
+
+        DropdownDocumentMenuBox(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+        ) {
+            documentType = it
+        }
+
 
         BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = R.string.nfc_complex_launch),
@@ -162,7 +185,12 @@ fun DataScreen(
                                 " expirationDate: $expirationDate"
                     )
                     nfcConfigurationData = SdkData.getNfcConfig(
-                        support, birthDate, expirationDate, showScreen, false
+                        support = support,
+                        birthDate = birthDate,
+                        expirationDate = expirationDate,
+                        showScreen = showScreen,
+                        skipPACE = false,
+                        docType = documentType
                     )
 
                     logs.clear()
@@ -193,7 +221,12 @@ fun DataScreen(
                                 " expirationDate: $expirationDate"
                     )
                     nfcConfigurationData = SdkData.getNfcConfig(
-                        support, birthDate, expirationDate, showScreen, true
+                        support = support,
+                        birthDate = birthDate,
+                        expirationDate = expirationDate,
+                        showScreen = showScreen,
+                        skipPACE = true,
+                        docType = documentType
                     )
                     logs.clear()
 
@@ -224,7 +257,7 @@ fun DataScreen(
         )
 
         if (!logs.isEmpty()) {
-            Divider(color = Color.LightGray, thickness = 1.dp)
+            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
             BaseTextButton(
                 enabled = true,
                 text = "Clear logs",
