@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SdkTheme -->
+    <color name="sdkPrimaryColor">#3167FC</color>
+    <color name="sdkSecondaryColor">#03DAC5</color>
+    <color name="sdkBackgroundColor">#F3F4F9</color>
+    <color name="sdkErrorColor">#DD3631</color>
+    <!-- SdkColorsPalette -->
+    <color name="sdkTitleTextColor">#1D2C4D</color>
+    <color name="sdkBodyTextColor">#526080</color>
+    <color name="sdkSuccessColor">#07A13A</color>
+    <color name="sdkNeutralColor">#202C4B</color>
+    <color name="sdkAccentColor">#EA7547</color>
+    <color name="sdkTopIconsColor">#243760</color>
+    <color name="sdkButtonTextColor">#FFFFFF</color>
+    <!-- SDK BUTTONS -->
+    <dimen name="sdk_buttons_corner_dimen">32dp</dimen>
+    <!-- SDK LOGO -->
+    <!-- <drawable name="sdk_logo">@drawable/ic_demo_logo</drawable> -->
+</resources>
