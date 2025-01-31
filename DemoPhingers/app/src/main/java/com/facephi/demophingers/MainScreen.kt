@@ -44,7 +44,7 @@ fun MainScreen(
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
-    var showTutorial by rememberSaveable {
+    var showPreviousTip by rememberSaveable {
         mutableStateOf(true)
     }
 
@@ -83,7 +83,7 @@ fun MainScreen(
             text = stringResource(id = R.string.phingers_demo_launch_capture),
             enabled = newOperationClicked,
             onClick = {
-                viewModel.launchPhingers(showTutorial, captureOrientation)
+                viewModel.launchPhingers(showPreviousTip, captureOrientation)
             }
         )
 
@@ -103,9 +103,9 @@ fun MainScreen(
 
         Row() {
             Checkbox(
-                checked = showTutorial,
+                checked = showPreviousTip,
                 onCheckedChange = {
-                    showTutorial = it
+                    showPreviousTip = it
                 },
                 colors = CheckboxDefaults.colors(
                     checkedColor = colorResource(id = R.color.sdkPrimaryColor),
@@ -114,7 +114,7 @@ fun MainScreen(
             )
             Text(
                 modifier = Modifier.padding(16.dp),
-                text = stringResource(id = R.string.phingers_demo_show_tutorial),
+                text = stringResource(id = R.string.phingers_demo_show_previous_tip),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )
         }
