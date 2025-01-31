@@ -47,10 +47,11 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchPhingers(showTutorial: Boolean, captureOrientation: CaptureOrientation) {
+    fun launchPhingers(showPreviousTip: Boolean, captureOrientation: CaptureOrientation) {
         viewModelScope.launch {
             val data = PhingersConfigurationData(
-                showTutorial = showTutorial,
+                showPreviousTip = showPreviousTip,
+                showTutorial = false,
                 reticleOrientation = captureOrientation
             )
             when (val result =
