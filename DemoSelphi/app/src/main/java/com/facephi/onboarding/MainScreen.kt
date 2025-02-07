@@ -85,7 +85,7 @@ fun MainScreen(
                 viewModel.newOperation()
             })
 
-        Row() {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(
                 checked = showPreviousTip,
                 onCheckedChange = {
@@ -97,7 +97,6 @@ fun MainScreen(
                 )
             )
             Text(
-                modifier = Modifier.padding(vertical = 16.dp),
                 text = stringResource(id = R.string.onboarding_show_previous_tip),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )
@@ -113,7 +112,6 @@ fun MainScreen(
                 )
             )
             Text(
-                modifier = Modifier.padding(vertical = 16.dp),
                 text = stringResource(id = R.string.onboarding_show_tutorial),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )

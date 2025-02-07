@@ -11,7 +11,7 @@
     <string name="phingers_demo_new_operation">New operation</string>
     <string name="phingers_demo_launch_capture">Launch capture</string>
     <string name="phingers_demo_launch_matching">Launch matching</string>
-    <string name="phingers_demo_show_tutorial">Show tutorial</string>
-    <string name="phingers_demo_show_previous_tip">Show previous tip</string>
+    <string name="phingers_demo_show_tutorial">Tutorial</string>
+    <string name="phingers_demo_show_previous_tip">Previous tip</string>
     <string name="phingers_demo_clear_logs">Clear logs</string>
 </resources>

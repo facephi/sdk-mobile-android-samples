@@ -2,11 +2,15 @@ package com.facephi.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +50,22 @@ fun MainScreen(
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
+    var showPreviousTipSelphi by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showTutorialSelphi by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showPreviousTipSelphId by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showTutorialSelphId by rememberSaveable {
+        mutableStateOf(true)
+    }
+
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
     }
@@ -66,26 +86,99 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
+        BaseButton(modifier = Modifier.padding(vertical = 8.dp),
             text = stringResource(id = R.string.onboarding_new_operation),
             onClick = {
                 newOperationClicked = true
                 viewModel.newOperation()
             })
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
+        Spacer(Modifier.height(8.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = showPreviousTipSelphi,
+                onCheckedChange = {
+                    showPreviousTipSelphi = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.onboarding_show_previous_tip),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+
+            Checkbox(
+                checked = showTutorialSelphi,
+                onCheckedChange = {
+                    showTutorialSelphi = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.onboarding_show_tutorial),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+        }
+
+        BaseButton(modifier = Modifier,
             text = stringResource(id = R.string.onboarding_launch_selphi),
             enabled = newOperationClicked,
             onClick = {
-               viewModel.launchSelphi()
+               viewModel.launchSelphi(
+                   showTutorial = showTutorialSelphi,
+                   showPreviousTip = showPreviousTipSelphi
+               )
             })
 
+        Spacer(Modifier.height(8.dp))
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = showPreviousTipSelphId,
+                onCheckedChange = {
+                    showPreviousTipSelphId = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.onboarding_show_previous_tip),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+
+            Checkbox(
+                checked = showTutorialSelphId,
+                onCheckedChange = {
+                    showTutorialSelphId = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.onboarding_show_tutorial),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+        }
+
+        BaseButton(modifier = Modifier,
             text = stringResource(id = R.string.onboarding_launch_selphid),
             enabled = newOperationClicked,
             onClick = {
-                viewModel.launchSelphId()
+                viewModel.launchSelphId(
+                    showTutorial = showTutorialSelphId,
+                    showPreviousTip = showPreviousTipSelphId
+                )
             })
 
         BaseButton(modifier = Modifier.padding(top = 8.dp),
