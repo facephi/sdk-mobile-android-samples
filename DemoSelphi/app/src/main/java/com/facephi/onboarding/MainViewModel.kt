@@ -22,7 +22,7 @@ class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            if (BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
 
@@ -32,9 +32,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
             }
 
-           /*SDKController.launch(TrackingErrorController {
-                log("Tracking Error: ${it.name}")
-            })*/
+            /*SDKController.launch(TrackingErrorController {
+                 log("Tracking Error: ${it.name}")
+             })*/
         }
     }
 
@@ -51,10 +51,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchSelphi() {
+    fun launchSelphi(
+        showTutorial: Boolean,
+        showPreviousTip: Boolean
+    ) {
         viewModelScope.launch {
             when (val result =
-                SDKController.launch(SelphiController(SdkData.selphiConfiguration))) {
+                SDKController.launch(
+                    SelphiController(
+                        SdkData.getSelphiConfiguration(
+                            showPreviousTip = showPreviousTip,
+                            showTutorial = showTutorial
+                        )
+                    )
+                )) {
                 is SdkResult.Success -> {
                     log("Selphi: OK")
                     result.data.bestImage?.bitmap?.let {
@@ -131,18 +141,19 @@ class MainViewModel : ViewModel() {
 
             // LIVENESS WITH TOKENIZED IMAGE
 
-            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }?.let { bestImageTokenized ->
-                val response = verificationController.passiveLivenessToken(
-                    request = PassiveLivenessTokenRequest(
-                        imageBuffer = bestImageTokenized,
-                        //trackingData = trackingData
-                    ),
-                    baseUrl = SdkData.BASE_URL
-                )
+            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }
+                ?.let { bestImageTokenized ->
+                    val response = verificationController.passiveLivenessToken(
+                        request = PassiveLivenessTokenRequest(
+                            imageBuffer = bestImageTokenized,
+                            //trackingData = trackingData
+                        ),
+                        baseUrl = SdkData.BASE_URL
+                    )
 
-                log("** passiveLivenessToken: ${response}\n")
+                    log("** passiveLivenessToken: ${response}\n")
 
-            }
+                }
 
 
         }

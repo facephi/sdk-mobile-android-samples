@@ -7,5 +7,6 @@
     <string name="onboarding_launch_selphi">Lanzar Selphi</string>
     <string name="onboarding_launch_template">Lanzar generación plantilla</string>
     <string name="onboarding_launch_verifications">Lanzar verificaciones</string>
-
+    <string name="onboarding_show_previous_tip">Pantalla previa</string>
+    <string name="onboarding_show_tutorial">Tutorial</string>
 </resources>

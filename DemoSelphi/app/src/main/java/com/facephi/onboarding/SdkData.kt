@@ -40,10 +40,13 @@ object SdkData {
     )
 
     // SELPHI DATA
-    val selphiConfiguration = SelphiConfigurationData(
+    fun getSelphiConfiguration(
+        showTutorial: Boolean,
+        showPreviousTip: Boolean
+    ) = SelphiConfigurationData(
         debug = false,
-        showTutorial = true,
-        showDiagnostic = true,
+        showTutorial = showTutorial,
+        showPreviousTip = showPreviousTip,
         resourcesPath = SELPHI_RESOURCES
     )
 

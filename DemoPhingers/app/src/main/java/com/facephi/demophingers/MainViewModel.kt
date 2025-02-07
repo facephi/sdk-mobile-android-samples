@@ -51,7 +51,6 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             val data = PhingersConfigurationData(
                 showPreviousTip = showPreviousTip,
-                showTutorial = false,
                 reticleOrientation = captureOrientation
             )
             when (val result =

@@ -6,4 +6,6 @@
     <string name="onboarding_launch_selphi">Launch Selphi</string>
     <string name="onboarding_launch_template">Launch generate template</string>
     <string name="onboarding_launch_verifications">Launch verifications</string>
+    <string name="onboarding_show_previous_tip">Show previous tip</string>
+    <string name="onboarding_show_tutorial">Show tutorial</string>
 </resources>

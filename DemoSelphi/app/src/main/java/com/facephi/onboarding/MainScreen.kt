@@ -2,11 +2,14 @@ package com.facephi.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +46,15 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
 
+    var showPreviousTip by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showTutorial by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
@@ -73,11 +85,48 @@ fun MainScreen(
                 viewModel.newOperation()
             })
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
+        Row() {
+            Checkbox(
+                checked = showPreviousTip,
+                onCheckedChange = {
+                    showPreviousTip = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                modifier = Modifier.padding(vertical = 16.dp),
+                text = stringResource(id = R.string.onboarding_show_previous_tip),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+
+            Checkbox(
+                checked = showTutorial,
+                onCheckedChange = {
+                    showTutorial = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                modifier = Modifier.padding(vertical = 16.dp),
+                text = stringResource(id = R.string.onboarding_show_tutorial),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+        }
+
+        BaseButton(modifier = Modifier,
             text = stringResource(id = R.string.onboarding_launch_selphi),
             enabled = newOperationClicked,
             onClick = {
-               viewModel.launchSelphi()
+               viewModel.launchSelphi(
+                   showTutorial = showTutorial,
+                   showPreviousTip = showPreviousTip
+               )
             })
 
 

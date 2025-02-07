@@ -87,20 +87,6 @@ fun MainScreen(
             }
         )
 
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = stringResource(id = R.string.phingers_demo_capture_orientation),
-            color = colorResource(id = R.color.sdkBodyTextColor)
-        )
-
-        DropdownCaptureOrientationMenu(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-        ) {
-            captureOrientation = it
-        }
-
         Row() {
             Checkbox(
                 checked = showPreviousTip,
@@ -117,6 +103,21 @@ fun MainScreen(
                 text = stringResource(id = R.string.phingers_demo_show_previous_tip),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )
+        }
+
+
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.phingers_demo_capture_orientation),
+            color = colorResource(id = R.color.sdkBodyTextColor)
+        )
+
+        DropdownCaptureOrientationMenu(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+        ) {
+            captureOrientation = it
         }
 
         Text(
