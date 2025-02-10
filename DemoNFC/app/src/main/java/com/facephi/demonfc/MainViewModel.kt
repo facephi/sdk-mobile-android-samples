@@ -50,12 +50,20 @@ class MainViewModel : ViewModel() {
     fun launchSelphidAndNfc(
         skipPACE: Boolean,
         docType: DocumentType,
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
         debugLogs: (String) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
                 SDKController.launch(
-                    SelphIDController(SdkData.getSelphIdConfig(docType))
+                    SelphIDController(SdkData.getSelphIdConfig(
+                        docType = docType,
+                        showTutorial = showTutorial,
+                        showDiagnostic = showDiagnostic,
+                        showPreviousTip = showPreviousTip,
+                    ))
                 )) {
                 is SdkResult.Error -> debugLogs("SelphID: KO - ${result.error}")
                 is SdkResult.Success -> {
@@ -75,9 +83,11 @@ class MainViewModel : ViewModel() {
                                 birthDate = birthDate, // "dd/MM/yyyy"
                                 expirationDate = expirationDate, // "dd/MM/yyyy",
                                 enableDebugMode = true,
-                                showTutorial = true,
+                                showTutorial = showTutorial,
                                 skipPACE = skipPACE,
-                                documentType = SdkData.getNfcDocType(docType)
+                                documentType = SdkData.getNfcDocType(docType),
+                                showPreviousTip = showPreviousTip,
+                                showDiagnostic = showDiagnostic,
                             ),
                             debugLogs = debugLogs
                         )

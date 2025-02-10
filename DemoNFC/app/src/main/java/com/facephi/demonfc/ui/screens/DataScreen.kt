@@ -1,15 +1,21 @@
 package com.facephi.demonfc.ui.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -37,10 +43,8 @@ import androidx.compose.ui.unit.sp
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.SdkData
-import com.facephi.demonfc.model.ShowScreen
 import com.facephi.demonfc.ui.composables.BaseButton
 import com.facephi.demonfc.ui.composables.BaseTextButton
-import com.facephi.demonfc.ui.composables.DropdownScreenMenuBox
 import com.facephi.demonfc.utils.validNfcDate
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import io.github.aakira.napier.Napier
@@ -77,8 +81,16 @@ fun DataScreen(
         mutableStateOf("")
     }
 
-    var showScreen by rememberSaveable {
-        mutableStateOf(ShowScreen.SHOW_TUTORIAL_AND_DIAGNOSTIC)
+    var showPreviousTip by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showTutorial by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showDiagnostic by rememberSaveable {
+        mutableStateOf(true)
     }
 
     var documentType by rememberSaveable {
@@ -143,20 +155,66 @@ fun DataScreen(
                 onDone = {keyboardController?.hide()})
         )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.nfc_show_screen),
-            color = colorResource(id = R.color.sdkBodyTextColor)
-        )
+        Spacer(Modifier.height(8.dp))
 
-        DropdownScreenMenuBox(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
-            showScreen = it
+            Checkbox(
+                checked = showPreviousTip,
+                onCheckedChange = {
+                    showPreviousTip = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.nfc_show_previous_tip),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Checkbox(
+                checked = showTutorial,
+                onCheckedChange = {
+                    showTutorial = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.nfc_show_tutorial),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+
+        }
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Checkbox(
+                checked = showDiagnostic,
+                onCheckedChange = {
+                    showDiagnostic = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.nfc_show_diagnostic),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
         }
 
         Text(
@@ -188,9 +246,11 @@ fun DataScreen(
                         support = support,
                         birthDate = birthDate,
                         expirationDate = expirationDate,
-                        showScreen = showScreen,
                         skipPACE = false,
-                        docType = documentType
+                        docType = documentType,
+                        showPreviousTip = showPreviousTip,
+                        showTutorial = showTutorial,
+                        showDiagnostic = showDiagnostic
                     )
 
                     logs.clear()
@@ -224,9 +284,11 @@ fun DataScreen(
                         support = support,
                         birthDate = birthDate,
                         expirationDate = expirationDate,
-                        showScreen = showScreen,
                         skipPACE = true,
-                        docType = documentType
+                        docType = documentType,
+                        showPreviousTip = showPreviousTip,
+                        showTutorial = showTutorial,
+                        showDiagnostic = showDiagnostic
                     )
                     logs.clear()
 
