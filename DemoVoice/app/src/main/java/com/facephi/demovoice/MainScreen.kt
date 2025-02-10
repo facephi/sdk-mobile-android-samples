@@ -51,7 +51,8 @@ fun MainScreen(
     val logs = viewModel.logs.collectAsState()
     val audios = remember { mutableStateListOf<String>() }
     val context = LocalContext.current
-    var showScreen by rememberSaveable { mutableStateOf(true) }
+    var showPreviousTipEnroll by rememberSaveable { mutableStateOf(true) }
+    var showPreviousTipAuth by rememberSaveable { mutableStateOf(true) }
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
 
@@ -100,6 +101,21 @@ fun MainScreen(
                 viewModel.newOperation()
             })
 
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = showPreviousTipEnroll,
+                onCheckedChange = { showPreviousTipEnroll = it },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.voice_previous_tip),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+        }
+
         BaseButton(
             text = stringResource(id = R.string.voice_enroll),
             enabled = newOperationClicked,
@@ -109,7 +125,7 @@ fun MainScreen(
                 viewModel.launchVoiceEnroll(
                     VoiceConfigurationData(
                     phrases = enrollPhrases,
-                    showTutorial = showScreen)
+                    showPreviousTip = showPreviousTipEnroll)
                 )
                 { audioArray ->
                     audios.clear()
@@ -131,6 +147,21 @@ fun MainScreen(
             }
         )
 
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = showPreviousTipAuth,
+                onCheckedChange = { showPreviousTipAuth = it },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.voice_previous_tip),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
+        }
+
         BaseButton(
             text = stringResource(id = R.string.voice_auth),
             enabled = newOperationClicked,
@@ -139,7 +170,7 @@ fun MainScreen(
                 viewModel.launchVoiceAuth(
                     VoiceConfigurationData(
                         phrases = authPhrases,
-                        showTutorial = showScreen)
+                        showPreviousTip = showPreviousTipAuth)
                 )
             }
         )
@@ -206,21 +237,11 @@ fun MainScreen(
             }
         )
 
-        Row() {
-            Checkbox(
-                checked = showScreen,
-                onCheckedChange = { showScreen = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                text = stringResource(id = R.string.voice_tutorial),
-            )
-        }
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = BuildConfig.LIBRARY_VERSION,
+            color = colorResource(id = R.color.sdkBodyTextColor)
+        )
 
         if (logs.value.isNotEmpty()) {
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)

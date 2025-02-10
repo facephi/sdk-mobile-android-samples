@@ -87,7 +87,7 @@ fun MainScreen(
             }
         )
 
-        Row() {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(
                 checked = showPreviousTip,
                 onCheckedChange = {
@@ -99,7 +99,6 @@ fun MainScreen(
                 )
             )
             Text(
-                modifier = Modifier.padding(16.dp),
                 text = stringResource(id = R.string.phingers_demo_show_previous_tip),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )
