@@ -8,4 +8,5 @@
     <string name="onboarding_launch_verifications">Launch verifications</string>
     <string name="onboarding_show_previous_tip">Previous tip</string>
     <string name="onboarding_show_tutorial">Tutorial</string>
+    <string name="onboarding_show_diagnostic">Diagnostic</string>
 </resources>

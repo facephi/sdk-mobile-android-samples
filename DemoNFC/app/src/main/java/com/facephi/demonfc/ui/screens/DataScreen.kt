@@ -51,6 +51,7 @@ import io.github.aakira.napier.Napier
 import androidx.compose.ui.res.colorResource
 import com.facephi.demonfc.BuildConfig
 import com.facephi.demonfc.model.DocumentType
+import com.facephi.demonfc.ui.composables.BaseCheckView
 import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -162,37 +163,20 @@ fun DataScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Checkbox(
-                checked = showPreviousTip,
-                onCheckedChange = {
-                    showPreviousTip = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.nfc_show_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            Checkbox(
-                checked = showTutorial,
-                onCheckedChange = {
-                    showTutorial = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.nfc_show_tutorial),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTip,
+                text = stringResource(id = R.string.nfc_show_previous_tip)
+            ) {
+                showPreviousTip = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showTutorial,
+                text = stringResource(id = R.string.nfc_show_tutorial)
+            ) {
+                showTutorial = it
+            }
 
         }
 
@@ -201,20 +185,12 @@ fun DataScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Checkbox(
-                checked = showDiagnostic,
-                onCheckedChange = {
-                    showDiagnostic = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.nfc_show_diagnostic),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+            BaseCheckView(
+                checkValue = showDiagnostic,
+                text = stringResource(id = R.string.nfc_show_diagnostic)
+            ) {
+                showDiagnostic = it
+            }
         }
 
         Text(

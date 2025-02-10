@@ -40,6 +40,7 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.demovoice.media.AppMediaPlayer
 import com.facephi.demovoice.media.AudioFileManager
 import com.facephi.demovoice.ui.composables.BaseButton
+import com.facephi.demovoice.ui.composables.BaseCheckView
 import com.facephi.demovoice.ui.composables.BaseTextButton
 import com.facephi.voice_component.data.configuration.VoiceConfigurationData
 import io.github.aakira.napier.Napier
@@ -110,33 +111,20 @@ fun MainScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Checkbox(
-                checked = showPreviousTipEnroll,
-                onCheckedChange = { showPreviousTipEnroll = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.voice_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
-            Spacer(modifier = Modifier.size(16.dp))
-            Checkbox(
-                checked = showDiagnosticEnroll,
-                onCheckedChange = {
-                    showDiagnosticEnroll = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.voice_diagnostic),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTipEnroll,
+                text = stringResource(id = R.string.voice_previous_tip)
+            ) {
+                showPreviousTipEnroll = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showDiagnosticEnroll,
+                text = stringResource(id = R.string.voice_diagnostic)
+            ) {
+                showDiagnosticEnroll = it
+            }
         }
 
         BaseButton(
@@ -177,33 +165,20 @@ fun MainScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Checkbox(
-                checked = showPreviousTipAuth,
-                onCheckedChange = { showPreviousTipAuth = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.voice_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
-            Spacer(modifier = Modifier.size(16.dp))
-            Checkbox(
-                checked = showDiagnosticAuth,
-                onCheckedChange = {
-                    showDiagnosticAuth = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.voice_diagnostic),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTipAuth,
+                text = stringResource(id = R.string.voice_previous_tip)
+            ) {
+                showPreviousTipAuth = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showDiagnosticAuth,
+                text = stringResource(id = R.string.voice_diagnostic)
+            ) {
+                showDiagnosticAuth = it
+            }
         }
 
         BaseButton(

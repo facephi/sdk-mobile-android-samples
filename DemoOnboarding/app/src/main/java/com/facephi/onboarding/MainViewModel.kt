@@ -57,7 +57,8 @@ class MainViewModel : ViewModel() {
 
     fun launchSelphi(
         showTutorial: Boolean,
-        showPreviousTip: Boolean
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
     ) {
         viewModelScope.launch {
             when (val result =
@@ -65,7 +66,8 @@ class MainViewModel : ViewModel() {
                     SelphiController(
                         SdkData.getSelphiConfiguration(
                             showTutorial = showTutorial,
-                            showPreviousTip = showPreviousTip
+                            showPreviousTip = showPreviousTip,
+                            showDiagnostic = showDiagnostic
                         )
                     )
                 )) {
@@ -88,6 +90,7 @@ class MainViewModel : ViewModel() {
     fun launchSelphId(
         showTutorial: Boolean,
         showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
     ) {
         viewModelScope.launch {
             when (val result =
@@ -95,7 +98,8 @@ class MainViewModel : ViewModel() {
                     SelphIDController(
                         SdkData.getSelphIDConfiguration(
                             showTutorial = showTutorial,
-                            showPreviousTip = showPreviousTip
+                            showPreviousTip = showPreviousTip,
+                            showDiagnostic = showDiagnostic
                         )
                     )
                 )) {

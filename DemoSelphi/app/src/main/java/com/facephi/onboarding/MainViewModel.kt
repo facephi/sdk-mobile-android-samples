@@ -53,7 +53,8 @@ class MainViewModel : ViewModel() {
 
     fun launchSelphi(
         showTutorial: Boolean,
-        showPreviousTip: Boolean
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
     ) {
         viewModelScope.launch {
             when (val result =
@@ -61,8 +62,10 @@ class MainViewModel : ViewModel() {
                     SelphiController(
                         SdkData.getSelphiConfiguration(
                             showPreviousTip = showPreviousTip,
-                            showTutorial = showTutorial
+                            showTutorial = showTutorial,
+                            showDiagnostic = showDiagnostic
                         )
+
                     )
                 )) {
                 is SdkResult.Success -> {

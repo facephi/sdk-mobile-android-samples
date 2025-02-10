@@ -1,6 +1,7 @@
 package com.facephi.onboarding
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
+import com.facephi.onboarding.ui.composables.BaseCheckView
 import com.facephi.onboarding.ui.composables.BaseTextButton
 
 @Composable
@@ -54,6 +56,9 @@ fun MainScreen(
         mutableStateOf(true)
     }
 
+    var showDiagnostic by rememberSaveable {
+        mutableStateOf(true)
+    }
 
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
@@ -85,46 +90,50 @@ fun MainScreen(
                 viewModel.newOperation()
             })
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(
-                checked = showPreviousTip,
-                onCheckedChange = {
-                    showPreviousTip = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.onboarding_show_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTip,
+                text = stringResource(id = R.string.onboarding_show_previous_tip)
+            ) {
+                showPreviousTip = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showTutorial,
+                text = stringResource(id = R.string.onboarding_show_tutorial)
+            ) {
+                showTutorial = it
+            }
 
-            Checkbox(
-                checked = showTutorial,
-                onCheckedChange = {
-                    showTutorial = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.onboarding_show_tutorial),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+        }
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                checkValue = showDiagnostic,
+                text = stringResource(id = R.string.onboarding_show_diagnostic)
+            ) {
+                showDiagnostic = it
+            }
         }
 
         BaseButton(modifier = Modifier,
             text = stringResource(id = R.string.onboarding_launch_selphi),
             enabled = newOperationClicked,
             onClick = {
-               viewModel.launchSelphi(
-                   showTutorial = showTutorial,
-                   showPreviousTip = showPreviousTip
-               )
+                viewModel.launchSelphi(
+                    showTutorial = showTutorial,
+                    showPreviousTip = showPreviousTip,
+                    showDiagnostic = showDiagnostic
+                )
             })
 
 
@@ -145,10 +154,11 @@ fun MainScreen(
             })
 
         Text(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 8.dp),
             text = BuildConfig.LIBRARY_VERSION,
-            style =  TextStyle(
+            style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,

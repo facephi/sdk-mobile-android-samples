@@ -46,6 +46,7 @@ import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.model.DocumentType
 import com.facephi.demonfc.ui.composables.BaseButton
+import com.facephi.demonfc.ui.composables.BaseCheckView
 import com.facephi.demonfc.ui.composables.BaseTextButton
 import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
@@ -106,37 +107,20 @@ fun MainScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Checkbox(
-                checked = showPreviousTip,
-                onCheckedChange = {
-                    showPreviousTip = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.nfc_show_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            Checkbox(
-                checked = showTutorial,
-                onCheckedChange = {
-                    showTutorial = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.nfc_show_tutorial),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTip,
+                text = stringResource(id = R.string.nfc_show_previous_tip)
+            ) {
+                showPreviousTip = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showTutorial,
+                text = stringResource(id = R.string.nfc_show_tutorial)
+            ) {
+                showTutorial = it
+            }
 
         }
 
@@ -145,20 +129,12 @@ fun MainScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Checkbox(
-                checked = showDiagnostic,
-                onCheckedChange = {
-                    showDiagnostic = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.nfc_show_diagnostic),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+            BaseCheckView(
+                checkValue = showDiagnostic,
+                text = stringResource(id = R.string.nfc_show_diagnostic)
+            ) {
+                showDiagnostic = it
+            }
         }
 
         Text(
@@ -189,7 +165,7 @@ fun MainScreen(
                     showDiagnostic = showDiagnostic,
                     showPreviousTip = showPreviousTip,
                     showTutorial = showTutorial
-                    ){
+                ) {
                     logs.add(it)
                 }
             }
@@ -201,12 +177,13 @@ fun MainScreen(
             onClick = {
                 logs.clear()
 
-                viewModel.launchSelphidAndNfc(skipPACE = true,
+                viewModel.launchSelphidAndNfc(
+                    skipPACE = true,
                     docType = documentType,
                     showDiagnostic = showDiagnostic,
                     showPreviousTip = showPreviousTip,
                     showTutorial = showTutorial
-                    ){
+                ) {
                     logs.add(it)
                 }
             }
@@ -217,7 +194,7 @@ fun MainScreen(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             text = BuildConfig.LIBRARY_VERSION,
-            style =  TextStyle(
+            style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
@@ -260,6 +237,6 @@ fun copyToClipboard(context: Context, text: String) {
 @Composable
 fun MainScreenPreview() {
     DemoNFCTheme {
-        MainScreen(MainViewModel()){}
+        MainScreen(MainViewModel()) {}
     }
 }

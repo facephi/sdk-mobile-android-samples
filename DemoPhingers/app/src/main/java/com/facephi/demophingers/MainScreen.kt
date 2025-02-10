@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.demophingers.ui.composables.BaseButton
+import com.facephi.demophingers.ui.composables.BaseCheckView
 import com.facephi.demophingers.ui.composables.BaseTextButton
 import com.facephi.demophingers.ui.composables.DropdownCaptureOrientationMenu
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
@@ -100,37 +101,21 @@ fun MainScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Checkbox(
-                checked = showPreviousTip,
-                onCheckedChange = {
-                    showPreviousTip = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.phingers_demo_show_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
-            Spacer(modifier = Modifier.size(16.dp))
-            Checkbox(
-                checked = showDiagnostic,
-                onCheckedChange = {
-                    showDiagnostic = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.phingers_demo_diagnostic),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTip,
+                text = stringResource(id = R.string.phingers_demo_show_previous_tip)
+            ) {
+                showPreviousTip = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showDiagnostic,
+                text = stringResource(id = R.string.phingers_demo_diagnostic)
+            ) {
+                showDiagnostic = it
+            }
         }
-
 
         Text(
             modifier = Modifier

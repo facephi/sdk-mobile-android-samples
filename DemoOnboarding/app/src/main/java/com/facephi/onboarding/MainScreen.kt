@@ -1,6 +1,7 @@
 package com.facephi.onboarding
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
+import com.facephi.onboarding.ui.composables.BaseCheckView
 import com.facephi.onboarding.ui.composables.BaseTextButton
 
 @Composable
@@ -63,6 +65,14 @@ fun MainScreen(
     }
 
     var showTutorialSelphId by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showDiagnosticSelphi by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showDiagnosticSelphId by rememberSaveable {
         mutableStateOf(true)
     }
 
@@ -95,36 +105,38 @@ fun MainScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(
-                checked = showPreviousTipSelphi,
-                onCheckedChange = {
-                    showPreviousTipSelphi = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.onboarding_show_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTipSelphi,
+                text = stringResource(id = R.string.onboarding_show_previous_tip)
+            ) {
+                showPreviousTipSelphi = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showTutorialSelphi,
+                text = stringResource(id = R.string.onboarding_show_tutorial)
+            ) {
+                showTutorialSelphi = it
+            }
+        }
 
-            Checkbox(
-                checked = showTutorialSelphi,
-                onCheckedChange = {
-                    showTutorialSelphi = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.onboarding_show_tutorial),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                checkValue = showDiagnosticSelphi,
+                text = stringResource(id = R.string.onboarding_show_diagnostic)
+            ) {
+                showDiagnosticSelphi = it
+            }
         }
 
         BaseButton(modifier = Modifier,
@@ -133,42 +145,45 @@ fun MainScreen(
             onClick = {
                viewModel.launchSelphi(
                    showTutorial = showTutorialSelphi,
-                   showPreviousTip = showPreviousTipSelphi
+                   showPreviousTip = showPreviousTipSelphi,
+                   showDiagnostic = showDiagnosticSelphi
                )
             })
 
         Spacer(Modifier.height(8.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(
-                checked = showPreviousTipSelphId,
-                onCheckedChange = {
-                    showPreviousTipSelphId = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.onboarding_show_previous_tip),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTipSelphId,
+                text = stringResource(id = R.string.onboarding_show_previous_tip)
+            ) {
+                showPreviousTipSelphId = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showTutorialSelphId,
+                text = stringResource(id = R.string.onboarding_show_tutorial)
+            ) {
+                showTutorialSelphId = it
+            }
+        }
 
-            Checkbox(
-                checked = showTutorialSelphId,
-                onCheckedChange = {
-                    showTutorialSelphId = it
-                },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                text = stringResource(id = R.string.onboarding_show_tutorial),
-                color = colorResource(id = R.color.sdkBodyTextColor)
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                checkValue = showDiagnosticSelphId,
+                text = stringResource(id = R.string.onboarding_show_diagnostic)
+            ) {
+                showDiagnosticSelphId = it
+            }
         }
 
         BaseButton(modifier = Modifier,
@@ -177,7 +192,8 @@ fun MainScreen(
             onClick = {
                 viewModel.launchSelphId(
                     showTutorial = showTutorialSelphId,
-                    showPreviousTip = showPreviousTipSelphId
+                    showPreviousTip = showPreviousTipSelphId,
+                    showDiagnostic = showDiagnosticSelphId
                 )
             })
 
