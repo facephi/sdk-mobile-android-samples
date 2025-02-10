@@ -13,5 +13,6 @@
     <string name="phingers_demo_launch_matching">Launch matching</string>
     <string name="phingers_demo_show_tutorial">Tutorial</string>
     <string name="phingers_demo_show_previous_tip">Previous tip</string>
+    <string name="phingers_demo_diagnostic">Diagnostic</string>
     <string name="phingers_demo_clear_logs">Clear logs</string>
 </resources>

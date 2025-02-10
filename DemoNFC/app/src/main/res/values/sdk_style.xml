@@ -3,7 +3,7 @@
     <!-- SdkTheme -->
     <color name="sdkPrimaryColor">#3167FC</color>
     <color name="sdkSecondaryColor">#03DAC5</color>
-    <color name="sdkBackgroundColor">#F3F4F9</color>
+    <color name="sdkBackgroundColor">#FFFFFF</color>
     <color name="sdkErrorColor">#DD3631</color>
     <!-- SdkColorsPalette -->
     <color name="sdkTitleTextColor">#1D2C4D</color>

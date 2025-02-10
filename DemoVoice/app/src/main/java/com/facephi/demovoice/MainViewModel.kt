@@ -25,7 +25,7 @@ class MainViewModel : ViewModel() {
     private var enrollTemplate = ""
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            if (BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
 
@@ -71,7 +71,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchVoiceAuth(data: VoiceConfigurationData,) {
+    fun launchVoiceAuth(data: VoiceConfigurationData) {
         viewModelScope.launch {
             when (val result =
                 SDKController.launch(VoiceController(data))) {
@@ -109,7 +109,7 @@ class MainViewModel : ViewModel() {
             log("DATA is empty")
             return
         }
-        
+
         val verificationController = VerificationsApi(context, SdkData.API_KEY)
 
         viewModelScope.launch {

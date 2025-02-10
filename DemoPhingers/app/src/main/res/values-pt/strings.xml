@@ -13,5 +13,6 @@
     <string name="phingers_demo_launch_matching">Lançar matching</string>
     <string name="phingers_demo_show_tutorial">Tutorial</string>
     <string name="phingers_demo_show_previous_tip">Mostrar o ecrã anterior</string>
+    <string name="phingers_demo_diagnostic">Diagnóstico</string>
     <string name="phingers_demo_clear_logs">Limpar registros</string>
 </resources>

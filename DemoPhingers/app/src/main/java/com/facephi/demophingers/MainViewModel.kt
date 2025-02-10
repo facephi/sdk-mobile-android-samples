@@ -18,7 +18,7 @@ class MainViewModel : ViewModel() {
     val logs = _logs.asStateFlow()
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            if (BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
 
@@ -47,10 +47,15 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchPhingers(showPreviousTip: Boolean, captureOrientation: CaptureOrientation) {
+    fun launchPhingers(
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+        captureOrientation: CaptureOrientation
+    ) {
         viewModelScope.launch {
             val data = PhingersConfigurationData(
                 showPreviousTip = showPreviousTip,
+                showDiagnostic = showDiagnostic,
                 reticleOrientation = captureOrientation
             )
             when (val result =
@@ -58,12 +63,13 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Success -> {
                     log("PHINGERS: OK")
                 }
+
                 is SdkResult.Error -> log("PHINGERS Error - ${result.error.name}")
             }
         }
     }
 
-    private fun log(message: String){
+    private fun log(message: String) {
         viewModelScope.launch {
             val data = _logs.value + "\n" + message
             _logs.emit(data)
@@ -71,7 +77,7 @@ class MainViewModel : ViewModel() {
 
     }
 
-    fun clearLogs(){
+    fun clearLogs() {
         viewModelScope.launch {
             _logs.emit("")
         }

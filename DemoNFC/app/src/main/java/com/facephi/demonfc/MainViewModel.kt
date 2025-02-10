@@ -16,7 +16,7 @@ class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            if (BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
 
@@ -58,12 +58,14 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             when (val result =
                 SDKController.launch(
-                    SelphIDController(SdkData.getSelphIdConfig(
-                        docType = docType,
-                        showTutorial = showTutorial,
-                        showDiagnostic = showDiagnostic,
-                        showPreviousTip = showPreviousTip,
-                    ))
+                    SelphIDController(
+                        SdkData.getSelphIdConfig(
+                            docType = docType,
+                            showTutorial = showTutorial,
+                            showDiagnostic = showDiagnostic,
+                            showPreviousTip = showPreviousTip,
+                        )
+                    )
                 )) {
                 is SdkResult.Error -> debugLogs("SelphID: KO - ${result.error}")
                 is SdkResult.Success -> {

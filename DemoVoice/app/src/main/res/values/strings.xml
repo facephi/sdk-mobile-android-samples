@@ -3,6 +3,7 @@
     <string name="new_operation">New Operation</string>
     <string name="voice_tutorial">Tutorial</string>
     <string name="voice_previous_tip">Previous Tip</string>
+    <string name="voice_diagnostic">Diagnostic</string>
     <string name="clear_logs">Clear logs</string>
     <string name="voice_enroll">Voice enrollment</string>
     <string name="voice_auth">Voice authentication</string>

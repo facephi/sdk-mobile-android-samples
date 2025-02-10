@@ -213,7 +213,8 @@ fun MainScreen(
         )
 
         Text(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 8.dp),
             text = BuildConfig.LIBRARY_VERSION,
             style =  TextStyle(

@@ -126,7 +126,7 @@ fun DataScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
         TextField(
@@ -139,7 +139,7 @@ fun DataScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
         TextField(
@@ -152,7 +152,7 @@ fun DataScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
         Spacer(Modifier.height(8.dp))
@@ -307,10 +307,11 @@ fun DataScreen(
         )
 
         Text(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 8.dp),
             text = BuildConfig.LIBRARY_VERSION,
-            style =  TextStyle(
+            style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,

@@ -54,11 +54,13 @@ object SdkData {
                 showTutorial = showTutorial,
                 showDiagnostic = showDiagnostic
             )
+
             DocumentType.PASSPORT -> passportConfig.copy(
                 showPreviousTip = showPreviousTip,
                 showTutorial = showTutorial,
                 showDiagnostic = showDiagnostic
             )
+
             DocumentType.FOREIGN_CARD -> foreignCardConfig.copy(
                 showPreviousTip = showPreviousTip,
                 showTutorial = showTutorial,
@@ -99,14 +101,15 @@ object SdkData {
         scanMode = SelphIDScanMode.MODE_SEARCH
     )
 
-    fun getNfcConfig(support: String,
-                     birthDate: String,
-                     expirationDate: String,
-                     skipPACE: Boolean,
-                     docType: DocumentType,
-                     showTutorial: Boolean,
-                     showPreviousTip: Boolean,
-                     showDiagnostic: Boolean,
+    fun getNfcConfig(
+        support: String,
+        birthDate: String,
+        expirationDate: String,
+        skipPACE: Boolean,
+        docType: DocumentType,
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
     ): NfcConfigurationData {
         return NfcConfigurationData(
             documentNumber = support, // Num soport.

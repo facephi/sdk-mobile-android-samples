@@ -1,11 +1,14 @@
 package com.facephi.demophingers
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
@@ -43,6 +46,7 @@ fun MainScreen(
 
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
+    var showDiagnostic by rememberSaveable { mutableStateOf(true) }
 
     var showPreviousTip by rememberSaveable {
         mutableStateOf(true)
@@ -83,11 +87,19 @@ fun MainScreen(
             text = stringResource(id = R.string.phingers_demo_launch_capture),
             enabled = newOperationClicked,
             onClick = {
-                viewModel.launchPhingers(showPreviousTip, captureOrientation)
+                viewModel.launchPhingers(
+                    showPreviousTip = showPreviousTip,
+                    showDiagnostic = showDiagnostic,
+                    captureOrientation = captureOrientation
+                )
             }
         )
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
             Checkbox(
                 checked = showPreviousTip,
                 onCheckedChange = {
@@ -102,11 +114,28 @@ fun MainScreen(
                 text = stringResource(id = R.string.phingers_demo_show_previous_tip),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )
+            Spacer(modifier = Modifier.size(16.dp))
+            Checkbox(
+                checked = showDiagnostic,
+                onCheckedChange = {
+                    showDiagnostic = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.phingers_demo_diagnostic),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
         }
 
 
         Text(
-            modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, bottom = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 32.dp, end = 32.dp, bottom = 8.dp),
             text = stringResource(id = R.string.phingers_demo_capture_orientation),
             color = colorResource(id = R.color.sdkBodyTextColor)
         )

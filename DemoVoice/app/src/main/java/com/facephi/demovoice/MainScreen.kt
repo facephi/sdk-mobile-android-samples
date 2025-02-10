@@ -1,11 +1,14 @@
 package com.facephi.demovoice
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
@@ -54,7 +57,8 @@ fun MainScreen(
     var showPreviousTipEnroll by rememberSaveable { mutableStateOf(true) }
     var showPreviousTipAuth by rememberSaveable { mutableStateOf(true) }
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
-
+    var showDiagnosticEnroll by rememberSaveable { mutableStateOf(true) }
+    var showDiagnosticAuth by rememberSaveable { mutableStateOf(true) }
 
     var isPlaying by rememberSaveable {
         mutableStateOf(false)
@@ -101,7 +105,11 @@ fun MainScreen(
                 viewModel.newOperation()
             })
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
             Checkbox(
                 checked = showPreviousTipEnroll,
                 onCheckedChange = { showPreviousTipEnroll = it },
@@ -114,6 +122,21 @@ fun MainScreen(
                 text = stringResource(id = R.string.voice_previous_tip),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )
+            Spacer(modifier = Modifier.size(16.dp))
+            Checkbox(
+                checked = showDiagnosticEnroll,
+                onCheckedChange = {
+                    showDiagnosticEnroll = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.voice_diagnostic),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
         }
 
         BaseButton(
@@ -124,12 +147,14 @@ fun MainScreen(
 
                 viewModel.launchVoiceEnroll(
                     VoiceConfigurationData(
-                    phrases = enrollPhrases,
-                    showPreviousTip = showPreviousTipEnroll)
+                        phrases = enrollPhrases,
+                        showPreviousTip = showPreviousTipEnroll,
+                        showDiagnostic = showDiagnosticEnroll
+                    )
                 )
                 { audioArray ->
                     audios.clear()
-                    if (audioArray.isNotEmpty()){
+                    if (audioArray.isNotEmpty()) {
                         audioArray.forEachIndexed { index, element ->
                             Napier.d("APP SAVING AUDIO $index")
                             AudioFileManager.saveWavToInternalStorage(
@@ -147,7 +172,11 @@ fun MainScreen(
             }
         )
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
             Checkbox(
                 checked = showPreviousTipAuth,
                 onCheckedChange = { showPreviousTipAuth = it },
@@ -160,6 +189,21 @@ fun MainScreen(
                 text = stringResource(id = R.string.voice_previous_tip),
                 color = colorResource(id = R.color.sdkBodyTextColor)
             )
+            Spacer(modifier = Modifier.size(16.dp))
+            Checkbox(
+                checked = showDiagnosticAuth,
+                onCheckedChange = {
+                    showDiagnosticAuth = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
+                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                )
+            )
+            Text(
+                text = stringResource(id = R.string.voice_diagnostic),
+                color = colorResource(id = R.color.sdkBodyTextColor)
+            )
         }
 
         BaseButton(
@@ -170,7 +214,9 @@ fun MainScreen(
                 viewModel.launchVoiceAuth(
                     VoiceConfigurationData(
                         phrases = authPhrases,
-                        showPreviousTip = showPreviousTipAuth)
+                        showPreviousTip = showPreviousTipAuth,
+                        showDiagnostic = showDiagnosticAuth
+                    )
                 )
             }
         )
