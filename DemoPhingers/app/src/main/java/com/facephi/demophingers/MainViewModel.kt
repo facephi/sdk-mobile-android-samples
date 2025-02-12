@@ -6,6 +6,7 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.phingers_component.PhingersController
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
+import com.facephi.phingers_component.data.configuration.FingerFilter
 import com.facephi.phingers_component.data.configuration.PhingersConfigurationData
 import com.facephi.sdk.SDKController
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,13 +51,15 @@ class MainViewModel : ViewModel() {
     fun launchPhingers(
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
-        captureOrientation: CaptureOrientation
+        captureOrientation: CaptureOrientation,
+        fingerFilter: FingerFilter
     ) {
         viewModelScope.launch {
             val data = PhingersConfigurationData(
                 showPreviousTip = showPreviousTip,
                 showDiagnostic = showDiagnostic,
-                reticleOrientation = captureOrientation
+                reticleOrientation = captureOrientation,
+                fingerFilter = fingerFilter
             )
             when (val result =
                 SDKController.launch(PhingersController(data))) {

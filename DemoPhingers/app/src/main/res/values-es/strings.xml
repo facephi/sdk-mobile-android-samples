@@ -15,4 +15,5 @@
     <string name="phingers_demo_show_previous_tip">Pantalla previa</string>
     <string name="phingers_demo_diagnostic">Diagnóstico</string>
     <string name="phingers_demo_clear_logs">Limpiar logs</string>
+    <string name="phingers_demo_finger_filter">Dedos:</string>
 </resources>

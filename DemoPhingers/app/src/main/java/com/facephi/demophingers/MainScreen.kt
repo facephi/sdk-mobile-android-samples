@@ -36,7 +36,9 @@ import com.facephi.demophingers.ui.composables.BaseButton
 import com.facephi.demophingers.ui.composables.BaseCheckView
 import com.facephi.demophingers.ui.composables.BaseTextButton
 import com.facephi.demophingers.ui.composables.DropdownCaptureOrientationMenu
+import com.facephi.demophingers.ui.composables.DropdownFingerFilterMenu
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
+import com.facephi.phingers_component.data.configuration.FingerFilter
 
 @Composable
 fun MainScreen(
@@ -55,6 +57,10 @@ fun MainScreen(
 
     var captureOrientation by rememberSaveable {
         mutableStateOf(CaptureOrientation.LEFT)
+    }
+
+    var fingerFilter by rememberSaveable {
+        mutableStateOf(FingerFilter.SLAP)
     }
 
     LaunchedEffect(Unit) {
@@ -91,7 +97,8 @@ fun MainScreen(
                 viewModel.launchPhingers(
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic,
-                    captureOrientation = captureOrientation
+                    captureOrientation = captureOrientation,
+                    fingerFilter = fingerFilter
                 )
             }
         )
@@ -131,6 +138,22 @@ fun MainScreen(
                 .padding(horizontal = 32.dp),
         ) {
             captureOrientation = it
+        }
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 32.dp, end = 32.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.phingers_demo_finger_filter),
+            color = colorResource(id = R.color.sdkBodyTextColor)
+        )
+
+        DropdownFingerFilterMenu(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+        ) {
+            fingerFilter = it
         }
 
         Text(
