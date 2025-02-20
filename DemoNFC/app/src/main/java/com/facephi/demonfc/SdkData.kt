@@ -3,7 +3,6 @@ package com.facephi.demonfc
 import com.facephi.core.data.OperationType
 import com.facephi.core.data.SdkApplication
 import com.facephi.demonfc.model.DocumentType
-import com.facephi.demonfc.model.ShowScreen
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import com.facephi.nfc_component.data.configuration.NfcDocumentType
 import com.facephi.sdk.data.EnvironmentLicensingData
@@ -43,11 +42,30 @@ object SdkData {
         trackingController = null // or TrackingController()
     )
 
-    fun getSelphIdConfig(docType: DocumentType): SelphIDConfigurationData {
+    fun getSelphIdConfig(
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+        docType: DocumentType
+    ): SelphIDConfigurationData {
         return when (docType) {
-            DocumentType.ID_CARD -> idCardConfig
-            DocumentType.PASSPORT -> passportConfig
-            DocumentType.FOREIGN_CARD -> foreignCardConfig
+            DocumentType.ID_CARD -> idCardConfig.copy(
+                showPreviousTip = showPreviousTip,
+                showTutorial = showTutorial,
+                showDiagnostic = showDiagnostic
+            )
+
+            DocumentType.PASSPORT -> passportConfig.copy(
+                showPreviousTip = showPreviousTip,
+                showTutorial = showTutorial,
+                showDiagnostic = showDiagnostic
+            )
+
+            DocumentType.FOREIGN_CARD -> foreignCardConfig.copy(
+                showPreviousTip = showPreviousTip,
+                showTutorial = showTutorial,
+                showDiagnostic = showDiagnostic
+            )
         }
     }
 
@@ -83,12 +101,15 @@ object SdkData {
         scanMode = SelphIDScanMode.MODE_SEARCH
     )
 
-    fun getNfcConfig(support: String,
-                     birthDate: String,
-                     expirationDate: String,
-                     showScreen: ShowScreen,
-                     skipPACE: Boolean,
-                     docType: DocumentType
+    fun getNfcConfig(
+        support: String,
+        birthDate: String,
+        expirationDate: String,
+        skipPACE: Boolean,
+        docType: DocumentType,
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
     ): NfcConfigurationData {
         return NfcConfigurationData(
             documentNumber = support, // Num soport.
@@ -96,11 +117,9 @@ object SdkData {
             expirationDate = expirationDate, // "dd/MM/yyyy",
             enableDebugMode = true,
             skipPACE = skipPACE,
-            showTutorial = when (showScreen) {
-                ShowScreen.SHOW_DIAGNOSTIC-> false
-                ShowScreen.SHOW_TUTORIAL, ShowScreen.SHOW_TUTORIAL_AND_DIAGNOSTIC -> {
-                    true
-                }},
+            showTutorial = showTutorial,
+            showPreviousTip = showPreviousTip,
+            showDiagnostic = showDiagnostic,
             documentType = getNfcDocType(docType)
         )
     }

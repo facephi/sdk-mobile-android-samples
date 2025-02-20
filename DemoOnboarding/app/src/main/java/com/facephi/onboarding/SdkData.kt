@@ -46,18 +46,28 @@ object SdkData {
     )
 
     // SELPHI DATA
-    val selphiConfiguration = SelphiConfigurationData(
+    fun getSelphiConfiguration(
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+    ) = SelphiConfigurationData(
         debug = false,
-        showTutorial = true,
-        showDiagnostic = true,
+        showTutorial = showTutorial,
+        showPreviousTip = showPreviousTip,
+        showDiagnostic = showDiagnostic,
         resourcesPath = SELPHI_RESOURCES
     )
 
     // SELPHID DATA
-    val selphIDConfiguration = SelphIDConfigurationData(
+    fun getSelphIDConfiguration(
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+    ) = SelphIDConfigurationData(
         debug = false,
-        showTutorial = true,
-        showDiagnostic = true,
+        showTutorial = showTutorial,
+        showPreviousTip = showPreviousTip,
+        showDiagnostic = showDiagnostic,
         wizardMode = true,
         showResultAfterCapture = true,
         scanMode = SelphIDScanMode.MODE_SEARCH,
