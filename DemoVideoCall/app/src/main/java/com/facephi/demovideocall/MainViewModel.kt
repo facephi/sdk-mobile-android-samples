@@ -10,6 +10,10 @@ import com.facephi.videocall_component.process.recording.VideoCallScreenSharingM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import io.github.aakira.napier.Napier
 
 class MainViewModel : ViewModel() {
 
@@ -18,6 +22,10 @@ class MainViewModel : ViewModel() {
     private lateinit var videoCallScreenSharingManager: VideoCallScreenSharingManager
 
     fun initSdk(sdkApplication: SdkApplication) {
+        SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+            Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                    " ${eventType.name} -  ${info ?: ""} " }
+        }
         videoCallScreenSharingManager = VideoCallScreenSharingManager(sdkApplication)
         videoCallScreenSharingManager.setOutput {
             log("Screen sharing state: ${it.name}")
@@ -90,6 +98,13 @@ class MainViewModel : ViewModel() {
             _logs.emit("")
         }
 
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 
 }

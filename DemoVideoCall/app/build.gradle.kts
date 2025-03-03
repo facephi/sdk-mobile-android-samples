@@ -61,12 +61,15 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
+    implementation(libs.kotlinx.datetime)
     implementation(compose.ui)
     implementation(compose.preview)
     implementation(compose.material3)
     debugImplementation(compose.uiTooling)
     implementation(libs.lifecycle.viewmodel.compose)
 
+    // Logs
+    implementation(libs.napier)
     // Ktor Client Http
     //implementation(libs.ktor.client.okhttp)
     //implementation(libs.ktor.serialization.kotlinx.json)

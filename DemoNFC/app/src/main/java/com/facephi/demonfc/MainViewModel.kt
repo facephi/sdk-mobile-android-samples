@@ -11,11 +11,19 @@ import com.facephi.sdk.SDKController
 import com.facephi.selphid_component.SelphIDController
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
+            SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " }
+            }
+
             if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
@@ -134,6 +142,13 @@ class MainViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 }
 

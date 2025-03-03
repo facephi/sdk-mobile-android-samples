@@ -19,6 +19,10 @@ import com.facephi.selphid_component.SelphIDController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import io.github.aakira.napier.Napier
 
 class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow("")
@@ -26,6 +30,11 @@ class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
+            SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " }
+            }
+
             if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
@@ -260,6 +269,13 @@ class MainViewModel : ViewModel() {
                 }
         }
 
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 
 }

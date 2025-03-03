@@ -9,6 +9,10 @@ import com.facephi.video_id_component.VideoIdController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import io.github.aakira.napier.Napier
 
 class MainViewModel : ViewModel() {
 
@@ -16,6 +20,10 @@ class MainViewModel : ViewModel() {
     val logs = _logs.asStateFlow()
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
+            SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " }
+            }
             if (BuildConfig.DEBUG){
                 SDKController.enableDebugMode()
             }
@@ -70,6 +78,13 @@ class MainViewModel : ViewModel() {
             _logs.emit("")
         }
 
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 
 }

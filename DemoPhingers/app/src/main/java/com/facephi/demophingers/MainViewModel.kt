@@ -9,9 +9,13 @@ import com.facephi.phingers_component.data.configuration.CaptureOrientation
 import com.facephi.phingers_component.data.configuration.FingerFilter
 import com.facephi.phingers_component.data.configuration.PhingersConfigurationData
 import com.facephi.sdk.SDKController
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class MainViewModel : ViewModel() {
 
@@ -19,6 +23,11 @@ class MainViewModel : ViewModel() {
     val logs = _logs.asStateFlow()
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
+            SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " }
+            }
+
             if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
@@ -85,6 +94,13 @@ class MainViewModel : ViewModel() {
             _logs.emit("")
         }
 
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 
 }
