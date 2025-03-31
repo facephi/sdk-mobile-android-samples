@@ -19,6 +19,10 @@ import com.facephi.selphid_component.SelphIDController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import io.github.aakira.napier.Napier
 
 class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow("")
@@ -26,7 +30,12 @@ class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            if (BuildConfig.DEBUG){
+            SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " }
+            }
+
+            if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
 
@@ -36,9 +45,9 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
             }
 
-           /*SDKController.launch(TrackingErrorController {
-                log("Tracking Error: ${it.name}")
-            })*/
+            /*SDKController.launch(TrackingErrorController {
+                 log("Tracking Error: ${it.name}")
+             })*/
         }
     }
 
@@ -55,10 +64,22 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchSelphi() {
+    fun launchSelphi(
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+    ) {
         viewModelScope.launch {
             when (val result =
-                SDKController.launch(SelphiController(SdkData.selphiConfiguration))) {
+                SDKController.launch(
+                    SelphiController(
+                        SdkData.getSelphiConfiguration(
+                            showTutorial = showTutorial,
+                            showPreviousTip = showPreviousTip,
+                            showDiagnostic = showDiagnostic
+                        )
+                    )
+                )) {
                 is SdkResult.Success -> {
                     log("Selphi: OK")
                     result.data.bestImage?.bitmap?.let {
@@ -75,10 +96,22 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchSelphId() {
+    fun launchSelphId(
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+    ) {
         viewModelScope.launch {
             when (val result =
-                SDKController.launch(SelphIDController(SdkData.selphIDConfiguration))) {
+                SDKController.launch(
+                    SelphIDController(
+                        SdkData.getSelphIDConfiguration(
+                            showTutorial = showTutorial,
+                            showPreviousTip = showPreviousTip,
+                            showDiagnostic = showDiagnostic
+                        )
+                    )
+                )) {
                 is SdkResult.Success -> {
                     log("SelphID: OK")
                     if (result.data.tokenFaceImage.isNotEmpty()) {
@@ -162,18 +195,19 @@ class MainViewModel : ViewModel() {
 
             // LIVENESS WITH TOKENIZED IMAGE
 
-            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }?.let { bestImageTokenized ->
-                val response = verificationController.passiveLivenessToken(
-                    request = PassiveLivenessTokenRequest(
-                        imageBuffer = bestImageTokenized,
-                        //trackingData = trackingData
-                    ),
-                    baseUrl = SdkData.BASE_URL
-                )
+            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }
+                ?.let { bestImageTokenized ->
+                    val response = verificationController.passiveLivenessToken(
+                        request = PassiveLivenessTokenRequest(
+                            imageBuffer = bestImageTokenized,
+                            //trackingData = trackingData
+                        ),
+                        baseUrl = SdkData.BASE_URL
+                    )
 
-                log("** passiveLivenessToken: ${response}\n")
+                    log("** passiveLivenessToken: ${response}\n")
 
-            }
+                }
 
             // MATCHING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
 
@@ -196,43 +230,52 @@ class MainViewModel : ViewModel() {
 
             // MATCHING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
 
-            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }?.let { bestImageTokenized ->
-                ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
-                    ?.let { documentTokenFaceImage ->
-                        val response = verificationController.authenticateFacial(
-                            request = AuthenticateFacialRequest(
-                                token1 = bestImageTokenized,
-                                token2 = documentTokenFaceImage,
-                                method = 5,
-                                //trackingData = trackingData
-                            ),
-                            baseUrl = SdkData.BASE_URL
-                        )
+            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }
+                ?.let { bestImageTokenized ->
+                    ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
+                        ?.let { documentTokenFaceImage ->
+                            val response = verificationController.authenticateFacial(
+                                request = AuthenticateFacialRequest(
+                                    token1 = bestImageTokenized,
+                                    token2 = documentTokenFaceImage,
+                                    method = 5,
+                                    //trackingData = trackingData
+                                ),
+                                baseUrl = SdkData.BASE_URL
+                            )
 
-                        log("** authenticateFacial (method = 5): ${response}\n")
-                    }
-            }
+                            log("** authenticateFacial (method = 5): ${response}\n")
+                        }
+                }
 
             // ONBOARDING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
 
-            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }?.let { bestImageTokenized ->
-                ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
-                    ?.let { documentTokenFaceImage ->
-                        val response = verificationController.onboarding(
-                            request = OnboardingRequest(
-                                bestImageToken = bestImageTokenized,
-                                token1 = documentTokenFaceImage,
-                                method = 5,
-                                //trackingData = trackingData
-                            ),
-                            baseUrl = SdkData.BASE_URL
-                        )
+            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }
+                ?.let { bestImageTokenized ->
+                    ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
+                        ?.let { documentTokenFaceImage ->
+                            val response = verificationController.onboarding(
+                                request = OnboardingRequest(
+                                    bestImageToken = bestImageTokenized,
+                                    token1 = documentTokenFaceImage,
+                                    method = 5,
+                                    //trackingData = trackingData
+                                ),
+                                baseUrl = SdkData.BASE_URL
+                            )
 
-                        log("** onboarding (method = 5): ${response}\n")
-                    }
-            }
+                            log("** onboarding (method = 5): ${response}\n")
+                        }
+                }
         }
 
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 
 }

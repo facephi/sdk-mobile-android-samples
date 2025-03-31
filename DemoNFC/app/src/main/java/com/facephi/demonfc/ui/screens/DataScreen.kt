@@ -1,15 +1,21 @@
 package com.facephi.demonfc.ui.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -37,16 +43,15 @@ import androidx.compose.ui.unit.sp
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.SdkData
-import com.facephi.demonfc.model.ShowScreen
 import com.facephi.demonfc.ui.composables.BaseButton
 import com.facephi.demonfc.ui.composables.BaseTextButton
-import com.facephi.demonfc.ui.composables.DropdownScreenMenuBox
 import com.facephi.demonfc.utils.validNfcDate
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import io.github.aakira.napier.Napier
 import androidx.compose.ui.res.colorResource
 import com.facephi.demonfc.BuildConfig
 import com.facephi.demonfc.model.DocumentType
+import com.facephi.demonfc.ui.composables.BaseCheckView
 import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -77,8 +82,16 @@ fun DataScreen(
         mutableStateOf("")
     }
 
-    var showScreen by rememberSaveable {
-        mutableStateOf(ShowScreen.SHOW_TUTORIAL_AND_DIAGNOSTIC)
+    var showPreviousTip by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showTutorial by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showDiagnostic by rememberSaveable {
+        mutableStateOf(true)
     }
 
     var documentType by rememberSaveable {
@@ -114,7 +127,7 @@ fun DataScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
         TextField(
@@ -127,7 +140,7 @@ fun DataScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
         TextField(
@@ -140,23 +153,44 @@ fun DataScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.nfc_show_screen),
-            color = colorResource(id = R.color.sdkBodyTextColor)
-        )
+        Spacer(Modifier.height(8.dp))
 
-        DropdownScreenMenuBox(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
-            showScreen = it
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTip,
+                text = stringResource(id = R.string.nfc_show_previous_tip)
+            ) {
+                showPreviousTip = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showTutorial,
+                text = stringResource(id = R.string.nfc_show_tutorial)
+            ) {
+                showTutorial = it
+            }
+
+        }
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                checkValue = showDiagnostic,
+                text = stringResource(id = R.string.nfc_show_diagnostic)
+            ) {
+                showDiagnostic = it
+            }
         }
 
         Text(
@@ -188,9 +222,11 @@ fun DataScreen(
                         support = support,
                         birthDate = birthDate,
                         expirationDate = expirationDate,
-                        showScreen = showScreen,
                         skipPACE = false,
-                        docType = documentType
+                        docType = documentType,
+                        showPreviousTip = showPreviousTip,
+                        showTutorial = showTutorial,
+                        showDiagnostic = showDiagnostic
                     )
 
                     logs.clear()
@@ -224,9 +260,11 @@ fun DataScreen(
                         support = support,
                         birthDate = birthDate,
                         expirationDate = expirationDate,
-                        showScreen = showScreen,
                         skipPACE = true,
-                        docType = documentType
+                        docType = documentType,
+                        showPreviousTip = showPreviousTip,
+                        showTutorial = showTutorial,
+                        showDiagnostic = showDiagnostic
                     )
                     logs.clear()
 
@@ -245,10 +283,11 @@ fun DataScreen(
         )
 
         Text(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 8.dp),
             text = BuildConfig.LIBRARY_VERSION,
-            style =  TextStyle(
+            style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,

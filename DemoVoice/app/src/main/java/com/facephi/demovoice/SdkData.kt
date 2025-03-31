@@ -38,18 +38,4 @@ object SdkData {
         trackingController = null // or TrackingController()
     )
 
-    // VOICE DATA
-    val voiceConfigurationData = VoiceConfigurationData(
-        phrases = arrayOf(
-            "Tu nombre completo",
-            "Tu DNI con letra",
-            "Tu dirección completa"
-        )
-    )
-    val voiceAuthConfigurationData = VoiceConfigurationData(
-        phrases = arrayOf(
-            "Tu DNI con letra"
-        )
-    )
-
 }

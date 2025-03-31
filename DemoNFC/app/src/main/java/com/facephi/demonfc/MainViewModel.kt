@@ -11,12 +11,20 @@ import com.facephi.sdk.SDKController
 import com.facephi.selphid_component.SelphIDController
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            if (BuildConfig.DEBUG){
+            SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " }
+            }
+
+            if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
 
@@ -50,12 +58,22 @@ class MainViewModel : ViewModel() {
     fun launchSelphidAndNfc(
         skipPACE: Boolean,
         docType: DocumentType,
+        showTutorial: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
         debugLogs: (String) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
                 SDKController.launch(
-                    SelphIDController(SdkData.getSelphIdConfig(docType))
+                    SelphIDController(
+                        SdkData.getSelphIdConfig(
+                            docType = docType,
+                            showTutorial = showTutorial,
+                            showDiagnostic = showDiagnostic,
+                            showPreviousTip = showPreviousTip,
+                        )
+                    )
                 )) {
                 is SdkResult.Error -> debugLogs("SelphID: KO - ${result.error}")
                 is SdkResult.Success -> {
@@ -75,9 +93,11 @@ class MainViewModel : ViewModel() {
                                 birthDate = birthDate, // "dd/MM/yyyy"
                                 expirationDate = expirationDate, // "dd/MM/yyyy",
                                 enableDebugMode = true,
-                                showTutorial = true,
+                                showTutorial = showTutorial,
                                 skipPACE = skipPACE,
-                                documentType = SdkData.getNfcDocType(docType)
+                                documentType = SdkData.getNfcDocType(docType),
+                                showPreviousTip = showPreviousTip,
+                                showDiagnostic = showDiagnostic,
                             ),
                             debugLogs = debugLogs
                         )
@@ -122,6 +142,13 @@ class MainViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 }
 

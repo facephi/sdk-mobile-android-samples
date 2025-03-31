@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.facephi.demophingers.R
 import com.facephi.demophingers.ui.theme.DemoPhingersTheme
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
+import com.facephi.phingers_component.data.configuration.FingerFilter
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +31,7 @@ fun DropdownCaptureOrientationMenu(
     modifier: Modifier = Modifier,
     newSelection: (CaptureOrientation) -> Unit
 ) {
-    val list = listOf(CaptureOrientation.LEFT, CaptureOrientation.RIGHT, CaptureOrientation.THUMB_PORTRAIT)
+    val list = CaptureOrientation.entries
 
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(CaptureOrientation.LEFT) }
@@ -59,7 +60,65 @@ fun DropdownCaptureOrientationMenu(
             ) {
                 list.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item.name, color = colorResource(id = R.color.sdkBodyTextColor)) },
+                        text = {
+                            Text(
+                                text = item.name,
+                                color = colorResource(id = R.color.sdkBodyTextColor)
+                            )
+                        },
+                        onClick = {
+                            selectedText = item
+                            expanded = false
+                            newSelection(item)
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropdownFingerFilterMenu(
+    modifier: Modifier = Modifier,
+    newSelection: (FingerFilter) -> Unit
+) {
+    val list = FingerFilter.entries
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(FingerFilter.SLAP) }
+
+    Box(modifier) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            TextField(
+                value = selectedText.name,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()  // Asegura que el menú se ancle al campo
+                    .clickable { expanded = true }  // Abre el menú al hacer clic
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .background(color = colorResource(id = R.color.sdkBackgroundColor))
+            ) {
+                list.forEach { item ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = item.name,
+                                color = colorResource(id = R.color.sdkBodyTextColor)
+                            )
+                        },
                         onClick = {
                             selectedText = item
                             expanded = false
@@ -73,11 +132,10 @@ fun DropdownCaptureOrientationMenu(
 }
 
 
-
 @Preview
 @Composable
 fun NewDropdownMenuBoxPreview() {
     DemoPhingersTheme {
-        DropdownCaptureOrientationMenu(){}
+        DropdownCaptureOrientationMenu() {}
     }
 }

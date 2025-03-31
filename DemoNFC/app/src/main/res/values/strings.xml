@@ -6,7 +6,9 @@
     <string name="nfc_num_support">Num. Support</string>
     <string name="nfc_birth_date">Birth date (dd/MM/yyyy)</string>
     <string name="nfc_expiry_date">Expiration date (dd/MM/yyyy)</string>
-    <string name="nfc_show_screen">Show screen:</string>
+    <string name="nfc_show_tutorial">Tutorial</string>
+    <string name="nfc_show_previous_tip">Previous tip</string>
+    <string name="nfc_show_diagnostic">Diagnostic</string>
     <string name="nfc_select_document">Select document type:</string>
     <string name="nfc_cancel">Cancel</string>
     <string name="nfc_retry">Retry</string>

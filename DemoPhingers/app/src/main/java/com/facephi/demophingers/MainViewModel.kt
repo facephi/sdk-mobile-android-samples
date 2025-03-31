@@ -6,11 +6,16 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.phingers_component.PhingersController
 import com.facephi.phingers_component.data.configuration.CaptureOrientation
+import com.facephi.phingers_component.data.configuration.FingerFilter
 import com.facephi.phingers_component.data.configuration.PhingersConfigurationData
 import com.facephi.sdk.SDKController
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class MainViewModel : ViewModel() {
 
@@ -18,7 +23,12 @@ class MainViewModel : ViewModel() {
     val logs = _logs.asStateFlow()
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
-            if (BuildConfig.DEBUG){
+            SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
+                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " }
+            }
+
+            if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
             }
 
@@ -47,24 +57,31 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchPhingers(showPreviousTip: Boolean, captureOrientation: CaptureOrientation) {
+    fun launchPhingers(
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+        captureOrientation: CaptureOrientation,
+        fingerFilter: FingerFilter
+    ) {
         viewModelScope.launch {
             val data = PhingersConfigurationData(
                 showPreviousTip = showPreviousTip,
-                showTutorial = false,
-                reticleOrientation = captureOrientation
+                showDiagnostic = showDiagnostic,
+                reticleOrientation = captureOrientation,
+                fingerFilter = fingerFilter
             )
             when (val result =
                 SDKController.launch(PhingersController(data))) {
                 is SdkResult.Success -> {
                     log("PHINGERS: OK")
                 }
+
                 is SdkResult.Error -> log("PHINGERS Error - ${result.error.name}")
             }
         }
     }
 
-    private fun log(message: String){
+    private fun log(message: String) {
         viewModelScope.launch {
             val data = _logs.value + "\n" + message
             _logs.emit(data)
@@ -72,11 +89,18 @@ class MainViewModel : ViewModel() {
 
     }
 
-    fun clearLogs(){
+    fun clearLogs() {
         viewModelScope.launch {
             _logs.emit("")
         }
 
+    }
+
+    private fun formatEpochMillis(epochMillis: Long): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime =
+            instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        return "${localDateTime.date} ${localDateTime.time}"
     }
 
 }

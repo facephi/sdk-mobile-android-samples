@@ -1,11 +1,14 @@
 package com.facephi.demovoice
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
@@ -37,6 +40,7 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.demovoice.media.AppMediaPlayer
 import com.facephi.demovoice.media.AudioFileManager
 import com.facephi.demovoice.ui.composables.BaseButton
+import com.facephi.demovoice.ui.composables.BaseCheckView
 import com.facephi.demovoice.ui.composables.BaseTextButton
 import com.facephi.voice_component.data.configuration.VoiceConfigurationData
 import io.github.aakira.napier.Napier
@@ -51,9 +55,11 @@ fun MainScreen(
     val logs = viewModel.logs.collectAsState()
     val audios = remember { mutableStateListOf<String>() }
     val context = LocalContext.current
-    var showScreen by rememberSaveable { mutableStateOf(true) }
+    var showPreviousTipEnroll by rememberSaveable { mutableStateOf(true) }
+    var showPreviousTipAuth by rememberSaveable { mutableStateOf(true) }
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
-
+    var showDiagnosticEnroll by rememberSaveable { mutableStateOf(true) }
+    var showDiagnosticAuth by rememberSaveable { mutableStateOf(true) }
 
     var isPlaying by rememberSaveable {
         mutableStateOf(false)
@@ -100,6 +106,27 @@ fun MainScreen(
                 viewModel.newOperation()
             })
 
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTipEnroll,
+                text = stringResource(id = R.string.voice_previous_tip)
+            ) {
+                showPreviousTipEnroll = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showDiagnosticEnroll,
+                text = stringResource(id = R.string.voice_diagnostic)
+            ) {
+                showDiagnosticEnroll = it
+            }
+        }
+
         BaseButton(
             text = stringResource(id = R.string.voice_enroll),
             enabled = newOperationClicked,
@@ -108,12 +135,14 @@ fun MainScreen(
 
                 viewModel.launchVoiceEnroll(
                     VoiceConfigurationData(
-                    phrases = enrollPhrases,
-                    showTutorial = showScreen)
+                        phrases = enrollPhrases,
+                        showPreviousTip = showPreviousTipEnroll,
+                        showDiagnostic = showDiagnosticEnroll
+                    )
                 )
                 { audioArray ->
                     audios.clear()
-                    if (audioArray.isNotEmpty()){
+                    if (audioArray.isNotEmpty()) {
                         audioArray.forEachIndexed { index, element ->
                             Napier.d("APP SAVING AUDIO $index")
                             AudioFileManager.saveWavToInternalStorage(
@@ -131,6 +160,27 @@ fun MainScreen(
             }
         )
 
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTipAuth,
+                text = stringResource(id = R.string.voice_previous_tip)
+            ) {
+                showPreviousTipAuth = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showDiagnosticAuth,
+                text = stringResource(id = R.string.voice_diagnostic)
+            ) {
+                showDiagnosticAuth = it
+            }
+        }
+
         BaseButton(
             text = stringResource(id = R.string.voice_auth),
             enabled = newOperationClicked,
@@ -139,7 +189,9 @@ fun MainScreen(
                 viewModel.launchVoiceAuth(
                     VoiceConfigurationData(
                         phrases = authPhrases,
-                        showTutorial = showScreen)
+                        showPreviousTip = showPreviousTipAuth,
+                        showDiagnostic = showDiagnosticAuth
+                    )
                 )
             }
         )
@@ -206,21 +258,11 @@ fun MainScreen(
             }
         )
 
-        Row() {
-            Checkbox(
-                checked = showScreen,
-                onCheckedChange = { showScreen = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                    uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
-                )
-            )
-            Text(
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                text = stringResource(id = R.string.voice_tutorial),
-            )
-        }
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = BuildConfig.LIBRARY_VERSION,
+            color = colorResource(id = R.color.sdkBodyTextColor)
+        )
 
         if (logs.value.isNotEmpty()) {
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)

@@ -4,11 +4,18 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
@@ -39,6 +46,7 @@ import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.model.DocumentType
 import com.facephi.demonfc.ui.composables.BaseButton
+import com.facephi.demonfc.ui.composables.BaseCheckView
 import com.facephi.demonfc.ui.composables.BaseTextButton
 import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
@@ -61,6 +69,18 @@ fun MainScreen(
         mutableStateOf(DocumentType.ID_CARD)
     }
 
+    var showPreviousTip by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showTutorial by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var showDiagnostic by rememberSaveable {
+        mutableStateOf(true)
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -79,6 +99,43 @@ fun MainScreen(
                     logs.add(it)
                 }
             })
+
+        Spacer(Modifier.height(8.dp))
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showPreviousTip,
+                text = stringResource(id = R.string.nfc_show_previous_tip)
+            ) {
+                showPreviousTip = it
+            }
+            BaseCheckView(
+                modifier = Modifier.weight(1f),
+                checkValue = showTutorial,
+                text = stringResource(id = R.string.nfc_show_tutorial)
+            ) {
+                showTutorial = it
+            }
+
+        }
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            BaseCheckView(
+                checkValue = showDiagnostic,
+                text = stringResource(id = R.string.nfc_show_diagnostic)
+            ) {
+                showDiagnostic = it
+            }
+        }
 
         Text(
             modifier = Modifier
@@ -102,7 +159,13 @@ fun MainScreen(
             onClick = {
                 logs.clear()
 
-                viewModel.launchSelphidAndNfc(false, documentType){
+                viewModel.launchSelphidAndNfc(
+                    skipPACE = false,
+                    docType = documentType,
+                    showDiagnostic = showDiagnostic,
+                    showPreviousTip = showPreviousTip,
+                    showTutorial = showTutorial
+                ) {
                     logs.add(it)
                 }
             }
@@ -114,17 +177,24 @@ fun MainScreen(
             onClick = {
                 logs.clear()
 
-                viewModel.launchSelphidAndNfc(true, documentType){
+                viewModel.launchSelphidAndNfc(
+                    skipPACE = true,
+                    docType = documentType,
+                    showDiagnostic = showDiagnostic,
+                    showPreviousTip = showPreviousTip,
+                    showTutorial = showTutorial
+                ) {
                     logs.add(it)
                 }
             }
         )
 
         Text(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 8.dp),
             text = BuildConfig.LIBRARY_VERSION,
-            style =  TextStyle(
+            style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
@@ -167,6 +237,6 @@ fun copyToClipboard(context: Context, text: String) {
 @Composable
 fun MainScreenPreview() {
     DemoNFCTheme {
-        MainScreen(MainViewModel()){}
+        MainScreen(MainViewModel()) {}
     }
 }
