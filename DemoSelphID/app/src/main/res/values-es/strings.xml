@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DemoOnboarding</string>
+    <string name="app_name">DemoSelphID</string>
     <string name="onboarding_init_message">Inicializando SDK...</string>
     <string name="onboarding_init_error">ERROR inicializando SDK: </string>
     <string name="onboarding_new_operation">Nueva Operación</string>

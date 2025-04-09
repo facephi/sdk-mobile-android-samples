@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -138,14 +136,6 @@ fun MainScreen(
                 )
             })
 
-
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_verifications),
-            enabled = newOperationClicked,
-            onClick = {
-                viewModel.launchVerifications(context)
-            })
-
         Text(
             modifier = Modifier.fillMaxWidth()
                 .padding(bottom = 8.dp),
@@ -171,17 +161,6 @@ fun MainScreen(
                     .padding(start = 16.dp, end = 16.dp),
                 text = logs.value,
                 color = colorResource(id = R.color.sdkBodyTextColor),
-            )
-        }
-
-        ImageData.selphiBestImage?.let {
-            Image(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .height(150.dp),
-                bitmap = it.asImageBitmap(),
-                contentDescription = "Selphi Face",
-                contentScale = ContentScale.Fit,
             )
         }
 
