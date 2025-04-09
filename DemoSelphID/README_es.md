@@ -8,7 +8,6 @@ Los componentes utilizados son:
 
 - Core
 - Sdk
-- Selphi
 - SelphID
 - Tracking
 
@@ -54,7 +53,6 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
-    implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
 
 ```
@@ -119,24 +117,6 @@ viewModelScope.launch {
 }
 ```
 
-
-#### 2.2.3 Captura facial
-
-La captura facial se realiza a través de Selphi. 
-En esta demo el proceso se realiza en un botón del Fragment:
-
-```
-viewModelScope.launch {
-    when (val result =
-        SDKController.launch(SelphiController(SdkData.selphiConfiguration))) {
-        is SdkResult.Success -> {
-            log("Selphi: OK")
-        }
-        is SdkResult.Error -> log("Selphi: Error - ${result.error.name}")
-    }
-}
-```
-
 #### 2.2.3 Captura del documento
 
 La captura del documento se realiza a través de SelphID. 
@@ -186,16 +166,6 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ```
 
-- Para Selphi el nombre del fichero ZIP de recursos (que estará en la carpeta assets de la aplicación) y los datos de configuración:
-```
-const val SELPHI_RESOURCES = ".....zip"
-
-val selphiConfiguration = SelphiConfigurationData(
-        ...,
-        resourcesPath = SELPHI_RESOURCES
-    )
-```
-
 - Para SelphID el nombre del fichero ZIP de recursos (que estará en la carpeta assets de la aplicación) y los datos de configuración:
 ```
 const val SELPHID_RESOURCES = "...zip"
@@ -210,11 +180,7 @@ val selphIDConfiguration = SelphIDConfigurationData(
 
 - IMPORTANTE: El bundleId de la aplicación debe coincidir con el que se ha solicitado en la licencia
 
-### 2.3 Servicios de verificación
-
-Si el cliente tiene acceso a los servición de verificación podrá hacer uso del Liveness y del MatchingFacial. Para ello será necesario haber hecho un reconocimiento facial y de documento previamente. 
-
-### 2.4 Pasos para iniciar la demo
+### 2.3 Pasos para iniciar la demo
 
 Los pasos a seguir para iniciar la demo son:
 

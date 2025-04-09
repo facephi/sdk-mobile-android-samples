@@ -8,7 +8,6 @@ The components used are:
 
 - Core
 - Sdk
-- Selphi
 - SelphID
 - Tracking
 
@@ -55,7 +54,6 @@ The library dependencies can be imported directly into gradle (from libs):
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
-    implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
 
 ```
@@ -121,24 +119,6 @@ viewModelScope.launch {
 }
 ```
 
-
-#### 2.2.3Face capture
-
-Facial capture is done through Selfi.
-In this demo the process is carried out in a Fragment button:
-
-```
-viewModelScope.launch {
-    when (val result =
-        SDKController.launch(SelphiController(SdkData.selphiConfiguration))) {
-        is SdkResult.Success -> {
-            log("Selphi: OK")
-        }
-        is SdkResult.Error -> log("Selphi: Error - ${result.error.name}")
-    }
-}
-```
-
 #### 2.2.3 Document Capture
 
 Document capture is done through SelphID.
@@ -189,16 +169,6 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ```
 
-- For Selphi the name of the resource ZIP file (which will be in the application's assets folder) and the configuration data:
-```
-const val SELPHI_RESOURCES = ".....zip"
-
-val selphiConfiguration = SelphiConfigurationData(
-        ...,
-        resourcesPath = SELPHI_RESOURCES
-    )
-```
-
 - For SelphID the name of the resource ZIP file (which will be in the application's assets folder) and the configuration data:
 ```
 const val SELPHID_RESOURCES = "...zip"
@@ -213,12 +183,7 @@ val selphIDConfiguration = SelphIDConfigurationData(
 
 - IMPORTANT: The bundleId of the application must match the one requested in the license
 
-### 2.3 Verification services
-
-If the client has access to the verification service, they can use Liveness and MatchingFacial. To do this, it will be necessary to have previously done facial and document recognition.
-
-
-### 2.4 Steps to start the demo
+### 2.3 Steps to start the demo
 
 The steps to follow to start the demo are:
 
