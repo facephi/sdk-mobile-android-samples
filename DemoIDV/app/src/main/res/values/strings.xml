@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DemoOnboarding</string>
+    <string name="onboarding_init_message">SDK initialization...</string>
+    <string name="onboarding_init_error">SDK initialization ERROR: </string>
+    <string name="onboarding_launch_idv">Launch IDV</string>
+    <string name="onboarding_show_previous_tip">Previous tip</string>
+    <string name="onboarding_show_tutorial">Tutorial</string>
+    <string name="onboarding_show_diagnostic">Diagnostic</string>
+</resources>

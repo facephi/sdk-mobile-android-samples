@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DemoOnboarding</string>
+    <string name="onboarding_init_message">Inicializando SDK...</string>
+    <string name="onboarding_init_error">ERROR inicializando SDK: </string>
+    <string name="onboarding_launch_idv">Lanzar IDV</string>
+    <string name="onboarding_show_previous_tip">Pantalla previa</string>
+    <string name="onboarding_show_tutorial">Tutorial</string>
+    <string name="onboarding_show_diagnostic">Diagnóstico</string>
+</resources>
