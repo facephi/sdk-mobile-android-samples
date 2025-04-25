@@ -37,7 +37,8 @@ object SdkData {
     )
 
     val videoIdConfiguration = VideoIdConfigurationData(
-        showCompletedTutorial = true,
-        mode = VideoIdMode.ONLY_FACE
+        sectionTimeout = 20000,
+        autoFaceDetection = true,
+        mode = VideoIdMode.FACE_DOCUMENT_FRONT_BACK
     )
 }
