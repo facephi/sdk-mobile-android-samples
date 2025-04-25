@@ -26,7 +26,7 @@ class MainViewModel : ViewModel() {
             Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
                     " ${eventType.name} -  ${info ?: ""} " }
         }
-        videoCallScreenSharingManager = VideoCallScreenSharingManager(sdkApplication)
+        videoCallScreenSharingManager = VideoCallScreenSharingManager()
         videoCallScreenSharingManager.setOutput {
             log("Screen sharing state: ${it.name}")
         }
