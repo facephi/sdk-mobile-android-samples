@@ -1,4 +1,4 @@
-# Facephi SDK Mobile samples - 2.2.X
+# Facephi SDK Mobile samples
 
 In this repository are the programming examples for using the Facephi Mobile SDK.
 
