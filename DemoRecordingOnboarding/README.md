@@ -3,13 +3,14 @@
 
 ## 1. Introduction
 
-In this demo you can carry out an onboarding process using the Facephi SDK.
+In this demo you can carry out an onboarding process with video using the Facephi SDK.
 The components used are:
 
 - Core
 - Sdk
 - Selphi
 - SelphID
+- VideoRecording
 - Tracking
 
 ## 2. Demo App Detail
@@ -57,6 +58,7 @@ The library dependencies can be imported directly into gradle (from libs):
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
+    implementation (libs.facephi.recording)
 
 ```
 
@@ -122,7 +124,7 @@ viewModelScope.launch {
 ```
 
 
-#### 2.2.3Face capture
+#### 2.2.3 Face capture
 
 Facial capture is done through Selfi.
 In this demo the process is carried out in a Fragment button:
@@ -139,7 +141,7 @@ viewModelScope.launch {
 }
 ```
 
-#### 2.2.3 Document Capture
+#### 2.2.4 Document Capture
 
 Document capture is done through SelphID.
 In this demo the process is carried out in a Fragment button:
@@ -156,14 +158,43 @@ viewModelScope.launch {
 
 ```
 
-#### 2.2.4 Log out
+#### 2.2.5 Launch screen recording
+
+To launch screen recording, you can use the [VideoRecordingController] with the [VideoRecordingConfigurationData]:
+
+```
+private val recordingController = VideoRecordingController(VideoRecordingConfigurationData())
+
+viewModelScope.launch {
+    recordingController.setOutput {
+        log("Recording State (start): ${it.name}")
+    }
+    SDKController.launch(recordingController)
+}
+```
+
+#### 2.2.6 Stop screen recording
+
+To stop screen recording:
+
+```
+private val stopRecordingController = StopVideoRecordingController()
+
+viewModelScope.launch {
+    stopRecordingController.setOutput {
+        log("Recording State (stop): ${it.name}")
+    }
+    SDKController.launch(stopRecordingController)
+}
+```
+#### 2.2.7 Log out
 
 When you finish using the SDK, you must log out:
 
 ```
 SDKController.closeSession()
 ```
-#### 2.2.5 Data necessary for the use of the SDK
+#### 2.2.8 Data necessary for the use of the SDK
 
 For the application to work correctly, the following information must be filled out.
 

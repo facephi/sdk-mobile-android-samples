@@ -18,6 +18,8 @@ import com.facephi.sdk.SDKController
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        /*
+        // Ask for location permissions
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -36,13 +38,13 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-
         locationPermissionRequest.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
         )
+        */
 
         setContent {
             DemoOnboardingTheme {

@@ -3,13 +3,14 @@
 
 ## 1. Introducción
 
-En esta demo se puede realizar un proceso de onboarding utilizando el SDK de Facephi.
+En esta demo se puede realizar un proceso de onboarding con vídeograbación utilizando el SDK de Facephi.
 Los componentes utilizados son:
 
 - Core
 - Sdk
 - Selphi
 - SelphID
+- VideoRecording
 - Tracking
 
 ## 2. Detalle de la aplicación demo
@@ -56,6 +57,7 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
+    implementation (libs.facephi.recording)
 
 ```
 
@@ -137,7 +139,7 @@ viewModelScope.launch {
 }
 ```
 
-#### 2.2.3 Captura del documento
+#### 2.2.4 Captura del documento
 
 La captura del documento se realiza a través de SelphID. 
 En esta demo el proceso se realiza en un botón del Fragment:
@@ -153,14 +155,44 @@ viewModelScope.launch {
  }
 ```
 
-#### 2.2.4 Cierre de sesión
+#### 2.2.5 Grabación de pantalla
+
+Para lanzar la grabación de pantalla:
+
+```
+private val recordingController = VideoRecordingController(VideoRecordingConfigurationData())
+
+viewModelScope.launch {
+    recordingController.setOutput {
+        log("Recording State (start): ${it.name}")
+    }
+    SDKController.launch(recordingController)
+}
+```
+
+#### 2.2.6 Detener grabación de pantalla
+
+Para dejar de grabar la pantalla:
+
+```
+private val stopRecordingController = StopVideoRecordingController()
+
+viewModelScope.launch {
+    stopRecordingController.setOutput {
+        log("Recording State (stop): ${it.name}")
+    }
+    SDKController.launch(stopRecordingController)
+}
+```
+
+#### 2.2.7 Cierre de sesión
 
 Cuando se finalice el uso del SDK se deberá cerrar sesión:
 
 ```
 SDKController.closeSession()
 ```
-#### 2.2.5 Datos necesarios para el uso del SDK
+#### 2.2.8 Datos necesarios para el uso del SDK
 
 Para que la aplicación funcione correctamente se deberán rellenar los siguientes datos.
 
