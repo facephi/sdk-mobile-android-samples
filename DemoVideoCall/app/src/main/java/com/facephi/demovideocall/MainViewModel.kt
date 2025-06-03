@@ -5,29 +5,29 @@ import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.sdk.SDKController
+import com.facephi.videocall_component.StopVideoCallController
 import com.facephi.videocall_component.VideoCallController
-import com.facephi.videocall_component.process.recording.VideoCallScreenSharingManager
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import io.github.aakira.napier.Napier
 
 class MainViewModel : ViewModel() {
 
     private val _logs = MutableStateFlow("")
     val logs = _logs.asStateFlow()
-    private lateinit var videoCallScreenSharingManager: VideoCallScreenSharingManager
+    private lateinit var stopVideoCallController: StopVideoCallController
 
     fun initSdk(sdkApplication: SdkApplication) {
         SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
             Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
                     " ${eventType.name} -  ${info ?: ""} " }
         }
-        videoCallScreenSharingManager = VideoCallScreenSharingManager()
-        videoCallScreenSharingManager.setOutput {
+        stopVideoCallController = StopVideoCallController()
+        stopVideoCallController.setOutput {
             log("Screen sharing state: ${it.name}")
         }
         viewModelScope.launch {
@@ -67,7 +67,7 @@ class MainViewModel : ViewModel() {
                 is SdkResult.Success -> {
                     log("Video Call: OK")
                     if (result.data.sharingScreen){
-                        activateScreenSharing()
+                        log("Video Call: Activate screen sharing")
                     }
                 }
                 is SdkResult.Error -> log("Video Call: Error - ${result.error.name}")
@@ -75,14 +75,12 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun activateScreenSharing(){
-        log("Video Call: Activate screen sharing")
-        videoCallScreenSharingManager.startScreenSharingService()
-    }
 
     fun stopScreenSharing(){
         log("Video Call: Stop screen sharing")
-        videoCallScreenSharingManager.stopScreenSharingService()
+        viewModelScope.launch {
+            SDKController.launch(stopVideoCallController)
+        }
     }
 
     private fun log(message: String){
