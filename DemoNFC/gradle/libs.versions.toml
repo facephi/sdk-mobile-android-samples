@@ -1,6 +1,6 @@
 # Facephi SDK Dependencies
 [versions]
-kotlin = "2.1.10"
+kotlin = "2.1.21"
 androidGradlePlugin = "8.9.3"
 composePlugin = "1.8.2"
 activityComposeVersion = "1.10.1"
