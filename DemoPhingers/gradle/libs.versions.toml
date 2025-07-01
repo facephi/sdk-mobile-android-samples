@@ -8,7 +8,7 @@ coreKtxVersion = "1.16.0"
 lifecycleRuntimeKtxVersion = "2.9.1"
 lifecycle_viewmodel_version = '2.9.1'
 android_material_version = '1.12.0'
-kotlinxDatetime = "0.7.0"
+kotlinxDatetime = "0.7.0-0.6.x-compat"
 napierVersion = "2.7.1"
 # FACEPHI SDK VERSION
 facephiVersion = "2.3.3"
