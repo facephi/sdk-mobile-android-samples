@@ -9,10 +9,11 @@ import com.facephi.video_id_component.VideoIdController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import io.github.aakira.napier.Napier
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class MainViewModel : ViewModel() {
 
@@ -80,6 +81,7 @@ class MainViewModel : ViewModel() {
 
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun formatEpochMillis(epochMillis: Long): String {
         val instant = Instant.fromEpochMilliseconds(epochMillis)
         val localDateTime =

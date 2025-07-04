@@ -14,9 +14,10 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow("")
@@ -169,6 +170,7 @@ class MainViewModel : ViewModel() {
 
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun formatEpochMillis(epochMillis: Long): String {
         val instant = Instant.fromEpochMilliseconds(epochMillis)
         val localDateTime =
