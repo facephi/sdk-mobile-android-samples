@@ -23,9 +23,6 @@ class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow("")
     val logs = _logs.asStateFlow()
 
-    private val recordingController = VideoRecordingController(VideoRecordingConfigurationData())
-    private val stopRecordingController = StopVideoRecordingController()
-
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
@@ -137,19 +134,27 @@ class MainViewModel : ViewModel() {
 
     fun launchVideoRecording() {
         viewModelScope.launch {
-            recordingController.setOutput {
-                log("Recording State (start): ${it.name}")
+            val result = SDKController.launch(VideoRecordingController(VideoRecordingConfigurationData()))
+            when (result) {
+                is SdkResult.Error -> log(
+                    "VIDEO_RECORDING Start: ERROR Name- ${result.error.name} - CODE: ${result.error.code} - REASON: ${result.error.reason}"
+                )
+
+                is SdkResult.Success -> log("VIDEO_RECORDING Start: OK")
             }
-            SDKController.launch(recordingController)
         }
     }
 
     fun stopVideoRecording() {
         viewModelScope.launch {
-            stopRecordingController.setOutput {
-                log("Recording State (stop): ${it.name}")
+            val result = SDKController.launch(StopVideoRecordingController())
+            when (result) {
+                is SdkResult.Error -> log(
+                    "VIDEO_RECORDING Stop: ERROR Name- ${result.error.name} - CODE: ${result.error.code} - REASON: ${result.error.reason}"
+                )
+
+                is SdkResult.Success -> log("VIDEO_RECORDING Stop: OK")
             }
-            SDKController.launch(stopRecordingController)
         }
     }
 

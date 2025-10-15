@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.facephi.onboarding"
-    compileSdk = 35
+    compileSdk = 36
 
     buildFeatures {
         buildConfig = true
@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId = "..."
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -72,6 +72,7 @@ dependencies {
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
+    implementation (libs.facephi.video.recording)
     implementation (libs.facephi.tracking)
 
     // Logs

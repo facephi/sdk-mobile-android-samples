@@ -3,10 +3,12 @@ package com.facephi.onboarding.ui.composables
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -36,6 +38,7 @@ fun BaseButton(
         )
     ),
     enabled: Boolean = true,
+    loading: Boolean = false,
     image: Int? = null,
     shape: Shape = RoundedCornerShape(dimensionResource(R.dimen.sdk_buttons_corner_dimen)),
 ) {
@@ -46,20 +49,29 @@ fun BaseButton(
         modifier = modifier.fillMaxWidth(),
         colors = colors
     ) {
-        Text(
-            text = text.uppercase(),
-            color = Color.White,
-            fontFamily = appFontFamily,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
-        if (image != null){
-            Image(
-                painter = painterResource(id = image),
-                contentDescription = null,
-                modifier = Modifier.padding(start = 16.dp)
+        if (loading){
+            CircularProgressIndicator(
+                color = Color.White,
+                modifier = Modifier
+                    .size(32.dp)
             )
+        } else {
+            Text(
+                text = text.uppercase(),
+                color = Color.White,
+                fontFamily = appFontFamily,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+            if (image != null){
+                Image(
+                    painter = painterResource(id = image),
+                    contentDescription = null,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
         }
+
     }
 }
 

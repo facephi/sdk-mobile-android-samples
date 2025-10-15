@@ -9,44 +9,36 @@ import com.facephi.sdk.data.SdkConfigurationData
 import com.facephi.selphi_component.FSelphiController
 import com.facephi.selphid_component.FSelphIDController
 import com.facephi.tracking_component.TrackingController
+import com.facephi.video_recording_component.FStopVideoRecordingController
+import com.facephi.video_recording_component.FVideoRecordingController
 
 object SdkData {
 
     // ************** LICENSE **************
 
-    const val LICENSE_ONLINE = true
-
     val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
         apiKey = "..."
     )
 
-    const val LICENSE = """
-        ...
-    """
-
     // ************** DATA **************
 
     const val CUSTOMER_ID = "demo_onboarding_idv@email.com"
-    const val IDV_ID = "..."
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,
-        licensing = if (LICENSE_ONLINE) {
-            LicensingOnline(environmentLicensingData)
-        } else {
-            LicensingOffline(LICENSE)
-        },
-        activateFlow = true,
+        licensing = LicensingOnline(environmentLicensingData),
         trackingController = TrackingController()
     )
 
 
-    fun getIDVFlowConfigurationData(): FlowConfigurationData {
+    fun getIDVFlowConfigurationData(flowId: String): FlowConfigurationData {
         return FlowConfigurationData(
-            id = IDV_ID,
+            id = flowId,
             controllers = listOf(
                 FSelphiController(),
-                FSelphIDController()
+                FSelphIDController(),
+                FStopVideoRecordingController(),
+                FVideoRecordingController()
             ),
             customerId = CUSTOMER_ID
         )
