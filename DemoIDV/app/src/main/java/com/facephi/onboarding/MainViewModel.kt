@@ -8,6 +8,7 @@ import com.facephi.onboarding.ui.MainState
 import com.facephi.sdk.FlowController
 import com.facephi.sdk.SDKController
 import com.facephi.sdk.data.IntegrationFlowData
+import com.facephi.sdk.data.OperationResult
 import com.facephi.tracking_component.TrackingErrorController
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,13 +85,24 @@ class MainViewModel : ViewModel() {
         )
         viewModelScope.launch {
             controller.stateFlow.collect { flowResult ->
+                // Flow info
                 flowResult.step?.key?.let { key ->
                     _mainState.update {
                         it.copy(logs = log("New Step: $key"))
                     }
                 }
-                if (flowResult.flowFinish) {
 
+                // Operation ID
+                val sdkResult = flowResult.result
+
+                if (sdkResult is SdkResult.Success && sdkResult.data is OperationResult) {
+                    _mainState.update {
+                        it.copy(logs = log("New Operation: ${(sdkResult.data as OperationResult).operationId}"))
+                    }
+                }
+
+                // Flow finished flag
+                if (flowResult.flowFinish) {
                     _mainState.update {
                         it.copy(
                             flowActive = false,
