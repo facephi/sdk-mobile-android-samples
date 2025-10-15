@@ -50,10 +50,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel()
 ) {
-    val context = LocalContext.current
-
-    val flowIDs = viewModel.flowIDs.collectAsState()
-    val logs = viewModel.logs.collectAsState()
+    val state = viewModel.mainState.collectAsState()
     var selectedFlow by remember { mutableStateOf<IntegrationFlowData?>(null) }
 
     LaunchedEffect(Unit) {
@@ -76,14 +73,14 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        if (flowIDs.value.isNotEmpty()) {
+        if (state.value.flowList.isNotEmpty()) {
             if (selectedFlow == null) {
-                selectedFlow = flowIDs.value.first()
+                selectedFlow = state.value.flowList.first()
             }
             Spacer(Modifier.height(8.dp))
 
             FlowSelector(
-                flows = flowIDs.value,
+                flows = state.value.flowList,
                 selected = selectedFlow,
                 onSelected = { selectedFlow = it },
                 modifier = Modifier.fillMaxWidth()
@@ -95,7 +92,9 @@ fun MainScreen(
             text = stringResource(id = R.string.onboarding_launch_idv),
             onClick = {
                 viewModel.start(selectedFlow?.id)
-            })
+            },
+            enabled = state.value.sdkReady,
+            loading = state.value.flowActive)
 
         Spacer(Modifier.height(8.dp))
 
@@ -110,7 +109,7 @@ fun MainScreen(
             )
         )
 
-        if (logs.value.isNotEmpty()) {
+        if (state.value.logs.isNotEmpty()) {
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
             BaseTextButton(
                 enabled = true,
@@ -122,7 +121,7 @@ fun MainScreen(
             Text(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp),
-                text = logs.value,
+                text = state.value.logs,
                 color = colorResource(id = R.color.sdkBodyTextColor),
             )
         }

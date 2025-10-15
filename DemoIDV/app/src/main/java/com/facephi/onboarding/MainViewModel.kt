@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
+import com.facephi.onboarding.ui.MainState
 import com.facephi.sdk.FlowController
 import com.facephi.sdk.SDKController
 import com.facephi.sdk.data.IntegrationFlowData
@@ -19,11 +20,8 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 class MainViewModel : ViewModel() {
-    private val _logs = MutableStateFlow("")
-    val logs = _logs.asStateFlow()
-
-    private val _flowIDs = MutableStateFlow(listOf<IntegrationFlowData>())
-    val flowIDs = _flowIDs.asStateFlow()
+    private val _mainState = MutableStateFlow(MainState())
+    val mainState = _mainState.asStateFlow()
 
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
@@ -41,44 +39,86 @@ class MainViewModel : ViewModel() {
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {
                 is SdkResult.Success -> {
-                    log("INIT SDK OK")
-                    _flowIDs.update { SDKController.getFlowIntegrationData() }
+                    _mainState.update {
+                        it.copy(
+                            sdkReady = true,
+                            flowList = SDKController.getFlowIntegrationData(),
+                            logs = log("INIT SDK OK")
+                        )
+                    }
                 }
-                is SdkResult.Error -> log("INIT SDK ERROR: ${result.error}")
+
+                is SdkResult.Error -> {
+                    _mainState.update {
+                        it.copy(logs = log("INIT SDK ERROR: ${result.error}"))
+                    }
+
+                }
             }
 
-            SDKController.launch(TrackingErrorController {
-                log("Tracking Error: ${it.name}")
+            SDKController.launch(TrackingErrorController { error ->
+                _mainState.update {
+                    it.copy(logs = log("Tracking Error: ${error.name}"))
+                }
+
             })
         }
     }
 
     fun start(flowId: String?) {
         if (flowId == null) {
-            log("No flow selected")
+            _mainState.update {
+                it.copy(logs = log("No flow selected"))
+            }
             return
         }
+
+        _mainState.update {
+            it.copy(
+                flowActive = true,
+                logs = log("Launch flow $flowId")
+            )
+        }
+        val controller = FlowController(
+            SdkData.getIDVFlowConfigurationData(flowId)
+        )
         viewModelScope.launch {
-            SDKController.launch(
-                FlowController(
-                    SdkData.getIDVFlowConfigurationData(flowId)
-                ))
+            controller.stateFlow.collect { flowResult ->
+                flowResult.step?.key?.let { key ->
+                    _mainState.update {
+                        it.copy(logs = log("New Step: $key"))
+                    }
+                }
+                if (flowResult.flowFinish) {
+
+                    _mainState.update {
+                        it.copy(
+                            flowActive = false,
+                            logs = log("Flow Finish")
+                        )
+                    }
+                }
+
+            }
+        }
+        viewModelScope.launch {
+            SDKController.launch(controller)
         }
     }
 
 
-    private fun log(message: String) {
-        viewModelScope.launch {
-            val data = _logs.value + "\n" + message
-            _logs.emit(data)
-            Napier.i { message }
-        }
+    private fun log(message: String): String {
+        val data = _mainState.value.logs + "\n" + message
+        Napier.i { message }
+        return data
 
     }
 
     fun clearLogs() {
         viewModelScope.launch {
-            _logs.emit("")
+            _mainState.update {
+                it.copy(logs = "")
+            }
         }
 
     }
