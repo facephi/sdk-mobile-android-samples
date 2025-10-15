@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,6 +41,8 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
 import com.facephi.onboarding.ui.composables.BaseCheckView
 import com.facephi.onboarding.ui.composables.BaseTextButton
+import com.facephi.onboarding.ui.composables.FlowSelector
+import com.facephi.sdk.data.IntegrationFlowData
 
 @Composable
 fun MainScreen(
@@ -49,7 +52,9 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
 
+    val flowIDs = viewModel.flowIDs.collectAsState()
     val logs = viewModel.logs.collectAsState()
+    var selectedFlow by remember { mutableStateOf<IntegrationFlowData?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -71,10 +76,25 @@ fun MainScreen(
                 .height(75.dp)
         )
 
+        if (flowIDs.value.isNotEmpty()) {
+            if (selectedFlow == null) {
+                selectedFlow = flowIDs.value.first()
+            }
+            Spacer(Modifier.height(8.dp))
+
+            FlowSelector(
+                flows = flowIDs.value,
+                selected = selectedFlow,
+                onSelected = { selectedFlow = it },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(8.dp))
+        }
+
         BaseButton(modifier = Modifier.padding(vertical = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_idv),
             onClick = {
-                viewModel.start()
+                viewModel.start(selectedFlow?.id)
             })
 
         Spacer(Modifier.height(8.dp))
