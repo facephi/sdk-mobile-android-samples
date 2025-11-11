@@ -11,7 +11,7 @@ napierVersion = "2.7.1"
 lifecycle_viewmodel_version = '2.9.4'
 kotlinxDatetime = "0.7.1"
 # FACEPHI SDK VERSION
-facephiVersion = "2.4.0"
+facephiVersion = "2.4.1"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
