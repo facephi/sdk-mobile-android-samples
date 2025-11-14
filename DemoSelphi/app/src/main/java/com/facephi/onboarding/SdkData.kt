@@ -45,7 +45,6 @@ object SdkData {
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
     ) = SelphiConfigurationData(
-        debug = false,
         showTutorial = showTutorial,
         showPreviousTip = showPreviousTip,
         showDiagnostic = showDiagnostic,
