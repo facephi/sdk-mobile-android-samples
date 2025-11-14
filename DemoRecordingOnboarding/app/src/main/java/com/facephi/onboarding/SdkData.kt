@@ -51,7 +51,6 @@ object SdkData {
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
     ) = SelphiConfigurationData(
-        debug = false,
         showTutorial = showTutorial,
         showPreviousTip = showPreviousTip,
         showDiagnostic = showDiagnostic,
@@ -64,7 +63,6 @@ object SdkData {
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
     ) = SelphIDConfigurationData(
-        debug = false,
         showTutorial = showTutorial,
         showPreviousTip = showPreviousTip,
         showDiagnostic = showDiagnostic,

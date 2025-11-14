@@ -115,7 +115,6 @@ object SdkData {
             documentNumber = support, // Num soport.
             birthDate = birthDate, // "dd/MM/yyyy"
             expirationDate = expirationDate, // "dd/MM/yyyy",
-            enableDebugMode = true,
             skipPACE = skipPACE,
             showTutorial = showTutorial,
             showPreviousTip = showPreviousTip,
