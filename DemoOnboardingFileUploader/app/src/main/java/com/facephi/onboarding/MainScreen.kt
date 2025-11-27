@@ -129,9 +129,14 @@ fun MainScreen(
             buttonText = stringResource(id = R.string.onboarding_launch_file_uploader),
             enabled = newOperationClicked,
             onLaunch = { showPreviousTip, allowGallery, showDiagnostic, maxDocuments ->
+                viewModel.launchFileUploader(
+                    allowGallery = allowGallery,
+                    showPreviousTip = showPreviousTip,
+                    showDiagnostic = showDiagnostic,
+                    maxScannedDocs = maxDocuments,
+                )
             }
         )
-
 
         BaseButton(
             modifier = Modifier.padding(top = 8.dp),
