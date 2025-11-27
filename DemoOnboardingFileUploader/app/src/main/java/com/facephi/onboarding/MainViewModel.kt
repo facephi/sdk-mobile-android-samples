@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.facephi.capture_component.FileUploaderController
+import com.facephi.capture_component.data.result.FileContent
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkImage
 import com.facephi.core.data.SdkResult
@@ -132,6 +134,45 @@ class MainViewModel : ViewModel() {
                 }
 
                 is SdkResult.Error -> log("SelphID: Error - ${result.error.name}")
+            }
+        }
+    }
+
+    fun launchFileUploader(
+        allowGallery: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+        maxScannedDocs: Int,
+    ) {
+        viewModelScope.launch {
+            when (val result =
+                SDKController.launch(
+                    FileUploaderController(
+                        SdkData.getFileUploaderDConfiguration(
+                            allowGallery = allowGallery,
+                            showPreviousTip = showPreviousTip,
+                            showDiagnostic = showDiagnostic,
+                            maxScannedDocs = maxScannedDocs
+                        )
+                    )
+                )) {
+                is SdkResult.Success -> {
+                    var imageCount = 0
+                    var pdfCount = 0
+                    result.data.capturedDocumentList.forEach { documentData ->
+                        when (documentData.content) {
+                            is FileContent.UploaderDocument -> {
+                                pdfCount ++
+                            }
+                            is FileContent.UploaderImage -> {
+                                imageCount ++
+                            }
+                        }
+                    }
+                    log("FileUploader: OK - Total files: ${(imageCount+pdfCount)} - Images: $imageCount - PDFs: $pdfCount")
+                }
+
+                is SdkResult.Error -> log("FileUploader: Error - ${result.error.name}")
             }
         }
     }

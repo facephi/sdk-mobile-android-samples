@@ -66,6 +66,7 @@ dependencies {
     implementation(compose.preview)
     implementation(compose.material3)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.material.icons.extended)
     debugImplementation(compose.uiTooling)
 
     // Ktor Client Http
@@ -78,7 +79,8 @@ dependencies {
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
-    //implementation (libs.facephi.tracking)
+    implementation (libs.facephi.capture)
+    implementation (libs.facephi.tracking)
 
     // Logs
     implementation(libs.napier)

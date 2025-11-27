@@ -1,5 +1,6 @@
 package com.facephi.onboarding
 
+import com.facephi.capture_component.data.configuration.FileUploaderConfigurationData
 import com.facephi.core.data.OperationType
 import com.facephi.core.data.SdkApplication
 import com.facephi.sdk.data.EnvironmentLicensingData
@@ -12,6 +13,7 @@ import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
 import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import com.facephi.selphid_component.data.configuration.SelphIDTimeout
+import com.facephi.tracking_component.TrackingController
 
 object SdkData {
 
@@ -42,7 +44,7 @@ object SdkData {
         } else {
             LicensingOffline(LICENSE)
         },
-        trackingController = null // or TrackingController()
+        trackingController = TrackingController() // or null
     )
 
     // SELPHI DATA
@@ -78,4 +80,16 @@ object SdkData {
         resourcesPath = SELPHID_RESOURCES,
     )
 
+    // FILE UPLOADER DATA
+    fun getFileUploaderDConfiguration(
+        allowGallery: Boolean,
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+        maxScannedDocs: Int,
+    ) = FileUploaderConfigurationData(
+        allowGallery = allowGallery,
+        showPreviousTip = showPreviousTip,
+        showDiagnostic = showDiagnostic,
+        maxScannedDocs = maxScannedDocs
+    )
 }

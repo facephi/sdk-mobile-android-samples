@@ -39,7 +39,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
 import com.facephi.onboarding.ui.composables.BaseCheckView
+import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
+import com.facephi.onboarding.ui.composables.FileUploaderCard
 
 @Composable
 fun MainScreen(
@@ -52,14 +54,6 @@ fun MainScreen(
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
-    var showPreviousTipSelphi by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showTutorialSelphi by rememberSaveable {
-        mutableStateOf(true)
-    }
-
     var showPreviousTipSelphId by rememberSaveable {
         mutableStateOf(true)
     }
@@ -68,9 +62,6 @@ fun MainScreen(
         mutableStateOf(true)
     }
 
-    var showDiagnosticSelphi by rememberSaveable {
-        mutableStateOf(true)
-    }
 
     var showDiagnosticSelphId by rememberSaveable {
         mutableStateOf(true)
@@ -96,7 +87,8 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        BaseButton(modifier = Modifier.padding(vertical = 8.dp),
+        BaseButton(
+            modifier = Modifier.padding(vertical = 8.dp),
             text = stringResource(id = R.string.onboarding_new_operation),
             onClick = {
                 newOperationClicked = true
@@ -105,99 +97,44 @@ fun MainScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showPreviousTipSelphi,
-                text = stringResource(id = R.string.onboarding_show_previous_tip)
-            ) {
-                showPreviousTipSelphi = it
-            }
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showTutorialSelphi,
-                text = stringResource(id = R.string.onboarding_show_tutorial)
-            ) {
-                showTutorialSelphi = it
-            }
-        }
-
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                checkValue = showDiagnosticSelphi,
-                text = stringResource(id = R.string.onboarding_show_diagnostic)
-            ) {
-                showDiagnosticSelphi = it
-            }
-        }
-
-        BaseButton(modifier = Modifier,
-            text = stringResource(id = R.string.onboarding_launch_selphi),
+        BaseComponentCard(
+            buttonText = stringResource(id = R.string.onboarding_launch_selphi),
             enabled = newOperationClicked,
-            onClick = {
-               viewModel.launchSelphi(
-                   showTutorial = showTutorialSelphi,
-                   showPreviousTip = showPreviousTipSelphi,
-                   showDiagnostic = showDiagnosticSelphi
-               )
-            })
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
+                viewModel.launchSelphi(
+                    showTutorial = showTutorial,
+                    showPreviousTip = showPreviousTip,
+                    showDiagnostic = showDiagnostic
+                )
+            }
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showPreviousTipSelphId,
-                text = stringResource(id = R.string.onboarding_show_previous_tip)
-            ) {
-                showPreviousTipSelphId = it
-            }
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showTutorialSelphId,
-                text = stringResource(id = R.string.onboarding_show_tutorial)
-            ) {
-                showTutorialSelphId = it
-            }
-        }
-
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                checkValue = showDiagnosticSelphId,
-                text = stringResource(id = R.string.onboarding_show_diagnostic)
-            ) {
-                showDiagnosticSelphId = it
-            }
-        }
-
-        BaseButton(modifier = Modifier,
-            text = stringResource(id = R.string.onboarding_launch_selphid),
+        BaseComponentCard(
+            buttonText = stringResource(id = R.string.onboarding_launch_selphid),
             enabled = newOperationClicked,
-            onClick = {
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
                 viewModel.launchSelphId(
-                    showTutorial = showTutorialSelphId,
-                    showPreviousTip = showPreviousTipSelphId,
-                    showDiagnostic = showDiagnosticSelphId
+                    showTutorial = showTutorial,
+                    showPreviousTip = showPreviousTip,
+                    showDiagnostic = showDiagnostic
                 )
-            })
+            }
+        )
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
+        Spacer(Modifier.height(8.dp))
+
+        FileUploaderCard(
+            buttonText = stringResource(id = R.string.onboarding_launch_file_uploader),
+            enabled = newOperationClicked,
+            onLaunch = { showPreviousTip, allowGallery, showDiagnostic, maxDocuments ->
+            }
+        )
+
+
+        BaseButton(
+            modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_template),
             enabled = newOperationClicked,
             onClick = {
@@ -206,7 +143,8 @@ fun MainScreen(
                 }
             })
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+        BaseButton(
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_verifications),
             enabled = newOperationClicked,
             onClick = {
@@ -214,10 +152,11 @@ fun MainScreen(
             })
 
         Text(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 8.dp),
             text = BuildConfig.LIBRARY_VERSION,
-            style =  TextStyle(
+            style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
