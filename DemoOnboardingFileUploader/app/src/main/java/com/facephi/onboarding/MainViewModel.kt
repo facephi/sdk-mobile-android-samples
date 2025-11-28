@@ -18,6 +18,8 @@ import com.facephi.sdk.SDKController
 import com.facephi.selphi_component.RawTemplateController
 import com.facephi.selphi_component.SelphiController
 import com.facephi.selphid_component.SelphIDController
+import com.facephi.video_recording_component.StopVideoRecordingController
+import com.facephi.video_recording_component.VideoRecordingController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -63,6 +65,28 @@ class MainViewModel : ViewModel() {
             when (result) {
                 is SdkResult.Success -> log("NEW OPERATION: OK")
                 is SdkResult.Error -> log("NEW OPERATION: Error - ${result.error.name}")
+            }
+        }
+    }
+
+    fun launchVideoRecording() {
+        viewModelScope.launch {
+            when (val result = SDKController.launch(VideoRecordingController(SdkData.getVideoRecording()))) {
+                is SdkResult.Success -> {
+                    log("VideoRecording: OK")
+                }
+                is SdkResult.Error -> log("VideoRecording: Error - ${result.error.name}")
+            }
+        }
+    }
+
+    fun launchStopVideoRecording() {
+        viewModelScope.launch {
+            when (val result = SDKController.launch(StopVideoRecordingController())) {
+                is SdkResult.Success -> {
+                    log("VideoRecording Stop: OK")
+                }
+                is SdkResult.Error -> log("VideoRecording Stop: Error - ${result.error.name}")
             }
         }
     }

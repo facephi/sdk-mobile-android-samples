@@ -3,6 +3,8 @@
     <string name="onboarding_init_message">SDK initialization...</string>
     <string name="onboarding_init_error">SDK initialization ERROR: </string>
     <string name="onboarding_new_operation" >New Operation</string>
+    <string name="onboarding_launch_videorecording">Video Recording</string>
+    <string name="onboarding_launch_stop_videorecording">Stop Video Recording</string>
     <string name="onboarding_launch_selphi">Selphi - Facial Capture</string>
     <string name="onboarding_launch_selphid">SelphID - Document Capture</string>
     <string name="onboarding_launch_file_uploader">Launch File Uploader</string>

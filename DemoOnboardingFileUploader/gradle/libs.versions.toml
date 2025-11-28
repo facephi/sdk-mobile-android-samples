@@ -36,6 +36,7 @@ facephi-selphi = { module = "com.facephi.androidsdk:selphi_component", version.r
 facephi-selphid = { module = "com.facephi.androidsdk:selphid_component", version.ref = "facephiVersion" }
 facephi-capture = { module = "com.facephi.androidsdk:capture_component", version.ref = "facephiVersion" }
 facephi-tracking = { module = "com.facephi.androidsdk:tracking_component", version.ref = "facephiVersion" }
+facephi-videorecording = { module = "com.facephi.androidsdk:video_recording_component", version.ref = "facephiVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
