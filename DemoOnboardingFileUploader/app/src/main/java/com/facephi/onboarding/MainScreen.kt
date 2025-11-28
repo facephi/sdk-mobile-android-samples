@@ -1,17 +1,13 @@
 package com.facephi.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
-import com.facephi.onboarding.ui.composables.BaseCheckView
 import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
 import com.facephi.onboarding.ui.composables.FileUploaderCard
@@ -94,6 +89,26 @@ fun MainScreen(
                 newOperationClicked = true
                 viewModel.newOperation()
             })
+
+        Spacer(Modifier.height(8.dp))
+
+        BaseButton(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_videorecording),
+            enabled = newOperationClicked,
+            onClick = {
+                viewModel.launchVideoRecording()
+            }
+        )
+
+        BaseButton(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = stringResource(id = R.string.onboarding_launch_stop_videorecording),
+            enabled = newOperationClicked,
+            onClick = {
+                viewModel.launchStopVideoRecording()
+            }
+        )
 
         Spacer(Modifier.height(8.dp))
 

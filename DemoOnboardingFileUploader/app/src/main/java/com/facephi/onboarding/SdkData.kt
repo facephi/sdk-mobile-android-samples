@@ -14,6 +14,7 @@ import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
 import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import com.facephi.selphid_component.data.configuration.SelphIDTimeout
 import com.facephi.tracking_component.TrackingController
+import com.facephi.video_recording_component.data.configuration.VideoRecordingConfigurationData
 
 object SdkData {
 
@@ -46,6 +47,9 @@ object SdkData {
         },
         trackingController = TrackingController() // or null
     )
+
+    // VideoRecording DATA
+    fun getVideoRecording() = VideoRecordingConfigurationData()
 
     // SELPHI DATA
     fun getSelphiConfiguration(
