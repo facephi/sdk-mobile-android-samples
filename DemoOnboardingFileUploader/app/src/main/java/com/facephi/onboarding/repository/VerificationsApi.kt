@@ -2,6 +2,9 @@ package com.facephi.onboarding.repository
 
 import android.content.Context
 import com.facephi.onboarding.repository.request.AuthenticateFacialRequest
+import com.facephi.onboarding.repository.request.ExtractDataOCRRequest
+import com.facephi.onboarding.repository.request.IdentityRequest
+import com.facephi.onboarding.repository.request.FinishTrackingRequest
 import com.facephi.onboarding.repository.request.OnboardingRequest
 import com.facephi.onboarding.repository.request.PassiveLivenessTokenRequest
 
@@ -28,7 +31,7 @@ class VerificationsApi(context: Context? = null, private val apiKey: String) {
         HttpClientProvider.client.post {
             url {
                 contentType(ContentType.Application.Json)
-                url("$baseUrl/services/evaluatePassiveLivenessToken")
+                url("$baseUrl/services/evaluatePassiveLiveness")
                 header("x-api-key", apiKey)
                 setBody(request)
             }
@@ -69,6 +72,41 @@ class VerificationsApi(context: Context? = null, private val apiKey: String) {
             url {
                 contentType(ContentType.Application.Json)
                 url("$baseUrl/onboarding/v2/identity")
+                header("x-api-key", apiKey)
+                setBody(request)
+            }
+        }.body()
+
+    /**
+     *
+     *
+     */
+
+    suspend fun finishOperation(baseUrl: String, request: FinishTrackingRequest): Any =
+        HttpClientProvider.client.post {
+            url {
+                contentType(ContentType.Application.Json)
+                url("$baseUrl/services/finishTracking")
+                header("x-api-key", apiKey)
+                setBody(request)
+            }
+        }.body()
+
+    suspend fun identity(baseUrl: String, request: IdentityRequest): Any =
+        HttpClientProvider.client.post {
+            url {
+                contentType(ContentType.Application.Json)
+                url("$baseUrl/onboarding/v2/identity")
+                header("x-api-key", apiKey)
+                setBody(request)
+            }
+        }.body()
+
+    suspend fun ocrWeb(baseUrl: String, request: ExtractDataOCRRequest): Any =
+        HttpClientProvider.client.post {
+            url {
+                contentType(ContentType.Application.Json)
+                url("$baseUrl/services/extractDocumentDataWeb")
                 header("x-api-key", apiKey)
                 setBody(request)
             }
