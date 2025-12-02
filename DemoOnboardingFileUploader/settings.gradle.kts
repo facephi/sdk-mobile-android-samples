@@ -32,4 +32,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "DemoOnboarding"
 include(":app")
+include(":identity-api")
  

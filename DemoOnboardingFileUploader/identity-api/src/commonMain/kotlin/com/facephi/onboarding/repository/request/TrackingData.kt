@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 data class TrackingData(
     val sessionId: String = "",
     val operationId: String = "",
-    val tenantId: String = ""
+    val tenantId: String = "",
+    val extraData: String? = null
 )

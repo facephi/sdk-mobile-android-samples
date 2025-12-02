@@ -10,6 +10,7 @@ object ImageData {
         documentFront = null
         documentBack = null
         documentTokenFaceImage = null
+        documentTokenOcr = null
     }
 
     var selphiBestImage: Bitmap? = null
@@ -18,4 +19,5 @@ object ImageData {
     var documentFront: Bitmap? = null
     var documentBack: Bitmap? = null
     var documentTokenFaceImage: String? = null
+    var documentTokenOcr: String? = null
 }

@@ -61,3 +61,6 @@ DemoIDV/.idea
 DemoRecordingOnboarding/.idea/
 
 DemoOnboardingFileUploader/.idea/
+DemoOnboardingFileUploader/.kotlin
+DemoOnboardingFileUploader/verification/build
+DemoOnboardingFileUploader/identity-api/build
