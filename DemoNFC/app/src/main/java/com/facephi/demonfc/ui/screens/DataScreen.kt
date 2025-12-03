@@ -1,5 +1,6 @@
 package com.facephi.demonfc.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,13 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -33,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -40,19 +39,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.facephi.demonfc.BuildConfig
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.SdkData
+import com.facephi.demonfc.model.DocumentType
 import com.facephi.demonfc.ui.composables.BaseButton
+import com.facephi.demonfc.ui.composables.BaseCheckView
 import com.facephi.demonfc.ui.composables.BaseTextButton
+import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 import com.facephi.demonfc.utils.validNfcDate
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
-import io.github.aakira.napier.Napier
-import androidx.compose.ui.res.colorResource
-import com.facephi.demonfc.BuildConfig
-import com.facephi.demonfc.model.DocumentType
-import com.facephi.demonfc.ui.composables.BaseCheckView
-import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -107,7 +104,7 @@ fun DataScreen(
 
         BaseButton(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
             text = stringResource(id = R.string.nfc_new_operation), onClick = {
-                Napier.d("APP: LAUNCH NEW OPERATION")
+                Log.i ( "APP", "LAUNCH NEW OPERATION")
                 focusManager.clearFocus()
 
                 logs.clear()
@@ -214,8 +211,7 @@ fun DataScreen(
             text = stringResource(id = R.string.nfc_complex_launch),
             onClick = {
                 if (support.isNotEmpty() && birthDate.validNfcDate() && expirationDate.validNfcDate()) {
-                    Napier.d(
-                        "APP: LAUNCH NFC \n Support: $support \n birthDate: $birthDate \n" +
+                    Log.i ( "APP", "LAUNCH NFC \n Support: $support \n birthDate: $birthDate \n" +
                                 " expirationDate: $expirationDate"
                     )
                     nfcConfigurationData = SdkData.getNfcConfig(
@@ -241,7 +237,7 @@ fun DataScreen(
 
 
                 } else {
-                    Napier.d("APP: NFC INVALID DATA")
+                    Log.i ( "APP", "NFC INVALID DATA")
                     logs.add("NFC: INVALID DATA")
                 }
             }
@@ -252,8 +248,7 @@ fun DataScreen(
             text = stringResource(id = R.string.nfc_simple_launch),
             onClick = {
                 if (support.isNotEmpty() && birthDate.validNfcDate() && expirationDate.validNfcDate()) {
-                    Napier.d(
-                        "APP: LAUNCH NFC \n Support: $support \n birthDate: $birthDate \n" +
+                    Log.i ( "APP", "LAUNCH NFC \n Support: $support \n birthDate: $birthDate \n" +
                                 " expirationDate: $expirationDate"
                     )
                     nfcConfigurationData = SdkData.getNfcConfig(
@@ -276,7 +271,7 @@ fun DataScreen(
                         })
 
                 } else {
-                    Napier.d("APP: NFC INVALID DATA")
+                    Log.i ( "APP", "NFC INVALID DATA")
                     logs.add("NFC: INVALID DATA")
                 }
             }
