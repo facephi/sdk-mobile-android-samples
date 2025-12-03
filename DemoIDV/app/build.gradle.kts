@@ -75,6 +75,4 @@ dependencies {
     implementation (libs.facephi.video.recording)
     implementation (libs.facephi.tracking)
 
-    // Logs
-    implementation(libs.napier)
 }
