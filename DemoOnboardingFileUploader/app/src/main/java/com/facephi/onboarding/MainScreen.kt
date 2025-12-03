@@ -193,6 +193,9 @@ fun MainScreen(
                 text = "Clear logs",
                 onClick = {
                     viewModel.clearLogs()
+                    selphiResult = UIComponentResult.PENDING
+                    selphIdResult = UIComponentResult.PENDING
+                    uploaderResult = UIComponentResult.PENDING
                 })
 
             Text(
