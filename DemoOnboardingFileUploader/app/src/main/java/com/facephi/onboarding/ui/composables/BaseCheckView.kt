@@ -60,7 +60,6 @@ fun BaseCheckView(
                 modifier = Modifier.weight(1f)
             )
 
-            // Checkbox alineado a la derecha
             Checkbox(
                 checked = checkValue,
                 onCheckedChange = { onCheckedChange(it) },

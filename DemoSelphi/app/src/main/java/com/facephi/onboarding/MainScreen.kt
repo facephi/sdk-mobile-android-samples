@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
 import com.facephi.onboarding.ui.composables.BaseCheckView
+import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
+import com.facephi.onboarding.ui.composables.ButtonCard
+import com.facephi.onboarding.ui.data.UIComponentResult
 
 @Composable
 fun MainScreen(
@@ -46,22 +50,10 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel()
 ) {
-    val context = LocalContext.current
-
-    var showPreviousTip by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showTutorial by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showDiagnostic by rememberSaveable {
-        mutableStateOf(true)
-    }
-
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
+
+    var selphiResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -83,80 +75,53 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.onboarding_new_operation),
+        ButtonCard(
+            title = stringResource(id = R.string.onboarding_title_operation),
+            desc = stringResource(id = R.string.onboarding_desc_operation),
+            enabled = true,
+            buttonText = stringResource(id = R.string.onboarding_init_operation),
             onClick = {
-                newOperationClicked = true
-                viewModel.newOperation()
-            })
+                viewModel.newOperation {
+                    newOperationClicked = true
+                }
+            },
+        )
 
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showPreviousTip,
-                text = stringResource(id = R.string.onboarding_show_previous_tip)
-            ) {
-                showPreviousTip = it
-            }
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showTutorial,
-                text = stringResource(id = R.string.onboarding_show_tutorial)
-            ) {
-                showTutorial = it
-            }
+        Spacer(Modifier.height(8.dp))
 
-        }
-
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                checkValue = showDiagnostic,
-                text = stringResource(id = R.string.onboarding_show_diagnostic)
-            ) {
-                showDiagnostic = it
-            }
-        }
-
-        BaseButton(modifier = Modifier,
-            text = stringResource(id = R.string.onboarding_launch_selphi),
+        BaseComponentCard(
+            title = stringResource(id = R.string.onboarding_title_selphi),
+            desc = stringResource(id = R.string.onboarding_desc_selphi),
+            buttonText = stringResource(id = R.string.onboarding_launch_selphi),
             enabled = newOperationClicked,
-            onClick = {
+            resultValue = selphiResult,
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
                 viewModel.launchSelphi(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic
-                )
-            })
+                ){
+                    selphiResult = it
+                }
+            }
+        )
+
+        Spacer(Modifier.height(16.dp))
 
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
+        /*BaseButton(modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_template),
             enabled = newOperationClicked,
             onClick = {
                 ImageData.selphiBestImage?.let {
                     viewModel.generateTemplateRawFromBitmap(it)
                 }
-            })
+            })*/
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_verifications),
-            enabled = newOperationClicked,
-            onClick = {
-                viewModel.launchVerifications(context)
-            })
 
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .fillMaxWidth(),
             text = BuildConfig.LIBRARY_VERSION,
             style = TextStyle(
                 fontWeight = FontWeight.Normal,
@@ -166,12 +131,14 @@ fun MainScreen(
         )
 
         if (logs.value.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
             BaseTextButton(
                 enabled = true,
                 text = "Clear logs",
                 onClick = {
                     viewModel.clearLogs()
+                    selphiResult = UIComponentResult.PENDING
                 })
 
             Text(
