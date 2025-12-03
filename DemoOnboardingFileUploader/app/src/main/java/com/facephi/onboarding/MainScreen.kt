@@ -36,7 +36,10 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
 import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
+import com.facephi.onboarding.ui.composables.ButtonCard
 import com.facephi.onboarding.ui.composables.FileUploaderCard
+import com.facephi.onboarding.ui.composables.StartAndStopCard
+import com.facephi.onboarding.ui.data.UIComponentResult
 
 @Composable
 fun MainScreen(
@@ -44,23 +47,13 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel()
 ) {
-    val context = LocalContext.current
 
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
-    var showPreviousTipSelphId by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showTutorialSelphId by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-
-    var showDiagnosticSelphId by rememberSaveable {
-        mutableStateOf(true)
-    }
+    var selphiResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
+    var selphIdResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
+    var uploaderResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -82,45 +75,51 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        BaseButton(
-            modifier = Modifier.padding(vertical = 8.dp),
-            text = stringResource(id = R.string.onboarding_new_operation),
+        ButtonCard(
+            title = stringResource(id = R.string.onboarding_title_operation),
+            desc = stringResource(id = R.string.onboarding_desc_operation),
+            enabled = true,
+            buttonText = stringResource(id = R.string.onboarding_init_operation),
             onClick = {
-                newOperationClicked = true
-                viewModel.newOperation()
-            })
+                viewModel.newOperation {
+                    newOperationClicked = true
+                }
+            },
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        BaseButton(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_videorecording),
+        // Video Recording
+        StartAndStopCard(
+            title = stringResource(id = R.string.onboarding_title_videorecording),
+            desc = stringResource(id = R.string.onboarding_desc_videorecording),
             enabled = newOperationClicked,
-            onClick = {
+            startButtonText = stringResource(id = R.string.onboarding_launch_videorecording),
+            stopButtonText = stringResource(id = R.string.onboarding_launch_stop_videorecording),
+            onStart = {
                 viewModel.launchVideoRecording()
-            }
-        )
-
-        BaseButton(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_stop_videorecording),
-            enabled = newOperationClicked,
-            onClick = {
+            },
+            onStop = {
                 viewModel.launchStopVideoRecording()
-            }
+            },
         )
 
         Spacer(Modifier.height(8.dp))
 
         BaseComponentCard(
+            title = stringResource(id = R.string.onboarding_title_selphi),
+            desc = stringResource(id = R.string.onboarding_desc_selphi),
             buttonText = stringResource(id = R.string.onboarding_launch_selphi),
             enabled = newOperationClicked,
+            resultValue = selphiResult,
             onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
                 viewModel.launchSelphi(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic
-                )
+                ){
+                    selphiResult = it
+                }
             }
         )
 
@@ -128,32 +127,42 @@ fun MainScreen(
 
         BaseComponentCard(
             buttonText = stringResource(id = R.string.onboarding_launch_selphid),
+            title = stringResource(id = R.string.onboarding_title_selphid),
+            desc = stringResource(id = R.string.onboarding_desc_selphid),
             enabled = newOperationClicked,
+            resultValue = selphIdResult,
             onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
                 viewModel.launchSelphId(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic
-                )
+                ){
+                    selphIdResult = it
+                }
             }
         )
 
         Spacer(Modifier.height(8.dp))
 
         FileUploaderCard(
+            title = stringResource(id = R.string.onboarding_title_file_uploader),
+            desc = stringResource(id = R.string.onboarding_desc_file_uploader),
             buttonText = stringResource(id = R.string.onboarding_launch_file_uploader),
             enabled = newOperationClicked,
+            resultValue = uploaderResult,
             onLaunch = { showPreviousTip, allowGallery, showDiagnostic, maxDocuments ->
                 viewModel.launchFileUploader(
                     allowGallery = allowGallery,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic,
                     maxScannedDocs = maxDocuments,
-                )
+                ){
+                    uploaderResult = it
+                }
             }
         )
 
-        BaseButton(
+       /* BaseButton(
             modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.onboarding_launch_template),
             enabled = newOperationClicked,
@@ -161,20 +170,13 @@ fun MainScreen(
                 ImageData.selphiBestImage?.let {
                     viewModel.generateTemplateRawFromBitmap(it)
                 }
-            })
+            })*/
 
-        BaseButton(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_verifications),
-            enabled = newOperationClicked,
-            onClick = {
-                viewModel.launchVerifications(context)
-            })
+        Spacer(Modifier.height(16.dp))
 
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .fillMaxWidth(),
             text = BuildConfig.LIBRARY_VERSION,
             style = TextStyle(
                 fontWeight = FontWeight.Normal,
@@ -184,6 +186,7 @@ fun MainScreen(
         )
 
         if (logs.value.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
             BaseTextButton(
                 enabled = true,

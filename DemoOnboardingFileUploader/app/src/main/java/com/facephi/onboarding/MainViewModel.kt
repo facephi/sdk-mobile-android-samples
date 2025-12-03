@@ -1,7 +1,7 @@
 package com.facephi.onboarding
 
-import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.capture_component.FileUploaderController
@@ -9,11 +9,7 @@ import com.facephi.capture_component.data.result.FileContent
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkImage
 import com.facephi.core.data.SdkResult
-import com.facephi.onboarding.repository.VerificationsApi
-import com.facephi.onboarding.repository.request.AuthenticateFacialRequest
-import com.facephi.onboarding.repository.request.OnboardingRequest
-import com.facephi.onboarding.repository.request.PassiveLivenessTokenRequest
-import com.facephi.onboarding.utils.toBase64
+import com.facephi.onboarding.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
 import com.facephi.selphi_component.RawTemplateController
 import com.facephi.selphi_component.SelphiController
@@ -25,7 +21,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import io.github.aakira.napier.Napier
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -36,8 +31,8 @@ class MainViewModel : ViewModel() {
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
-                        " ${eventType.name} -  ${info ?: ""} " }
+                Log.i ("APP",  "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " )
             }
 
             if (BuildConfig.DEBUG) {
@@ -56,14 +51,17 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun newOperation() {
+    fun newOperation(onOperationStarted: () -> Unit) {
         viewModelScope.launch {
             val result = SDKController.newOperation(
                 operationType = SdkData.OPERATION_TYPE,
                 customerId = SdkData.CUSTOMER_ID,
             )
             when (result) {
-                is SdkResult.Success -> log("NEW OPERATION: OK")
+                is SdkResult.Success -> {
+                    log("NEW OPERATION: OK")
+                    onOperationStarted.invoke()
+                }
                 is SdkResult.Error -> log("NEW OPERATION: Error - ${result.error.name}")
             }
         }
@@ -95,6 +93,7 @@ class MainViewModel : ViewModel() {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
@@ -115,10 +114,14 @@ class MainViewModel : ViewModel() {
                     result.data.bestImageTokenized?.let {
                         ImageData.selphiBestImageTokenized = it
                     }
+                    onResult.invoke(UIComponentResult.OK)
 
                 }
 
-                is SdkResult.Error -> log("Selphi: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("Selphi: Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
@@ -127,6 +130,7 @@ class MainViewModel : ViewModel() {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
@@ -155,9 +159,13 @@ class MainViewModel : ViewModel() {
                     result.data.backDocumentImage?.bitmap.let {
                         ImageData.documentBack = it
                     }
+                    onResult.invoke(UIComponentResult.OK)
                 }
 
-                is SdkResult.Error -> log("SelphID: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("SelphID: Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
@@ -167,6 +175,7 @@ class MainViewModel : ViewModel() {
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
         maxScannedDocs: Int,
+        onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
@@ -194,9 +203,13 @@ class MainViewModel : ViewModel() {
                         }
                     }
                     log("FileUploader: OK - Total files: ${(imageCount+pdfCount)} - Images: $imageCount - PDFs: $pdfCount")
+                    onResult.invoke(UIComponentResult.OK)
                 }
 
-                is SdkResult.Error -> log("FileUploader: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("FileUploader: Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
@@ -222,117 +235,6 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             _logs.emit("")
             ImageData.clear()
-        }
-
-    }
-
-    fun launchVerifications(context: Context) {
-
-        if (SdkData.API_KEY.isEmpty() || SdkData.BASE_URL.isEmpty()) {
-            log("DATA is empty")
-            return
-        }
-
-        val verificationController = VerificationsApi(context, SdkData.API_KEY)
-
-        viewModelScope.launch {
-            // If Tracking Component is used
-            /*val extraData = when (val result = SDKController.launch(ExtraDataController())) {
-                is SdkResult.Success -> result.data
-                is SdkResult.Error -> {
-                    log("EXTRA_DATA: Error - ${result.error}")
-                    ""
-                }
-            }
-
-            if (extraData.isEmpty()) return@launch
-
-            val operationId = SDKController.launch(GetOperationIdController()).orEmpty()
-
-            if (operationId.isEmpty()) return@launch
-
-            val trackingData = TrackingData(
-                extraData = extraData,
-                operationId = operationId
-            )
-
-             */
-
-
-            // LIVENESS WITH TOKENIZED IMAGE
-
-            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }
-                ?.let { bestImageTokenized ->
-                    val response = verificationController.passiveLivenessToken(
-                        request = PassiveLivenessTokenRequest(
-                            imageBuffer = bestImageTokenized,
-                            //trackingData = trackingData
-                        ),
-                        baseUrl = SdkData.BASE_URL
-                    )
-
-                    log("** passiveLivenessToken: ${response}\n")
-
-                }
-
-            // MATCHING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
-
-            ImageData.selphiBestImage?.toBase64()?.takeIf { it.isNotBlank() }?.let { bestImageB64 ->
-                ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
-                    ?.let { documentTokenFaceImage ->
-                        val response = verificationController.authenticateFacial(
-                            request = AuthenticateFacialRequest(
-                                token1 = bestImageB64,
-                                token2 = documentTokenFaceImage,
-                                method = 4,
-                                //trackingData = trackingData
-                            ),
-                            baseUrl = SdkData.BASE_URL
-                        )
-
-                        log("** authenticateFacial (method = 4): ${response}\n")
-                    }
-            }
-
-            // MATCHING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
-
-            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }
-                ?.let { bestImageTokenized ->
-                    ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
-                        ?.let { documentTokenFaceImage ->
-                            val response = verificationController.authenticateFacial(
-                                request = AuthenticateFacialRequest(
-                                    token1 = bestImageTokenized,
-                                    token2 = documentTokenFaceImage,
-                                    method = 5,
-                                    //trackingData = trackingData
-                                ),
-                                baseUrl = SdkData.BASE_URL
-                            )
-
-                            log("** authenticateFacial (method = 5): ${response}\n")
-                        }
-                }
-
-            // ONBOARDING: BASE64 FACE IMAGE AND TOKENIZED DOCUMENT FACE IMAGE
-
-            ImageData.selphiBestImageTokenized?.takeIf { it.isNotBlank() }
-                ?.let { bestImageTokenized ->
-                    ImageData.documentTokenFaceImage?.takeIf { it.isNotBlank() }
-                        ?.let { documentTokenFaceImage ->
-                            val response = verificationController.onboarding(
-                                request = OnboardingRequest(
-                                    bestImageToken = bestImageTokenized,
-                                    token1 = documentTokenFaceImage,
-                                    method = 5,
-                                    //trackingData = trackingData
-                                ),
-                                baseUrl = SdkData.BASE_URL
-                            )
-
-                            log("** onboarding (method = 5): ${response}\n")
-                        }
-                }
         }
 
     }
