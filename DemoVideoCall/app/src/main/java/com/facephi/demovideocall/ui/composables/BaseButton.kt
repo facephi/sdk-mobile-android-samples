@@ -43,7 +43,7 @@ fun BaseButton(
         onClick = onClick,
         enabled = enabled,
         shape = shape,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         colors = colors
     ) {
         Text(
