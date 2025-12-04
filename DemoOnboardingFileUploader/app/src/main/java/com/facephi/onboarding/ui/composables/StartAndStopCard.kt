@@ -14,8 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.facephi.onboarding.R
+import com.facephi.onboarding.ui.data.UIComponentResult
 
 
 @Composable
@@ -24,6 +26,7 @@ fun StartAndStopCard(
     desc: String,
     startButtonText: String,
     stopButtonText: String,
+    resultValue: UIComponentResult,
     enabled: Boolean,
     onStart: () -> Unit,
     onStop: () -> Unit,
@@ -74,6 +77,13 @@ fun StartAndStopCard(
                     onClick = onStop
                 )
             }
+            /*if (resultValue != UIComponentResult.PENDING) {
+                ResultRow(
+                    label = if (resultValue == UIComponentResult.OK) stringResource(id = R.string.onboarding_result_ok)
+                    else stringResource(id = R.string.onboarding_result_error),
+                    ok = resultValue == UIComponentResult.OK
+                )
+            }*/
         }
     }
 }

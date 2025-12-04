@@ -145,15 +145,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun launchVideoRecording() {
+    fun launchVideoRecording(onResult: (UIComponentResult) -> Unit) {
         viewModelScope.launch {
             val result = SDKController.launch(VideoRecordingController(VideoRecordingConfigurationData()))
             when (result) {
-                is SdkResult.Error -> log(
-                    "VIDEO_RECORDING Start: ERROR Name- ${result.error.name} - CODE: ${result.error.code} - REASON: ${result.error.reason}"
-                )
-
-                is SdkResult.Success -> log("VIDEO_RECORDING Start: OK")
+                is SdkResult.Success -> {
+                    log("VIDEO_RECORDING Start: OK")
+                    onResult.invoke(UIComponentResult.OK)
+                }
+                is SdkResult.Error -> {
+                    log(
+                        "VIDEO_RECORDING Start: ERROR Name- ${result.error.name} - CODE: ${result.error.code} - REASON: ${result.error.reason}"
+                    )
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }

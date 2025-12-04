@@ -60,6 +60,7 @@ fun MainScreen(
 
     var selphiResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
     var selphIdResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
+    var videoResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -101,8 +102,11 @@ fun MainScreen(
             enabled = newOperationClicked,
             startButtonText = stringResource(id = R.string.onboarding_launch_videorecording),
             stopButtonText = stringResource(id = R.string.onboarding_launch_stop_videorecording),
+            resultValue = videoResult,
             onStart = {
-                viewModel.launchVideoRecording()
+                viewModel.launchVideoRecording{
+                    videoResult = it
+                }
             },
             onStop = {
                 viewModel.stopVideoRecording()
@@ -170,6 +174,7 @@ fun MainScreen(
                     viewModel.clearLogs()
                     selphiResult = UIComponentResult.PENDING
                     selphIdResult = UIComponentResult.PENDING
+                    videoResult = UIComponentResult.PENDING
                 })
 
             Text(

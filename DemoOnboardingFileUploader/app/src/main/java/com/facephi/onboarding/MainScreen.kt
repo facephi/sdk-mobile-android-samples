@@ -54,6 +54,7 @@ fun MainScreen(
     var selphiResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
     var selphIdResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
     var uploaderResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
+    var videoResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -97,8 +98,11 @@ fun MainScreen(
             startButtonText = stringResource(id = R.string.onboarding_launch_videorecording),
             stopButtonText = stringResource(id = R.string.onboarding_launch_stop_videorecording),
             onStart = {
-                viewModel.launchVideoRecording()
+                viewModel.launchVideoRecording {
+                    videoResult = it
+                }
             },
+            resultValue = videoResult,
             onStop = {
                 viewModel.launchStopVideoRecording()
             },
@@ -117,7 +121,7 @@ fun MainScreen(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic
-                ){
+                ) {
                     selphiResult = it
                 }
             }
@@ -136,7 +140,7 @@ fun MainScreen(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic
-                ){
+                ) {
                     selphIdResult = it
                 }
             }
@@ -156,21 +160,21 @@ fun MainScreen(
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic,
                     maxScannedDocs = maxDocuments,
-                ){
+                ) {
                     uploaderResult = it
                 }
             }
         )
 
-       /* BaseButton(
-            modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.onboarding_launch_template),
-            enabled = newOperationClicked,
-            onClick = {
-                ImageData.selphiBestImage?.let {
-                    viewModel.generateTemplateRawFromBitmap(it)
-                }
-            })*/
+        /* BaseButton(
+             modifier = Modifier.padding(top = 8.dp),
+             text = stringResource(id = R.string.onboarding_launch_template),
+             enabled = newOperationClicked,
+             onClick = {
+                 ImageData.selphiBestImage?.let {
+                     viewModel.generateTemplateRawFromBitmap(it)
+                 }
+             })*/
 
         Spacer(Modifier.height(16.dp))
 
@@ -196,6 +200,7 @@ fun MainScreen(
                     selphiResult = UIComponentResult.PENDING
                     selphIdResult = UIComponentResult.PENDING
                     uploaderResult = UIComponentResult.PENDING
+                    videoResult = UIComponentResult.PENDING
                 })
 
             Text(
