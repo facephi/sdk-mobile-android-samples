@@ -36,9 +36,9 @@ object SdkData {
         trackingController = null // or TrackingController()
     )
 
-    val videoIdConfiguration = VideoIdConfigurationData(
+    fun getVideoIdConfiguration(autoFace: Boolean) = VideoIdConfigurationData(
         sectionTimeout = 20000,
-        autoFaceDetection = true,
+        autoFaceDetection = autoFace,
         mode = VideoIdMode.FACE_DOCUMENT_FRONT_BACK
     )
 }
