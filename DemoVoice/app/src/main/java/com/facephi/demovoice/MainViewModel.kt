@@ -1,6 +1,7 @@
 package com.facephi.demovoice
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
@@ -8,10 +9,10 @@ import com.facephi.core.data.SdkResult
 import com.facephi.demovoice.repository.VerificationsApi
 import com.facephi.demovoice.repository.request.VoiceAuthenticationRequest
 import com.facephi.demovoice.repository.request.VoiceEnrollRequest
+import com.facephi.demovoice.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
 import com.facephi.voice_component.VoiceController
 import com.facephi.voice_component.data.configuration.VoiceConfigurationData
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -31,8 +32,10 @@ class MainViewModel : ViewModel() {
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
-                        " ${eventType.name} -  ${info ?: ""} " }
+                Log.i(
+                    "APP", "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                            " ${eventType.name} -  ${info ?: ""} "
+                )
             }
             if (BuildConfig.DEBUG) {
                 SDKController.enableDebugMode()
@@ -50,20 +53,28 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun newOperation() {
+    fun newOperation(onOperationStarted: () -> Unit) {
         viewModelScope.launch {
             val result = SDKController.newOperation(
                 operationType = SdkData.OPERATION_TYPE,
                 customerId = SdkData.CUSTOMER_ID,
             )
             when (result) {
-                is SdkResult.Success -> log("NEW OPERATION: OK")
+                is SdkResult.Success -> {
+                    log("NEW OPERATION: OK")
+                    onOperationStarted.invoke()
+                }
+
                 is SdkResult.Error -> log("NEW OPERATION: Error - ${result.error.name}")
             }
         }
     }
 
-    fun launchVoiceEnroll(data: VoiceConfigurationData, output: (Array<ByteArray>) -> Unit) {
+    fun launchVoiceEnroll(
+        data: VoiceConfigurationData,
+        output: (Array<ByteArray>) -> Unit,
+        onResult: (UIComponentResult) -> Unit
+    ) {
         viewModelScope.launch {
             when (val result =
                 SDKController.launch(VoiceController(data))) {
@@ -72,27 +83,41 @@ class MainViewModel : ViewModel() {
                     if (result.data.audios.isNotEmpty()) {
                         enrollTokenizedAudios = result.data.tokenizedAudios
                         output.invoke(result.data.audios)
+                        onResult.invoke(UIComponentResult.OK)
                     }
                 }
 
-                is SdkResult.Error -> log("Voice Enroll: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("Voice Enroll: Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
 
-    fun launchVoiceAuth(data: VoiceConfigurationData) {
+    fun launchVoiceAuth(
+        data: VoiceConfigurationData,
+        onResult: (UIComponentResult) -> Unit
+    ) {
+        Log.d("APP", "Launch Voice Auth")
         viewModelScope.launch {
             when (val result =
                 SDKController.launch(VoiceController(data))) {
                 is SdkResult.Success -> {
                     log("Voice Auth: OK")
+                    Log.d("APP", "Voice Auth OK")
                     if (result.data.tokenizedAudios.isNotEmpty()) {
                         authTokenizedAudio = result.data.tokenizedAudios.first()
                     }
+                    onResult.invoke(UIComponentResult.OK)
 
                 }
 
-                is SdkResult.Error -> log("Voice Auth: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("Voice Auth: Error - ${result.error.name}")
+                    Log.d("APP", "Voice Auth Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }

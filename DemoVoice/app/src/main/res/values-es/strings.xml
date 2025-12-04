@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="new_operation">Nueva operación</string>
-    <string name="voice_tutorial">Mostrar tutorial</string>
-    <string name="voice_previous_tip">Tip Previo</string>
-    <string name="voice_diagnostic">Diagnóstico</string>
-    <string name="clear_logs">Limpiar logs</string>
-    <string name="voice_enroll">Registro de voz</string>
-    <string name="voice_auth">Autenticación de voz</string>
-    <string name="voice_play">Reproducir audios grabados</string>
-    <string name="voice_verifications">Lanzar verificaciones</string>
-    <string name="voice_phrase_1">DNI con letra</string>
-    <string name="voice_phrase_2">Repetir el DNI con letra</string>
+    <string name="onboarding_title_operation" >Operación</string>
+    <string name="onboarding_desc_operation" >Nueva operación del SDK</string>
+    <string name="onboarding_init_operation" >Crear</string>
+    <string name="onboarding_launch_enroll">Registro</string>
+    <string name="onboarding_launch_auth">Autenticación</string>
+    <string name="onboarding_title_voice">Voice ID</string>
+    <string name="onboarding_desc_voice">Captura de voz</string>
+    <string name="onboarding_show_previous_tip">Pantalla previa</string>
+    <string name="onboarding_show_tutorial">Tutorial</string>
+    <string name="onboarding_show_diagnostic">Diagnóstico</string>
+    <string name="onboarding_result_ok">Resultado correcto</string>
+    <string name="onboarding_result_error">Resultado erróneo</string>
+    <string name="onboarding_clear_logs">Limpiar logs</string>
+    <string name="onboarding_play">Play</string>
+    <string name="onboarding_verifications">Lanzar verificaciones</string>
+    <string name="onboarding_phrase_1">DNI con letra</string>
+    <string name="onboarding_phrase_2">Repetir el DNI con letra</string>
+    <string name="onboarding_title_media">Media</string>
+    <string name="onboarding_desc_media">Reproducir audios grabados</string>
 </resources>

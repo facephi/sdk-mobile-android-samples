@@ -1,7 +1,7 @@
 package com.facephi.demovoice.repository
 
 import android.content.Context
-import io.github.aakira.napier.Napier
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -31,7 +31,7 @@ object HttpClientProvider {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
-                        Napier.v(message, tag = "HTTP Client")
+                        Log.v("APP", message)
                     }
                 }
                 level = LogLevel.ALL
