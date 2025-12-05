@@ -1,15 +1,15 @@
 package com.facephi.demophingers
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
-import com.facephi.phingers_component.PhingersController
-import com.facephi.phingers_component.data.configuration.CaptureOrientation
-import com.facephi.phingers_component.data.configuration.FingerFilter
-import com.facephi.phingers_component.data.configuration.PhingersConfigurationData
+import com.facephi.demophingers.ui.data.UIComponentResult
+import com.facephi.phingers_tf_component.PhingersTFController
+import com.facephi.phingers_tf_component.data.configuration.CaptureOrientation
+import com.facephi.phingers_tf_component.data.configuration.FingerFilter
 import com.facephi.sdk.SDKController
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,10 +23,15 @@ class MainViewModel : ViewModel() {
     private val _logs = MutableStateFlow("")
     val logs = _logs.asStateFlow()
     fun initSdk(sdkApplication: SdkApplication) {
+        if (BuildConfig.DEBUG) {
+            SDKController.enableDebugMode()
+        }
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
-                        " ${eventType.name} -  ${info ?: ""} " }
+                Log.i(
+                    "APP", "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                            " ${eventType.name} -  ${info ?: ""} "
+                )
             }
 
             if (BuildConfig.DEBUG) {
@@ -45,14 +50,18 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun newOperation() {
+    fun newOperation(onOperationStarted: () -> Unit) {
         viewModelScope.launch {
             val result = SDKController.newOperation(
                 operationType = SdkData.OPERATION_TYPE,
                 customerId = SdkData.CUSTOMER_ID,
             )
             when (result) {
-                is SdkResult.Success -> log("NEW OPERATION: OK")
+                is SdkResult.Success -> {
+                    log("NEW OPERATION: OK")
+                    onOperationStarted.invoke()
+                }
+
                 is SdkResult.Error -> log("NEW OPERATION: Error - ${result.error.name}")
             }
         }
@@ -61,23 +70,33 @@ class MainViewModel : ViewModel() {
     fun launchPhingers(
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        liveness: Boolean,
         captureOrientation: CaptureOrientation,
-        fingerFilter: FingerFilter
+        fingerFilter: FingerFilter,
+        onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
-            val data = PhingersConfigurationData(
-                showPreviousTip = showPreviousTip,
-                showDiagnostic = showDiagnostic,
-                reticleOrientation = captureOrientation,
-                fingerFilter = fingerFilter
-            )
             when (val result =
-                SDKController.launch(PhingersController(data))) {
+                SDKController.launch(
+                    PhingersTFController(
+                        SdkData.getConfiguration(
+                            showPreviousTip = showPreviousTip,
+                            liveness = liveness,
+                            captureOrientation = captureOrientation,
+                            showDiagnostic = showDiagnostic,
+                            fingerFilter = fingerFilter
+                        )
+                    )
+                )) {
                 is SdkResult.Success -> {
                     log("PHINGERS: OK")
+                    onResult.invoke(UIComponentResult.OK)
                 }
 
-                is SdkResult.Error -> log("PHINGERS Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("PHINGERS Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }

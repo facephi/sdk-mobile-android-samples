@@ -1,18 +1,13 @@
 package com.facephi.demophingers
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,16 +24,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
-import com.facephi.demophingers.ui.composables.BaseButton
-import com.facephi.demophingers.ui.composables.BaseCheckView
+import com.facephi.demophingers.ui.composables.BaseComponentCard
 import com.facephi.demophingers.ui.composables.BaseTextButton
-import com.facephi.demophingers.ui.composables.DropdownCaptureOrientationMenu
-import com.facephi.demophingers.ui.composables.DropdownFingerFilterMenu
-import com.facephi.phingers_component.data.configuration.CaptureOrientation
-import com.facephi.phingers_component.data.configuration.FingerFilter
+import com.facephi.demophingers.ui.composables.ButtonCard
+import com.facephi.demophingers.ui.data.UIComponentResult
 
 @Composable
 fun MainScreen(
@@ -49,19 +45,7 @@ fun MainScreen(
 
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
-    var showDiagnostic by rememberSaveable { mutableStateOf(true) }
-
-    var showPreviousTip by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var captureOrientation by rememberSaveable {
-        mutableStateOf(CaptureOrientation.LEFT)
-    }
-
-    var fingerFilter by rememberSaveable {
-        mutableStateOf(FingerFilter.SLAP)
-    }
+    var phingerResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -82,87 +66,58 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.phingers_demo_new_operation),
+        ButtonCard(
+            title = stringResource(id = R.string.onboarding_title_operation),
+            desc = stringResource(id = R.string.onboarding_desc_operation),
+            enabled = true,
+            buttonText = stringResource(id = R.string.onboarding_init_operation),
             onClick = {
-                newOperationClicked = true
-                viewModel.newOperation()
-            })
+                viewModel.newOperation {
+                    newOperationClicked = true
+                }
+            },
+        )
 
+        Spacer(Modifier.height(8.dp))
 
-        BaseButton(
-            text = stringResource(id = R.string.phingers_demo_launch_capture),
+        BaseComponentCard(
+            title = stringResource(id = R.string.onboarding_title_phinger),
+            desc = stringResource(id = R.string.onboarding_desc_phinger),
+            buttonText = stringResource(id = R.string.onboarding_launch_phinger),
             enabled = newOperationClicked,
-            onClick = {
+            resultValue = phingerResult,
+            onLaunch = { showPreviousTip,
+                         showDiagnostic,
+                         liveness,
+                         captureOrientation,
+                         fingerFilter ->
                 viewModel.launchPhingers(
                     showPreviousTip = showPreviousTip,
-                    showDiagnostic = showDiagnostic,
+                    liveness = liveness,
                     captureOrientation = captureOrientation,
-                    fingerFilter = fingerFilter
-                )
+                    fingerFilter = fingerFilter,
+                    showDiagnostic = showDiagnostic
+                ) {
+                    phingerResult = it
+                }
             }
         )
 
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showPreviousTip,
-                text = stringResource(id = R.string.phingers_demo_show_previous_tip)
-            ) {
-                showPreviousTip = it
-            }
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showDiagnostic,
-                text = stringResource(id = R.string.phingers_demo_diagnostic)
-            ) {
-                showDiagnostic = it
-            }
-        }
+        Spacer(Modifier.height(16.dp))
 
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 32.dp, end = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.phingers_demo_capture_orientation),
-            color = colorResource(id = R.color.sdkBodyTextColor)
-        )
-
-        DropdownCaptureOrientationMenu(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-        ) {
-            captureOrientation = it
-        }
-
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 32.dp, end = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.phingers_demo_finger_filter),
-            color = colorResource(id = R.color.sdkBodyTextColor)
-        )
-
-        DropdownFingerFilterMenu(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-        ) {
-            fingerFilter = it
-        }
-
-        Text(
-            modifier = Modifier.padding(16.dp),
+                .fillMaxWidth(),
             text = BuildConfig.LIBRARY_VERSION,
-            color = colorResource(id = R.color.sdkBodyTextColor)
+            style = TextStyle(
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+            )
         )
 
         if (logs.value.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
             BaseTextButton(
                 enabled = true,
