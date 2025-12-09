@@ -77,13 +77,13 @@ fun StartAndStopCard(
                     onClick = onStop
                 )
             }
-            /*if (resultValue != UIComponentResult.PENDING) {
+            if (resultValue != UIComponentResult.PENDING) {
                 ResultRow(
                     label = if (resultValue == UIComponentResult.OK) stringResource(id = R.string.onboarding_result_ok)
                     else stringResource(id = R.string.onboarding_result_error),
                     ok = resultValue == UIComponentResult.OK
                 )
-            }*/
+            }
         }
     }
 }

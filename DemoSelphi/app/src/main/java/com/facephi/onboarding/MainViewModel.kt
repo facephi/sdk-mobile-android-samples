@@ -109,6 +109,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun log(message: String) {
+        Log.d("APP", message)
         viewModelScope.launch {
             val data = _logs.value + "\n" + message
             _logs.emit(data)
