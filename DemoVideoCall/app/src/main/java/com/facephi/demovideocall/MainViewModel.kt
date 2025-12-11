@@ -1,13 +1,14 @@
 package com.facephi.demovideocall
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
+import com.facephi.demovideocall.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
 import com.facephi.videocall_component.StopVideoCallController
 import com.facephi.videocall_component.VideoCallController
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -24,8 +25,8 @@ class MainViewModel : ViewModel() {
 
     fun initSdk(sdkApplication: SdkApplication) {
         SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-            Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
-                    " ${eventType.name} -  ${info ?: ""} " }
+            Log.i ("APP",  "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                    " ${eventType.name} -  ${info ?: ""} " )
         }
         stopVideoCallController = StopVideoCallController()
         stopVideoCallController.setOutput {
@@ -48,20 +49,23 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun newOperation() {
+    fun newOperation(onOperationStarted: () -> Unit) {
         viewModelScope.launch {
             val result = SDKController.newOperation(
                 operationType = SdkData.OPERATION_TYPE,
                 customerId = SdkData.CUSTOMER_ID,
             )
             when (result) {
-                is SdkResult.Success -> log("NEW OPERATION: OK")
+                is SdkResult.Success -> {
+                    log("NEW OPERATION: OK")
+                    onOperationStarted.invoke()
+                }
                 is SdkResult.Error -> log("NEW OPERATION: Error - ${result.error.name}")
             }
         }
     }
 
-    fun launchVideoCall() {
+    fun launchVideoCall(onResult: (UIComponentResult) -> Unit) {
         viewModelScope.launch {
             when (val result = SDKController.launch(
                 VideoCallController(SdkData.videoCallConfiguration))) {
@@ -70,8 +74,14 @@ class MainViewModel : ViewModel() {
                     if (result.data.sharingScreen){
                         log("Video Call: Activate screen sharing")
                     }
+
+                    onResult.invoke(UIComponentResult.OK)
+
                 }
-                is SdkResult.Error -> log("Video Call: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("Video Call: Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
@@ -85,6 +95,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun log(message: String){
+        Log.d("APP", message)
         viewModelScope.launch {
             val data = _logs.value + "\n" + message
             _logs.emit(data)

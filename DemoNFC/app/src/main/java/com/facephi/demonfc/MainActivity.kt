@@ -3,6 +3,7 @@ package com.facephi.demonfc
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -28,7 +29,7 @@ import com.facephi.demonfc.ui.screens.DisclaimerScreen
 import com.facephi.demonfc.ui.screens.TabScreen
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
 import com.facephi.sdk.SDKController
-import io.github.aakira.napier.Napier
+
 
 class MainActivity : ComponentActivity() {
 
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Napier.d("APP: LAUNCH INIT SDK")
+        Log.d ( "APP", "LAUNCH INIT SDK")
         viewModel.initSdk(SdkApplication(application))
 
         setContent {
@@ -90,7 +91,7 @@ class MainActivity : ComponentActivity() {
                                 try {
                                     this.startActivity(intent)
                                 } catch (e: Exception) {
-                                    Napier.d("APP: EMAIL ERROR $e")
+                                    Log.e ( "APP", "EMAIL ERROR $e")
                                 }
                             }
                         } else {

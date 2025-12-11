@@ -1,7 +1,7 @@
 package com.facephi.demovoice.media
 
 import android.media.MediaPlayer
-import io.github.aakira.napier.Napier
+import android.util.Log
 
 object AppMediaPlayer {
     private var mediaPlayer = MediaPlayer()
@@ -19,7 +19,7 @@ object AppMediaPlayer {
     }
 
     private fun play(file: String, onFinish: () -> Unit) {
-        Napier.d("APP: MEDIA PLAY file:$file")
+        Log.d("APP","MEDIA PLAY file:$file")
         // val mediaSource = AppMediaDataSource(byteArray)
         mediaPlayer = MediaPlayer()
         mediaPlayer.apply {
@@ -37,7 +37,7 @@ object AppMediaPlayer {
     }
 
     fun stop() {
-        Napier.d("APP: MEDIA STOP")
+        Log.d("APP","MEDIA STOP")
 
         audioIndex = 0
         if (mediaPlayer.isPlaying == true) {

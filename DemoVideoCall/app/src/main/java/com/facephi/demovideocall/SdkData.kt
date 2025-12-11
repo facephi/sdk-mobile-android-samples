@@ -12,7 +12,7 @@ object SdkData {
 
     // ************** LICENSE **************
 
-    const val LICENSE_ONLINE = false
+    const val LICENSE_ONLINE = true
 
     val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
         apiKey = "..."

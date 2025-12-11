@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">DemoVideoId</string>
-    <string name="demo_new_operation" >New Operation</string>
-    <string name="demo_launch_video">Launch Video ID</string>
+    <string name="onboarding_init_message">SDK initialization...</string>
+    <string name="onboarding_init_error">SDK initialization ERROR: </string>
+    <string name="onboarding_title_operation">Operation</string>
+    <string name="onboarding_desc_operation">Create a new operation and finish it</string>
+    <string name="onboarding_init_operation">Create</string>
+    <string name="onboarding_launch_video">Launch</string>
+    <string name="onboarding_title_video">Video ID</string>
+    <string name="onboarding_desc_video">Facial Capture</string>
+    <string name="onboarding_show_auto_face">Auto Face Detection</string>
+    <string name="onboarding_result_ok">Result OK</string>
+    <string name="onboarding_result_error">Result error</string>
 </resources>

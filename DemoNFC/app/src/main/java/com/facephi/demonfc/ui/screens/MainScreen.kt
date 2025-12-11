@@ -3,6 +3,7 @@ package com.facephi.demonfc.ui.screens
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,7 +51,6 @@ import com.facephi.demonfc.ui.composables.BaseCheckView
 import com.facephi.demonfc.ui.composables.BaseTextButton
 import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
-import io.github.aakira.napier.Napier
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +90,7 @@ fun MainScreen(
 
         BaseButton(modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = R.string.nfc_new_operation), onClick = {
-                Napier.d("APP: LAUNCH NEW OPERATION")
+                Log.i ( "APP", "LAUNCH NEW OPERATION")
                 focusManager.clearFocus()
 
                 logs.clear()

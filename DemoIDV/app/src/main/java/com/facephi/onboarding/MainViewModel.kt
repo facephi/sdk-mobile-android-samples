@@ -1,5 +1,6 @@
 package com.facephi.onboarding
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
@@ -7,10 +8,8 @@ import com.facephi.core.data.SdkResult
 import com.facephi.onboarding.ui.MainState
 import com.facephi.sdk.FlowController
 import com.facephi.sdk.SDKController
-import com.facephi.sdk.data.IntegrationFlowData
 import com.facephi.sdk.data.OperationResult
 import com.facephi.tracking_component.TrackingErrorController
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,10 +26,10 @@ class MainViewModel : ViewModel() {
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-                Napier.i {
+                Log.i ("APP",
                     "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
                             " ${eventType.name} -  ${info ?: ""} "
-                }
+                )
             }
 
             if (BuildConfig.DEBUG) {
@@ -121,7 +120,7 @@ class MainViewModel : ViewModel() {
 
     private fun log(message: String): String {
         val data = _mainState.value.logs + "\n" + message
-        Napier.i { message }
+        Log.i ("APP", message )
         return data
 
     }

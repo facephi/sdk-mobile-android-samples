@@ -16,7 +16,7 @@ object SdkData {
 
     // ************** LICENSE **************
 
-    const val LICENSE_ONLINE = false
+    const val LICENSE_ONLINE = true
 
     val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
         apiKey = "..."
@@ -29,9 +29,6 @@ object SdkData {
     const val CUSTOMER_ID = "demo_onboarding@email.com"
     val OPERATION_TYPE = OperationType.ONBOARDING
     private const val SELPHID_RESOURCES = "resources-selphid-2-0.zip"
-
-    const val BASE_URL = ""
-    const val API_KEY = ""
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,
@@ -48,20 +45,29 @@ object SdkData {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        wizardMode: Boolean,
+        showResultAfterCapture: Boolean,
+        scanMode: SelphIDScanMode,
+        specificData: String,
+        fullscreen: Boolean,
+        documentType: SelphIDDocumentType,
+        documentSide: SelphIDDocumentSide,
+        generateRawImages: Boolean,
     ) = SelphIDConfigurationData(
         showTutorial = showTutorial,
         showPreviousTip = showPreviousTip,
         showDiagnostic = showDiagnostic,
-        wizardMode = true,
-        showResultAfterCapture = true,
-        scanMode = SelphIDScanMode.MODE_SEARCH,
-        specificData = "ES|<ALL>",
-        fullscreen = true,
-        documentType = SelphIDDocumentType.ID_CARD,
-        documentSide = SelphIDDocumentSide.FRONT,
+        wizardMode = wizardMode,
+        showResultAfterCapture = showResultAfterCapture,
+        scanMode = scanMode,
+        specificData = specificData,
+        fullscreen = fullscreen,
+        documentType = documentType,
+        documentSide = documentSide,
         timeout = SelphIDTimeout.LONG,
-        generateRawImages = false,
+        generateRawImages = generateRawImages,
         resourcesPath = SELPHID_RESOURCES,
     )
+
 
 }

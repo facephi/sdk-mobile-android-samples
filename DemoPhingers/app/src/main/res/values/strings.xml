@@ -1,19 +1,27 @@
 <resources>
     <string name="app_name" translatable="false">Demo Phingers</string>
-    <string name="phingers_component_left_hand">Prepare your left hand for the catch</string>
-    <string name="phingers_component_right_hand">Prepare your right hand for capture</string>
-    <string name="phingers_component_action_text">Take fingerprints</string>
-    <string name="phingers_component_capture_phingers">Hold fingers steady</string>
-    <string name="phingers_component_capture_thumb">Hold finger steady</string>
-    <string name="phingers_component_capture_phingers_not_focus">Move fingers until in focus</string>
-    <string name="phingers_component_capture_thumb_not_focus">Move finger until in focus</string>
-    <string name="phingers_demo_capture_orientation">Capture orientation:</string>
-    <string name="phingers_demo_new_operation">New operation</string>
-    <string name="phingers_demo_launch_capture">Launch capture</string>
-    <string name="phingers_demo_launch_matching">Launch matching</string>
-    <string name="phingers_demo_show_tutorial">Tutorial</string>
-    <string name="phingers_demo_show_previous_tip">Previous tip</string>
-    <string name="phingers_demo_diagnostic">Diagnostic</string>
-    <string name="phingers_demo_clear_logs">Clear logs</string>
-    <string name="phingers_demo_finger_filter">Finger filter:</string>
+    <string name="onboarding_title_operation" >Operation</string>
+    <string name="onboarding_desc_operation" >Create a new operation and finish it</string>
+    <string name="onboarding_init_operation" >Create</string>
+    <string name="onboarding_launch_phinger">Launch</string>
+    <string name="onboarding_title_phinger">Phingers</string>
+    <string name="onboarding_desc_phinger">Fingerprint capture</string>
+    <string name="onboarding_show_previous_tip">Previous tip</string>
+    <string name="onboarding_show_tutorial">Tutorial</string>
+    <string name="onboarding_show_diagnostic">Diagnostic</string>
+    <string name="onboarding_left">Left</string>
+    <string name="onboarding_right">Right</string>
+    <string name="onboarding_choose_hand">Choose hand</string>
+    <string name="onboarding_choose_filter">Select filter</string>
+    <string name="onboarding_result_ok">Result OK</string>
+    <string name="onboarding_result_error">Result error</string>
+    <string name="onboarding_fingerfilter_slap">Slap</string>
+    <string name="onboarding_fingerfilter_all_4_fingers_one_by_one">4 fingers one by one</string>
+    <string name="onboarding_fingerfilter_all_5_fingers_one_by_one">5 fingers one by one</string>
+    <string name="onboarding_fingerfilter_index_finger">Index finger</string>
+    <string name="onboarding_fingerfilter_middle_finger">Middle finger</string>
+    <string name="onboarding_fingerfilter_ring_finger">Ring finger</string>
+    <string name="onboarding_fingerfilter_little_finger">Little finger</string>
+    <string name="onboarding_fingerfilter_thumb_finger">Thumb</string>
+
 </resources>

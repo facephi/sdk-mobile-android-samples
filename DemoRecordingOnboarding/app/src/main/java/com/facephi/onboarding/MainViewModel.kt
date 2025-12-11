@@ -1,16 +1,20 @@
 package com.facephi.onboarding
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
+import com.facephi.onboarding.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
 import com.facephi.selphi_component.SelphiController
 import com.facephi.selphid_component.SelphIDController
+import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
+import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
+import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import com.facephi.video_recording_component.StopVideoRecordingController
 import com.facephi.video_recording_component.VideoRecordingController
 import com.facephi.video_recording_component.data.configuration.VideoRecordingConfigurationData
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -26,10 +30,9 @@ class MainViewModel : ViewModel() {
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-                Napier.i {
-                    "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                Log.i ("APP","*** ${formatEpochMillis(time)} - ${componentName.name} -" +
                             " ${eventType.name} -  ${info ?: ""} "
-                }
+                )
             }
 
             if (BuildConfig.DEBUG) {
@@ -48,14 +51,17 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun newOperation() {
+    fun newOperation(onOperationStarted: () -> Unit) {
         viewModelScope.launch {
             val result = SDKController.newOperation(
                 operationType = SdkData.OPERATION_TYPE,
                 customerId = SdkData.CUSTOMER_ID,
             )
             when (result) {
-                is SdkResult.Success -> log("NEW OPERATION: OK")
+                is SdkResult.Success -> {
+                    log("NEW OPERATION: OK")
+                    onOperationStarted.invoke()
+                }
                 is SdkResult.Error -> log("NEW OPERATION: Error - ${result.error.name}")
             }
         }
@@ -65,6 +71,7 @@ class MainViewModel : ViewModel() {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
@@ -85,18 +92,31 @@ class MainViewModel : ViewModel() {
                     result.data.bestImageTokenized?.let {
                         ImageData.selphiBestImageTokenized = it
                     }
+                    onResult.invoke(UIComponentResult.OK)
 
                 }
 
-                is SdkResult.Error -> log("Selphi: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("Selphi: Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
 
     fun launchSelphId(
-        showTutorial: Boolean,
         showPreviousTip: Boolean,
+        showTutorial: Boolean,
         showDiagnostic: Boolean,
+        wizardMode: Boolean,
+        showResultAfterCapture: Boolean,
+        scanMode: SelphIDScanMode,
+        specificData: String,
+        fullscreen: Boolean,
+        documentType: SelphIDDocumentType,
+        documentSide: SelphIDDocumentSide,
+        generateRawImages: Boolean,
+        onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
@@ -105,7 +125,15 @@ class MainViewModel : ViewModel() {
                         SdkData.getSelphIDConfiguration(
                             showTutorial = showTutorial,
                             showPreviousTip = showPreviousTip,
-                            showDiagnostic = showDiagnostic
+                            showDiagnostic = showDiagnostic,
+                            wizardMode = wizardMode,
+                            showResultAfterCapture = showResultAfterCapture,
+                            scanMode = scanMode,
+                            specificData = specificData,
+                            fullscreen = fullscreen,
+                            documentType = documentType,
+                            documentSide = documentSide,
+                            generateRawImages = generateRawImages
                         )
                     )
                 )) {
@@ -125,22 +153,31 @@ class MainViewModel : ViewModel() {
                     result.data.backDocumentImage?.bitmap.let {
                         ImageData.documentBack = it
                     }
+                    onResult.invoke(UIComponentResult.OK)
                 }
 
-                is SdkResult.Error -> log("SelphID: Error - ${result.error.name}")
+                is SdkResult.Error -> {
+                    log("SelphID: Error - ${result.error.name}")
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
 
-    fun launchVideoRecording() {
+    fun launchVideoRecording(onResult: (UIComponentResult) -> Unit) {
         viewModelScope.launch {
             val result = SDKController.launch(VideoRecordingController(VideoRecordingConfigurationData()))
             when (result) {
-                is SdkResult.Error -> log(
-                    "VIDEO_RECORDING Start: ERROR Name- ${result.error.name} - CODE: ${result.error.code} - REASON: ${result.error.reason}"
-                )
-
-                is SdkResult.Success -> log("VIDEO_RECORDING Start: OK")
+                is SdkResult.Success -> {
+                    log("VIDEO_RECORDING Start: OK")
+                    onResult.invoke(UIComponentResult.OK)
+                }
+                is SdkResult.Error -> {
+                    log(
+                        "VIDEO_RECORDING Start: ERROR Name- ${result.error.name} - CODE: ${result.error.code} - REASON: ${result.error.reason}"
+                    )
+                    onResult.invoke(UIComponentResult.ERROR)
+                }
             }
         }
     }
@@ -160,6 +197,7 @@ class MainViewModel : ViewModel() {
 
 
     private fun log(message: String) {
+        Log.d("APP", message)
         viewModelScope.launch {
             val data = _logs.value + "\n" + message
             _logs.emit(data)

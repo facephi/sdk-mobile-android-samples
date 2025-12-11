@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DemoVideoCall</string>
-    <string name="demo_new_operation" >Nueva operación</string>
-    <string name="demo_launch_video">Lanzar video call</string>
-    <string name="demo_stop_video">Parar video call</string>
-
+    <string name="demo_title_operation" >Operación</string>
+    <string name="demo_desc_operation" >Nueva operación del SDK</string>
+    <string name="demo_init_operation" >Crear</string>
+    <string name="demo_launch_video">Llamar</string>
+    <string name="demo_title_video">Videollamada</string>
+    <string name="demo_desc_video">Contactar con un asistente</string>
+    <string name="demo_stop_video">Colgar</string>
+    <string name="demo_result_ok">Resultado correcto</string>
+    <string name="demo_result_error">Resultado erróneo</string>
 </resources>

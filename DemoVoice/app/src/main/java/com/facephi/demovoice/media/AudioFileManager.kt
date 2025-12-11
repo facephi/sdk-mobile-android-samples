@@ -1,7 +1,7 @@
 package com.facephi.demovoice.media
 
 import android.content.Context
-import io.github.aakira.napier.Napier
+import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -22,13 +22,13 @@ object AudioFileManager {
             fos = FileOutputStream(outputFile)
             fos.write(byteArray)
         } catch (e: Exception) {
-            Napier.d("APP: Save WAV error: $e")
+            Log.d("APP","Save WAV error: $e")
         } finally {
             dir = outputFile.absolutePath
             try {
                 fos?.close()
             } catch (e: IOException) {
-                Napier.d(e.localizedMessage)
+                Log.d("APP",e.localizedMessage)
             }
         }
         return dir

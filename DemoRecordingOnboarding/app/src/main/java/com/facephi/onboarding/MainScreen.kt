@@ -42,7 +42,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
 import com.facephi.onboarding.ui.composables.BaseCheckView
+import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
+import com.facephi.onboarding.ui.composables.ButtonCard
+import com.facephi.onboarding.ui.composables.SelphIDComponentCard
+import com.facephi.onboarding.ui.composables.StartAndStopCard
+import com.facephi.onboarding.ui.data.UIComponentResult
 
 @Composable
 fun MainScreen(
@@ -54,29 +59,9 @@ fun MainScreen(
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
 
-    var showPreviousTipSelphi by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showTutorialSelphi by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showPreviousTipSelphId by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showTutorialSelphId by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showDiagnosticSelphi by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showDiagnosticSelphId by rememberSaveable {
-        mutableStateOf(true)
-    }
+    var selphiResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
+    var selphIdResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
+    var videoResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -97,148 +82,92 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        BaseButton(
-            modifier = Modifier.padding(vertical = 8.dp),
-            text = stringResource(id = R.string.onboarding_new_operation),
+        ButtonCard(
+            title = stringResource(id = R.string.onboarding_title_operation),
+            desc = stringResource(id = R.string.onboarding_desc_operation),
+            enabled = true,
+            buttonText = stringResource(id = R.string.onboarding_init_operation),
             onClick = {
-                newOperationClicked = true
-                viewModel.newOperation()
-            })
-
-        BaseButton(
-            modifier = Modifier,
-            enabled = newOperationClicked,
-            text = stringResource(id = R.string.onboarding_launch_recording),
-            onClick = {
-                viewModel.launchVideoRecording()
-            })
+                viewModel.newOperation {
+                    newOperationClicked = true
+                }
+            },
+        )
 
         Spacer(Modifier.height(8.dp))
 
-        Card(
-            elevation = CardDefaults.cardElevation(4.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(id = R.color.sdkBackgroundColor)
-            )
-        ) {
-            Column(Modifier.padding(4.dp)) {
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    BaseCheckView(
-                        modifier = Modifier.weight(1f),
-                        checkValue = showPreviousTipSelphi,
-                        text = stringResource(id = R.string.onboarding_show_previous_tip)
-                    ) {
-                        showPreviousTipSelphi = it
-                    }
-                    BaseCheckView(
-                        modifier = Modifier.weight(1f),
-                        checkValue = showTutorialSelphi,
-                        text = stringResource(id = R.string.onboarding_show_tutorial)
-                    ) {
-                        showTutorialSelphi = it
-                    }
-                }
-
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    BaseCheckView(
-                        checkValue = showDiagnosticSelphi,
-                        text = stringResource(id = R.string.onboarding_show_diagnostic)
-                    ) {
-                        showDiagnosticSelphi = it
-                    }
-                }
-
-                BaseButton(
-                    modifier = Modifier,
-                    text = stringResource(id = R.string.onboarding_launch_selphi),
-                    enabled = newOperationClicked,
-                    onClick = {
-                        viewModel.launchSelphi(
-                            showTutorial = showTutorialSelphi,
-                            showPreviousTip = showPreviousTipSelphi,
-                            showDiagnostic = showDiagnosticSelphi
-                        )
-                    })
-            }
-        }
-
-        Spacer(Modifier.height(8.dp))
-
-        Card(
-            elevation = CardDefaults.cardElevation(4.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(id = R.color.sdkBackgroundColor)
-            )
-        ) {
-            Column(Modifier.padding(4.dp)) {
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    BaseCheckView(
-                        modifier = Modifier.weight(1f),
-                        checkValue = showPreviousTipSelphId,
-                        text = stringResource(id = R.string.onboarding_show_previous_tip)
-                    ) {
-                        showPreviousTipSelphId = it
-                    }
-                    BaseCheckView(
-                        modifier = Modifier.weight(1f),
-                        checkValue = showTutorialSelphId,
-                        text = stringResource(id = R.string.onboarding_show_tutorial)
-                    ) {
-                        showTutorialSelphId = it
-                    }
-                }
-
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    BaseCheckView(
-                        checkValue = showDiagnosticSelphId,
-                        text = stringResource(id = R.string.onboarding_show_diagnostic)
-                    ) {
-                        showDiagnosticSelphId = it
-                    }
-                }
-
-                BaseButton(
-                    modifier = Modifier,
-                    text = stringResource(id = R.string.onboarding_launch_selphid),
-                    enabled = newOperationClicked,
-                    onClick = {
-                        viewModel.launchSelphId(
-                            showTutorial = showTutorialSelphId,
-                            showPreviousTip = showPreviousTipSelphId,
-                            showDiagnostic = showDiagnosticSelphId
-                        )
-                    })
-            }
-        }
-
-        BaseButton(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.onboarding_stop_recording),
+        // Video Recording
+        StartAndStopCard(
+            title = stringResource(id = R.string.onboarding_title_videorecording),
+            desc = stringResource(id = R.string.onboarding_desc_videorecording),
             enabled = newOperationClicked,
-            onClick = {
+            startButtonText = stringResource(id = R.string.onboarding_launch_videorecording),
+            stopButtonText = stringResource(id = R.string.onboarding_launch_stop_videorecording),
+            resultValue = videoResult,
+            onStart = {
+                viewModel.launchVideoRecording{
+                    videoResult = it
+                }
+            },
+            onStop = {
                 viewModel.stopVideoRecording()
-            })
+            },
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        BaseComponentCard(
+            title = stringResource(id = R.string.onboarding_title_selphi),
+            desc = stringResource(id = R.string.onboarding_desc_selphi),
+            buttonText = stringResource(id = R.string.onboarding_launch_selphi),
+            enabled = newOperationClicked,
+            resultValue = selphiResult,
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
+                viewModel.launchSelphi(
+                    showTutorial = showTutorial,
+                    showPreviousTip = showPreviousTip,
+                    showDiagnostic = showDiagnostic
+                ){
+                    selphiResult = it
+                }
+            }
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        SelphIDComponentCard(
+            buttonText = stringResource(id = R.string.onboarding_launch_selphid),
+            title = stringResource(id = R.string.onboarding_title_selphid),
+            desc = stringResource(id = R.string.onboarding_desc_selphid),
+            enabled = newOperationClicked,
+            resultValue = selphIdResult,
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic,
+                         wizardMode, showResultAfterCapture, scanMode, specificData,
+                         fullscreen, documentType, documentSide, generateRawImages
+                ->
+                viewModel.launchSelphId(
+                    showTutorial = showTutorial,
+                    showPreviousTip = showPreviousTip,
+                    showDiagnostic = showDiagnostic,
+                    wizardMode = wizardMode,
+                    showResultAfterCapture = showResultAfterCapture,
+                    scanMode = scanMode,
+                    specificData = specificData,
+                    fullscreen = fullscreen,
+                    documentType = documentType,
+                    documentSide = documentSide,
+                    generateRawImages = generateRawImages
+                ){
+                    selphIdResult = it
+                }
+            }
+        )
+
+        Spacer(Modifier.height(16.dp))
 
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .fillMaxWidth(),
             text = BuildConfig.LIBRARY_VERSION,
             style = TextStyle(
                 fontWeight = FontWeight.Normal,
@@ -248,12 +177,16 @@ fun MainScreen(
         )
 
         if (logs.value.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
             BaseTextButton(
                 enabled = true,
                 text = "Clear logs",
                 onClick = {
                     viewModel.clearLogs()
+                    selphiResult = UIComponentResult.PENDING
+                    selphIdResult = UIComponentResult.PENDING
+                    videoResult = UIComponentResult.PENDING
                 })
 
             Text(

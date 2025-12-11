@@ -67,15 +67,13 @@ dependencies {
     implementation(compose.material3)
     debugImplementation(compose.uiTooling)
     implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.material.icons.extended)
 
     // Ktor Client Http
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.logging)
-
-    // Logs
-    implementation(libs.napier)
 
     // SDK Facephi
     implementation (libs.facephi.sdk)

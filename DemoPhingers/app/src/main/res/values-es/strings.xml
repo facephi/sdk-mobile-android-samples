@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="phingers_component_left_hand">Prepara tu mano izquierda para la captura</string>
-    <string name="phingers_component_right_hand">Prepara tu mano derecha para la captura</string>
-    <string name="phingers_component_action_text">Tomar huellas</string>
-    <string name="phingers_component_capture_phingers">Mantenga los dedos firmes</string>
-    <string name="phingers_component_capture_thumb">Mantenga el dedo firmes</string>
-    <string name="phingers_component_capture_phingers_not_focus">Mueva los dedos hasta que estén enfocados</string>
-    <string name="phingers_component_capture_thumb_not_focus">Mova o dedo até que esteja focado</string>
-    <string name="phingers_demo_capture_orientation">Orientación de la captura:</string>
-    <string name="phingers_demo_new_operation">Nueva operación</string>
-    <string name="phingers_demo_launch_capture">Lanzar captura</string>
-    <string name="phingers_demo_launch_matching">Lanzar matching</string>
-    <string name="phingers_demo_show_tutorial">Tutorial</string>
-    <string name="phingers_demo_show_previous_tip">Pantalla previa</string>
-    <string name="phingers_demo_diagnostic">Diagnóstico</string>
-    <string name="phingers_demo_clear_logs">Limpiar logs</string>
-    <string name="phingers_demo_finger_filter">Dedos:</string>
+    <string name="onboarding_title_operation" >Operación</string>
+    <string name="onboarding_desc_operation" >Nueva operación del SDK</string>
+    <string name="onboarding_init_operation" >Crear</string>
+    <string name="onboarding_launch_phinger">Lanzar</string>
+    <string name="onboarding_title_phinger">Phingers</string>
+    <string name="onboarding_desc_phinger">Captura de huellas dactilares</string>
+    <string name="onboarding_show_previous_tip">Pantalla previa</string>
+    <string name="onboarding_show_tutorial">Tutorial</string>
+    <string name="onboarding_show_diagnostic">Diagnóstico</string>
+    <string name="onboarding_left">Izquierda</string>
+    <string name="onboarding_right">Derecha</string>
+    <string name="onboarding_choose_hand">Elige mano</string>
+    <string name="onboarding_choose_filter">Selecciona filtro</string>
+    <string name="onboarding_result_ok">Resultado correcto</string>
+    <string name="onboarding_result_error">Resultado erróneo</string>
+    <string name="onboarding_fingerfilter_slap">Mano completa</string>
+    <string name="onboarding_fingerfilter_all_4_fingers_one_by_one">4 dedos uno por uno</string>
+    <string name="onboarding_fingerfilter_all_5_fingers_one_by_one">5 dedos uno por uno</string>
+    <string name="onboarding_fingerfilter_index_finger">Dedo índice</string>
+    <string name="onboarding_fingerfilter_middle_finger">Dedo corazón</string>
+    <string name="onboarding_fingerfilter_ring_finger">Dedo anular</string>
+    <string name="onboarding_fingerfilter_little_finger">Dedo meñique</string>
+    <string name="onboarding_fingerfilter_thumb_finger">Pulgar</string>
 </resources>

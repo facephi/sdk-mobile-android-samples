@@ -14,6 +14,35 @@ import com.facephi.sdk.SDKController
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /*
+       // Ask for location permissions
+       val locationPermissionRequest = registerForActivityResult(
+           ActivityResultContracts.RequestMultiplePermissions()
+       ) { permissions ->
+           when {
+               permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                   // Precise location access granted.
+               }
+
+               permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                   // Only approximate location access granted.
+               }
+
+               else -> {
+                   // No location access granted.
+               }
+           }
+       }
+
+       locationPermissionRequest.launch(
+           arrayOf(
+               Manifest.permission.ACCESS_FINE_LOCATION,
+               Manifest.permission.ACCESS_COARSE_LOCATION
+           )
+       )
+       */
+
         setContent {
             DemoVideoIdTheme {
                 Surface(

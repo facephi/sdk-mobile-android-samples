@@ -1,14 +1,22 @@
 <resources>
     <string name="app_name" translatable="false">Demo Voice ID</string>
-    <string name="new_operation">New Operation</string>
-    <string name="voice_tutorial">Tutorial</string>
-    <string name="voice_previous_tip">Previous Tip</string>
-    <string name="voice_diagnostic">Diagnostic</string>
-    <string name="clear_logs">Clear logs</string>
-    <string name="voice_enroll">Voice enrollment</string>
-    <string name="voice_auth">Voice authentication</string>
-    <string name="voice_play">Play voice audios</string>
-    <string name="voice_verifications">Launch verifications</string>
-    <string name="voice_phrase_1">Full ID card number</string>
-    <string name="voice_phrase_2">Repeat your ID card number</string>
+    <string name="onboarding_title_operation" >Operation</string>
+    <string name="onboarding_desc_operation" >Create a new operation and finish it</string>
+    <string name="onboarding_init_operation" >Create</string>
+    <string name="onboarding_launch_enroll">Enrollment</string>
+    <string name="onboarding_launch_auth">Authentication</string>
+    <string name="onboarding_title_voice">Voice ID</string>
+    <string name="onboarding_desc_voice">Voice Capture</string>
+    <string name="onboarding_show_previous_tip">Previous tip</string>
+    <string name="onboarding_show_tutorial">Tutorial</string>
+    <string name="onboarding_show_diagnostic">Diagnostic</string>
+    <string name="onboarding_result_ok">Result OK</string>
+    <string name="onboarding_result_error">Result error</string>
+    <string name="onboarding_clear_logs">Clear logs</string>
+    <string name="onboarding_play">Play</string>
+    <string name="onboarding_verifications">Launch verifications</string>
+    <string name="onboarding_phrase_1">Full ID card number</string>
+    <string name="onboarding_phrase_2">Repeat your ID card number</string>
+    <string name="onboarding_title_media">Media</string>
+    <string name="onboarding_desc_media">Play audio files</string>
 </resources>

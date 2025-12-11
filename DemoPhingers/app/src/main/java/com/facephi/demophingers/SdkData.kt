@@ -3,6 +3,9 @@ package com.facephi.demophingers
 
 import com.facephi.core.data.OperationType
 import com.facephi.core.data.SdkApplication
+import com.facephi.phingers_tf_component.data.configuration.CaptureOrientation
+import com.facephi.phingers_tf_component.data.configuration.FingerFilter
+import com.facephi.phingers_tf_component.data.configuration.PhingersConfigurationData
 import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
@@ -12,7 +15,7 @@ import com.facephi.sdk.data.SdkConfigurationData
 object SdkData {
     // ************** LICENSE **************
 
-    const val LICENSE_ONLINE = false
+    const val LICENSE_ONLINE = true
 
     val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
         apiKey = "..."
@@ -33,6 +36,20 @@ object SdkData {
             LicensingOffline(LICENSE)
         },
         trackingController = null // or TrackingController()
+    )
+
+    fun getConfiguration(
+        showPreviousTip: Boolean,
+        showDiagnostic: Boolean,
+        liveness: Boolean,
+        captureOrientation: CaptureOrientation,
+        fingerFilter: FingerFilter,
+    ) = PhingersConfigurationData(
+        showPreviousTip = showPreviousTip,
+        useLiveness = liveness,
+        showDiagnostic = showDiagnostic,
+        reticleOrientation = captureOrientation,
+        fingerFilter = fingerFilter
     )
 
 }

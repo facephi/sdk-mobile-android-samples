@@ -1,19 +1,17 @@
 # Facephi SDK Dependencies
 [versions]
-kotlin = "2.2.20"
-androidGradlePlugin = "8.13.0"
-composePlugin = "1.9.0"
-activityComposeVersion = "1.11.0"
+kotlin = "2.2.21"
+androidGradlePlugin = "8.13.1"
+composePlugin = "1.9.3"
+activityComposeVersion = "1.12.0"
 coreKtxVersion = "1.17.0"
-lifecycleRuntimeKtxVersion = "2.9.4"
-ktorVersion = "3.3.0"
-napierVersion = "2.7.1"
-lifecycle_viewmodel_version = '2.9.4'
+lifecycleRuntimeKtxVersion = "2.10.0"
+lifecycle_viewmodel_version = '2.10.0'
 kotlinxDatetime = "0.7.1"
 materialIconsExtendedVersion = "1.7.3"
 
 # FACEPHI SDK VERSION
-facephiVersion = "2.4.2"
+facephiVersion = "2.5.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -22,13 +20,6 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle_viewmodel_version" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtendedVersion" }
-# Ktor Http Client
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorVersion" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorVersion" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorVersion" }
-# Logs
-napier = { module = "io.github.aakira:napier", version.ref = "napierVersion" }
 
 # FACEPHI SDK
 facephi-sdk = { module = "com.facephi.androidsdk:sdk", version.ref = "facephiVersion" }

@@ -1,17 +1,17 @@
 # Facephi SDK Dependencies
 [versions]
-kotlin = "2.2.20"
-androidGradlePlugin = "8.13.0"
-compose-plugin = "1.9.0"
-activityComposeVersion = "1.11.0"
+kotlin = "2.2.21"
+androidGradlePlugin = "8.13.1"
+compose-plugin = "1.9.3"
+activityComposeVersion = "1.12.1"
 coreKtxVersion = "1.17.0"
-lifecycleRuntimeKtxVersion = "2.9.4"
-lifecycle_viewmodel_version = '2.9.4'
+lifecycleRuntimeKtxVersion = "2.10.0"
+lifecycle_viewmodel_version = '2.10.0'
 android_material_version = '1.13.0'
 kotlinxDatetime = "0.7.1"
-napierVersion = "2.7.1"
+materialIconsExtendedVersion = "1.7.3"
 # FACEPHI SDK VERSION
-facephiVersion = "2.4.2"
+facephiVersion = "2.5.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -20,10 +20,11 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle_viewmodel_version" }
 android-material = { module = "com.google.android.material:material", version.ref = "android_material_version" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
-napier = { module = "io.github.aakira:napier", version.ref = "napierVersion" }
+material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtendedVersion" }
+
 # FACEPHI SDK
 facephi-sdk = { module = "com.facephi.androidsdk:sdk", version.ref = "facephiVersion" }
-facephi-phingers = { module = "com.facephi.androidsdk:phingers_component", version.ref = "facephiVersion" }
+facephi-phingers = { module = "com.facephi.androidsdk:phingers_tf_component", version.ref = "facephiVersion" }
 facephi-tracking = { module = "com.facephi.androidsdk:tracking_component", version.ref = "facephiVersion" }
 
 [plugins]

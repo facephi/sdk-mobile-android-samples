@@ -1,5 +1,6 @@
 package com.facephi.demonfc
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
@@ -9,9 +10,7 @@ import com.facephi.nfc_component.NfcController
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import com.facephi.sdk.SDKController
 import com.facephi.selphid_component.SelphIDController
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
-
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.ExperimentalTime
@@ -22,8 +21,8 @@ class MainViewModel : ViewModel() {
     fun initSdk(sdkApplication: SdkApplication) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-                Napier.i { "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
-                        " ${eventType.name} -  ${info ?: ""} " }
+                Log.i ( "APP", "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                        " ${eventType.name} -  ${info ?: ""} " )
             }
 
             if (BuildConfig.DEBUG) {
@@ -32,8 +31,8 @@ class MainViewModel : ViewModel() {
 
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {
-                is SdkResult.Success -> Napier.d("INIT SDK OK")
-                is SdkResult.Error -> Napier.d("INIT SDK ERROR: ${result.error}")
+                is SdkResult.Success ->Log.i ( "APP", "INIT SDK OK")
+                is SdkResult.Error -> Log.i ( "APP", "INIT SDK ERROR: ${result.error}")
             }
 
             /*SDKController.launch(TrackingErrorController {
@@ -94,7 +93,6 @@ class MainViewModel : ViewModel() {
                                 documentNumber = nfcKey, // Num support.
                                 birthDate = birthDate, // "dd/MM/yyyy"
                                 expirationDate = expirationDate, // "dd/MM/yyyy",
-                                enableDebugMode = true,
                                 showTutorial = showTutorial,
                                 skipPACE = skipPACE,
                                 documentType = SdkData.getNfcDocType(docType),
@@ -123,23 +121,23 @@ class MainViewModel : ViewModel() {
                 SDKController.launch(
                     NfcController(componentData = nfcConfigurationData,
                         debugLogs = {
-                            Napier.d("APP: Logs: $it")
+                            Log.d ( "APP", "Logs: $it")
                             debugLogs("NFC: Logs: $it")
                         },
                         state = { state ->
-                            Napier.d("APP: NFC  State: ${state.name}")
+                            Log.d ( "APP", "State: ${state.name}")
                             debugLogs("NFC: State: ${state.name}")
                         })
                 )) {
 
                 is SdkResult.Success -> {
-                    Napier.d("APP: NFC OK")
+                    Log.i ( "APP", "NFC OK")
                     debugLogs("NFC: OK")
                     debugLogs("VALIDATIONS: ${result.data.nfcValidations}")
                 }
 
                 is SdkResult.Error -> {
-                    Napier.d("APP: NFC ERROR - ${result.error}")
+                    Log.i ( "APP", "NFC ERROR - ${result.error}")
                     debugLogs("NFC: ERROR - ${result.error}")
                 }
             }

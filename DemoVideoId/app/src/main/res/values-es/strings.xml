@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DemoVideoId</string>
-    <string name="demo_new_operation" >Nueva operación</string>
-    <string name="demo_launch_video">Lanzar Video ID</string>
+    <string name="onboarding_init_message">Inicializando SDK...</string>
+    <string name="onboarding_init_error">ERROR inicializando SDK: </string>
+    <string name="onboarding_title_operation" >Operación</string>
+    <string name="onboarding_desc_operation" >Nueva operación del SDK</string>
+    <string name="onboarding_init_operation" >Crear</string>
+    <string name="onboarding_launch_video">Lanzar</string>
+    <string name="onboarding_title_video">Selphi</string>
+    <string name="onboarding_desc_video">Captura facial</string>
+    <string name="onboarding_show_auto_face">Detección de cara automática</string>
+    <string name="onboarding_result_ok">Resultado correcto</string>
+    <string name="onboarding_result_error">Resultado erróneo</string>
 </resources>

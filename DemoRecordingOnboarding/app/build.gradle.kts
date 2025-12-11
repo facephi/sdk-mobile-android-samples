@@ -66,6 +66,7 @@ dependencies {
     implementation(compose.preview)
     implementation(compose.material3)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.material.icons.extended)
     debugImplementation(compose.uiTooling)
 
     // SDK Facephi
@@ -75,6 +76,4 @@ dependencies {
     implementation (libs.facephi.recording)
     //implementation (libs.facephi.tracking)
 
-    // Logs
-    implementation(libs.napier)
 }

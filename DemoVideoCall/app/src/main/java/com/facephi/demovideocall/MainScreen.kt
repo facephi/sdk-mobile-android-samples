@@ -2,6 +2,7 @@ package com.facephi.demovideocall
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
+import com.facephi.demovideocall.ui.composables.ButtonCard
+import com.facephi.demovideocall.ui.composables.StartAndStopCard
+import com.facephi.demovideocall.ui.data.UIComponentResult
 import com.facephi.demovideoid.ui.composables.BaseButton
 import com.facephi.demovideoid.ui.composables.BaseTextButton
 
@@ -42,6 +46,7 @@ fun MainScreen(
 
     val logs = viewModel.logs.collectAsState()
     var newOperationClicked by rememberSaveable { mutableStateOf(false) }
+    var videoResult by rememberSaveable { mutableStateOf(UIComponentResult.PENDING) }
 
     LaunchedEffect(Unit) {
         viewModel.initSdk(sdkApplication)
@@ -63,30 +68,41 @@ fun MainScreen(
                 .height(75.dp)
         )
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.demo_new_operation),
+        ButtonCard(
+            title = stringResource(id = R.string.demo_title_operation),
+            desc = stringResource(id = R.string.demo_desc_operation),
+            enabled = true,
+            buttonText = stringResource(id = R.string.demo_init_operation),
             onClick = {
-                newOperationClicked = true
-                viewModel.newOperation()
-            })
+                viewModel.newOperation {
+                    newOperationClicked = true
+                }
+            },
+        )
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.demo_launch_video),
-            enabled = newOperationClicked,
-            onClick = {
-                viewModel.launchVideoCall()
-            })
+        Spacer(Modifier.height(8.dp))
 
-        BaseButton(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.demo_stop_video),
+        StartAndStopCard(
+            title = stringResource(id = R.string.demo_title_video),
+            desc = stringResource(id = R.string.demo_desc_video),
             enabled = newOperationClicked,
-            onClick = {
+            startButtonText = stringResource(id = R.string.demo_launch_video),
+            stopButtonText = stringResource(id = R.string.demo_stop_video),
+            resultValue = videoResult,
+            onStart = {
+                viewModel.launchVideoCall {
+                    videoResult = it
+                }
+            },
+            onStop = {
                 viewModel.stopScreenSharing()
-            })
+            },
+        )
+
+        Spacer(Modifier.height(16.dp))
 
         Text(
-            modifier = Modifier.fillMaxWidth()
-                .padding(bottom = 8.dp),
+            modifier = Modifier.fillMaxWidth(),
             text = BuildConfig.LIBRARY_VERSION,
             style =  TextStyle(
                 fontWeight = FontWeight.Normal,
@@ -96,12 +112,14 @@ fun MainScreen(
         )
 
         if (logs.value.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
             BaseTextButton(
                 enabled = true,
                 text = "Clear logs",
                 onClick = {
                     viewModel.clearLogs()
+                    videoResult = UIComponentResult.PENDING
                 })
 
             Text(
