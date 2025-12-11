@@ -35,9 +35,6 @@ object SdkData {
     const val SELPHI_RESOURCES = "resources-selphi-2-0.zip"
     const val SELPHID_RESOURCES = "resources-selphid-2-0.zip"
 
-    const val BASE_URL = ""
-    const val API_KEY = ""
-
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,
         licensing = if (LICENSE_ONLINE) {
@@ -68,19 +65,27 @@ object SdkData {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        wizardMode: Boolean,
+        showResultAfterCapture: Boolean,
+        scanMode: SelphIDScanMode,
+        specificData: String,
+        fullscreen: Boolean,
+        documentType: SelphIDDocumentType,
+        documentSide: SelphIDDocumentSide,
+        generateRawImages: Boolean,
     ) = SelphIDConfigurationData(
         showTutorial = showTutorial,
         showPreviousTip = showPreviousTip,
         showDiagnostic = showDiagnostic,
-        wizardMode = true,
-        showResultAfterCapture = true,
-        scanMode = SelphIDScanMode.MODE_SEARCH,
-        specificData = "ES|<ALL>",
-        fullscreen = true,
-        documentType = SelphIDDocumentType.ID_CARD,
-        documentSide = SelphIDDocumentSide.FRONT,
+        wizardMode = wizardMode,
+        showResultAfterCapture = showResultAfterCapture,
+        scanMode = scanMode,
+        specificData = specificData,
+        fullscreen = fullscreen,
+        documentType = documentType,
+        documentSide = documentSide,
         timeout = SelphIDTimeout.LONG,
-        generateRawImages = false,
+        generateRawImages = generateRawImages,
         resourcesPath = SELPHID_RESOURCES,
     )
 

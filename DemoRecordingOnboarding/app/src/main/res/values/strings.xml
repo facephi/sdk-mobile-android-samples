@@ -21,4 +21,5 @@
     <string name="onboarding_show_diagnostic">Diagnostic</string>
     <string name="onboarding_result_ok">Result OK</string>
     <string name="onboarding_result_error">Result error</string>
+    <string name="onboarding_configuration">Advanced configuration</string>
 </resources>

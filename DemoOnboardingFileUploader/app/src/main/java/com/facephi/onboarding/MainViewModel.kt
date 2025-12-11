@@ -14,6 +14,9 @@ import com.facephi.sdk.SDKController
 import com.facephi.selphi_component.RawTemplateController
 import com.facephi.selphi_component.SelphiController
 import com.facephi.selphid_component.SelphIDController
+import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
+import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
+import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import com.facephi.video_recording_component.StopVideoRecordingController
 import com.facephi.video_recording_component.VideoRecordingController
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -133,9 +136,17 @@ class MainViewModel : ViewModel() {
     }
 
     fun launchSelphId(
-        showTutorial: Boolean,
         showPreviousTip: Boolean,
+        showTutorial: Boolean,
         showDiagnostic: Boolean,
+        wizardMode: Boolean,
+        showResultAfterCapture: Boolean,
+        scanMode: SelphIDScanMode,
+        specificData: String,
+        fullscreen: Boolean,
+        documentType: SelphIDDocumentType,
+        documentSide: SelphIDDocumentSide,
+        generateRawImages: Boolean,
         onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
@@ -145,7 +156,15 @@ class MainViewModel : ViewModel() {
                         SdkData.getSelphIDConfiguration(
                             showTutorial = showTutorial,
                             showPreviousTip = showPreviousTip,
-                            showDiagnostic = showDiagnostic
+                            showDiagnostic = showDiagnostic,
+                            wizardMode = wizardMode,
+                            showResultAfterCapture = showResultAfterCapture,
+                            scanMode = scanMode,
+                            specificData = specificData,
+                            fullscreen = fullscreen,
+                            documentType = documentType,
+                            documentSide = documentSide,
+                            generateRawImages = generateRawImages
                         )
                     )
                 )) {

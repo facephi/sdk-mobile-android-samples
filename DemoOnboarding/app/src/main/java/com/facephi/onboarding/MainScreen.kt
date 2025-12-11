@@ -42,6 +42,7 @@ import com.facephi.onboarding.ui.composables.BaseCheckView
 import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
 import com.facephi.onboarding.ui.composables.ButtonCard
+import com.facephi.onboarding.ui.composables.SelphIDComponentCard
 import com.facephi.onboarding.ui.data.UIComponentResult
 
 @Composable
@@ -109,22 +110,34 @@ fun MainScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        BaseComponentCard(
+        SelphIDComponentCard(
             buttonText = stringResource(id = R.string.onboarding_launch_selphid),
             title = stringResource(id = R.string.onboarding_title_selphid),
             desc = stringResource(id = R.string.onboarding_desc_selphid),
             enabled = newOperationClicked,
             resultValue = selphIdResult,
-            onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic,
+                         wizardMode, showResultAfterCapture, scanMode, specificData,
+                         fullscreen, documentType, documentSide, generateRawImages
+                ->
                 viewModel.launchSelphId(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
-                    showDiagnostic = showDiagnostic
+                    showDiagnostic = showDiagnostic,
+                    wizardMode = wizardMode,
+                    showResultAfterCapture = showResultAfterCapture,
+                    scanMode = scanMode,
+                    specificData = specificData,
+                    fullscreen = fullscreen,
+                    documentType = documentType,
+                    documentSide = documentSide,
+                    generateRawImages = generateRawImages
                 ){
                     selphIdResult = it
                 }
             }
         )
+
 
         Spacer(Modifier.height(16.dp))
 

@@ -1,9 +1,7 @@
 package com.facephi.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,11 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
-import com.facephi.onboarding.ui.composables.BaseButton
-import com.facephi.onboarding.ui.composables.BaseCheckView
-import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
 import com.facephi.onboarding.ui.composables.ButtonCard
+import com.facephi.onboarding.ui.composables.SelphIDComponentCard
 import com.facephi.onboarding.ui.data.UIComponentResult
 
 @Composable
@@ -87,17 +82,28 @@ fun MainScreen(
         )
 
         Spacer(Modifier.height(8.dp))
-        BaseComponentCard(
+        SelphIDComponentCard(
             buttonText = stringResource(id = R.string.onboarding_launch_selphid),
             title = stringResource(id = R.string.onboarding_title_selphid),
             desc = stringResource(id = R.string.onboarding_desc_selphid),
             enabled = newOperationClicked,
             resultValue = selphIdResult,
-            onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic,
+                         wizardMode, showResultAfterCapture, scanMode, specificData,
+                         fullscreen, documentType, documentSide, generateRawImages
+                ->
                 viewModel.launchSelphId(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
-                    showDiagnostic = showDiagnostic
+                    showDiagnostic = showDiagnostic,
+                    wizardMode = wizardMode,
+                    showResultAfterCapture = showResultAfterCapture,
+                    scanMode = scanMode,
+                    specificData = specificData,
+                    fullscreen = fullscreen,
+                    documentType = documentType,
+                    documentSide = documentSide,
+                    generateRawImages = generateRawImages
                 ){
                     selphIdResult = it
                 }
