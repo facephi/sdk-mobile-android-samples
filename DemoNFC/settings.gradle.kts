@@ -27,6 +27,20 @@ dependencyResolutionManagement {
                 password = token
             }
         }
+        maven {
+            url = uri("https://facephicorp.jfrog.io/artifactory/maven-dev-fphi")
+            credentials {
+                username = user
+                password = token
+            }
+        }
+        maven {
+            url = uri("https://facephicorp.jfrog.io/artifactory/maven-snapshot-fphi")
+            credentials {
+                username = user
+                password = token
+            }
+        }
     }
 }
 

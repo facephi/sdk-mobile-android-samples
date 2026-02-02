@@ -1,4 +1,4 @@
-package com.facephi.demonfc.ui.composables
+package com.facephi.demonfc.ui.composables.disclaimer
 
 import android.widget.TextView
 import androidx.compose.runtime.Composable
