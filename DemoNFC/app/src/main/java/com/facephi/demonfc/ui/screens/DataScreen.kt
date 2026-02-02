@@ -51,8 +51,8 @@ fun DataScreen(
     val context = LocalContext.current
     val logs = remember { mutableStateListOf<String>() }
 
-    val personalData by viewModel.personalData .collectAsState()
-    val nfcResult by viewModel.nfcResult .collectAsState()
+    val personalData by viewModel.personalData.collectAsState()
+    val nfcResult by viewModel.nfcResult.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,9 +61,10 @@ fun DataScreen(
             .verticalScroll(rememberScrollState())
     ) {
 
-        BaseButton(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
+        BaseButton(
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
             text = stringResource(id = R.string.nfc_new_operation), onClick = {
-                Log.i ( "APP", "LAUNCH NEW OPERATION")
+                Log.i("APP", "LAUNCH NEW OPERATION")
                 logs.clear()
 
                 viewModel.newOperation {

@@ -32,11 +32,13 @@ class MainViewModel : ViewModel() {
     private val _nfcResult = MutableStateFlow(UIComponentResult.PENDING)
     val nfcResult: StateFlow<UIComponentResult> = _nfcResult.asStateFlow()
 
-    fun initSdk(sdkApplication: SdkApplication, onError: (String) -> Unit){
+    fun initSdk(sdkApplication: SdkApplication, onError: (String) -> Unit) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
-                Log.i ( "APP", "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
-                        " ${eventType.name} -  ${info ?: ""} " )
+                Log.i(
+                    "APP", "*** ${formatEpochMillis(time)} - ${componentName.name} -" +
+                            " ${eventType.name} -  ${info ?: ""} "
+                )
             }
 
             if (BuildConfig.DEBUG) {
@@ -45,9 +47,9 @@ class MainViewModel : ViewModel() {
 
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {
-                is SdkResult.Success ->Log.i ( "APP", "INIT SDK OK")
+                is SdkResult.Success -> Log.i("APP", "INIT SDK OK")
                 is SdkResult.Error -> {
-                    Log.i ( "APP", "INIT SDK ERROR: ${result.error}")
+                    Log.i("APP", "INIT SDK ERROR: ${result.error}")
                     onError(result.error.name)
                 }
             }
@@ -92,6 +94,7 @@ class MainViewModel : ViewModel() {
                     returnLogWithDate("SelphID: KO - ${result.error}", debugLogs)
                     _nfcResult.update { UIComponentResult.ERROR }
                 }
+
                 is SdkResult.Success -> {
                     returnLogWithDate("SelphID: OK", debugLogs)
                     debugLogs("SelphID: Issuer :${result.data.personalData?.issuer}")
@@ -140,18 +143,19 @@ class MainViewModel : ViewModel() {
         debugLogs("NFC - Configuration: SkipPace :${nfcConfigurationData.skipPACE}")
         viewModelScope.launch {
             val result = SDKController.launch(
-                NfcController(componentData = nfcConfigurationData,
+                NfcController(
+                    componentData = nfcConfigurationData,
                     debugLogs = {
                         returnLogWithDate(it, debugLogs)
                     },
                     state = { state ->
-                        Log.d("APP","NFC  State: ${state.name}")
+                        Log.d("APP", "NFC  State: ${state.name}")
                         returnLogWithDate("NFC: State: ${state.name}", debugLogs)
                     })
             )
             when (result) {
                 is SdkResult.Success -> {
-                    Log.d("APP"," NFC OK")
+                    Log.d("APP", " NFC OK")
                     returnLogWithDate("NFC finish OK", debugLogs)
                     debugLogs("VALIDATIONS: ${result.data.nfcValidations}")
                     result.data.nfcDocumentInformation?.type?.let {
@@ -167,14 +171,14 @@ class MainViewModel : ViewModel() {
                     result.data.nfcImages?.facialImage?.let {
                         Images.faceImage = it
                         debugLogs("FACIAL image extracted")
-                    }?: run{
+                    } ?: run {
                         debugLogs("FACIAL image NULL")
                     }
 
                     result.data.nfcImages?.signatureImage?.let {
                         Images.signatureImage = it
                         debugLogs("SIGNATURE image extracted")
-                    } ?: run{
+                    } ?: run {
                         debugLogs("SIGNATURE image NULL")
                     }
 
@@ -184,7 +188,7 @@ class MainViewModel : ViewModel() {
                 }
 
                 is SdkResult.Error -> {
-                    Log.d("APP"," NFC ERROR - ${result.error}")
+                    Log.d("APP", " NFC ERROR - ${result.error}")
                     returnLogWithDate("NFC: ERROR - ${result.error}", debugLogs)
                     _nfcResult.update { UIComponentResult.ERROR }
                 }
@@ -192,14 +196,14 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun clearData(){
+    fun clearData() {
         _personalData.value = null
         _nfcResult.value = UIComponentResult.PENDING
         Images.clear()
     }
 
     @OptIn(ExperimentalTime::class)
-    fun returnLogWithDate(msg: String, debugLogs: (String) -> Unit){
+    fun returnLogWithDate(msg: String, debugLogs: (String) -> Unit) {
         debugLogs("${formatEpochMillis()} $msg")
     }
 

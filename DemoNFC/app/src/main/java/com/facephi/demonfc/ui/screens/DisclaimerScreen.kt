@@ -62,7 +62,7 @@ fun DisclaimerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
-            text = stringResource(id = com.facephi.demonfc.R.string.nfc_rgpd_title),
+            text = stringResource(id = com.facephi.demonfc.R.string.nfc_gdpr_title),
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
             fontSize = 18.sp
@@ -85,7 +85,7 @@ fun DisclaimerScreen(
 
             HtmlTextView(
                 modifier = Modifier.padding(8.dp),
-                html = stringResource(id = R.string.nfc_rgpd_text)
+                html = stringResource(id = R.string.nfc_gdpr_text)
             )
 
         }

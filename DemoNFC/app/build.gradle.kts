@@ -16,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "nfc.com"
+        applicationId = "..."
         minSdk = 24
         targetSdk = 36
         versionCode = 1

@@ -9,7 +9,7 @@ lifecycleRuntimeKtxVersion = "2.10.0"
 kotlinxDatetime = "0.7.1"
 materialIconsExtendedVersion = "1.7.3"
 # FACEPHI SDK VERSION
-facephiVersion = "2.6.0-SNAPSHOT"
+facephiVersion = "2.6.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }

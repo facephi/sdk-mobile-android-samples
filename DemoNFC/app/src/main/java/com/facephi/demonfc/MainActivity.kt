@@ -38,12 +38,12 @@ import com.facephi.sdk.SDKController
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
-    private var error : String? = null
+    private var error: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d ( "APP", "LAUNCH INIT SDK")
+        Log.d("APP", "LAUNCH INIT SDK")
         viewModel.initSdk(SdkApplication(application), onError = {
             error = it
         })
@@ -99,20 +99,24 @@ class MainActivity : ComponentActivity() {
                                         Intent.EXTRA_EMAIL,
                                         arrayOf("sdkmobile@facephi.com")
                                     )
-                                    putExtra(Intent.EXTRA_SUBJECT, "Prueba NFC Samples Android (${viewModel.formatEpochMillis()})")
+                                    putExtra(
+                                        Intent.EXTRA_SUBJECT,
+                                        "Prueba NFC Samples Android (${viewModel.formatEpochMillis()})"
+                                    )
                                     putExtra(Intent.EXTRA_TEXT, message)
                                 }
 
                                 try {
                                     this.startActivity(intent)
                                 } catch (e: Exception) {
-                                    Log.e ( "APP", "EMAIL ERROR $e")
+                                    Log.e("APP", "EMAIL ERROR $e")
                                 }
                             }
                         } else {
-                            DisclaimerScreen(modifier = Modifier
-                                .fillMaxSize()
-                                .padding(it),
+                            DisclaimerScreen(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(it),
                                 onCancel = {
                                     this@MainActivity.finish()
 

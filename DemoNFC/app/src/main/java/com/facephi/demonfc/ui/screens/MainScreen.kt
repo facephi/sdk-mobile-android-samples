@@ -67,9 +67,10 @@ fun MainScreen(
             .verticalScroll(rememberScrollState())
     ) {
 
-        BaseButton(modifier = Modifier.padding(top = 16.dp),
+        BaseButton(
+            modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = R.string.nfc_new_operation), onClick = {
-                Log.i ( "APP", "LAUNCH NEW OPERATION")
+                Log.i("APP", "LAUNCH NEW OPERATION")
                 logs.clear()
                 viewModel.clearData()
 
@@ -91,7 +92,7 @@ fun MainScreen(
                          extractSignature: Boolean,
                          documentType: DocumentType,
                          skipPace: Boolean,
-                         readingProgressStyle : ReadingProgressStyle ->
+                         readingProgressStyle: ReadingProgressStyle ->
 
                 Images.clear()
                 viewModel.clearData()
