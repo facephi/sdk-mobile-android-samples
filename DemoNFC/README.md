@@ -1,21 +1,31 @@
-# DEMO NFC
+# Demo NFC
 
+Demo app to validate an onboarding flow using the Facephi SDK.
 
-## 1. Introduction
+## Overview
 
-In this demo you can carry out an onboarding process using the Facephi SDK.
-The components used are:
-
+**Components**
 - Core
-- Sdk
+- SDK
 - NFC
-- SelphId
+- SelphID
 
-## 2. Demo App Detail
+**What you can do**
+- Capture document data with SelphID (MRZ)
+- Read the NFC chip using captured or manual data
 
-### 2.1 Dependencies
+## App flow
 
-The following code must be included in the settings.gradle file, normally after mavenCentral(), to download the Facephi libraries:
+1. **Terms and conditions**: a screen shows the terms of use. You must scroll to the end to enable the **Accept** button and proceed.
+2. **Main screen with tabs**:
+   - **SelphID + NFC**: first, the document data is captured with the camera by reading the MRZ; then those data are used to read the NFC chip. In SelphID configuration you can change the document country to read.
+   - **NFC**: allows manually entering the required data to read the NFC chip.
+
+## Setup
+
+### Maven repository
+
+Add this to `settings.gradle` (usually after `mavenCentral()`):
 
 ```
 maven {
@@ -31,95 +41,71 @@ maven {
         password = props["artifactory.token"] 
     }
 }
-
 ```
 
-Users must be provided by Facephi and included in the local.properties:
+Add credentials in `local.properties`:
 
 ```
 artifactory.user=TUS_CREDENCIALES_USER
 artifactory.token=TUS_CREDENCIALES_TOKEN
 ```
 
-The library dependencies can be imported directly into gradle (from libs):
+### Gradle dependencies
 
 ```
-    implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
-    implementation (libs.facephi.selphid)
-    implementation (libs.facephi.nfc){
-        exclude group : "org.bouncycastle", module : "bcprov-jdk15on"
-        exclude group : "org.bouncycastle", module : "jetified-bcprov-jdk15on-1.68"
+implementation (libs.facephi.sdk)
+implementation (libs.facephi.core)
+implementation (libs.facephi.selphid)
+implementation (libs.facephi.nfc){
+    exclude group : "org.bouncycastle", module : "bcprov-jdk15on"
+    exclude group : "org.bouncycastle", module : "jetified-bcprov-jdk15on-1.68"
+}
+```
+
+For the NFC component add:
+
+```
+packaging {
+    resources {
+        pickFirsts.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
     }
-
+}
 ```
 
-For the NFC component it is necessary to add in gradle:
+## SDK configuration
 
-```
-   packaging {
-        resources {
-            pickFirsts.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
-        }
-    }
-```
+The `SdkData` class stores all the necessary data.
 
-
-### 2.2 Using the SDK
-
-The SDK documentation:
-
-https://facephi.github.io/sdk-mobile-documentation/
-
-The **SdkData** class stores all the necessary data in the SDK. (Section 2.3)
-
-### 2.3 Data necessary for the use of the SDK
-
-For the application to work correctly, the following information must be filled out.
-
-In the SdkData class:
-
-- Necessary data if a service is going to be used to obtain licenses:
-
+**License via service**
 ```
 val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-        apiKey = "....."
-    )
+    apiKey = "....."
+)
 ```
 
-- License string if a service is not going to be used:
+**License as String**
 ```
 const val LICENSE = "...." 
 ```
 
-- Client identifier and type of operation to use in initialization:
+**Client identifier and operation**
 ```
 const val CUSTOMER_ID = "...." 
 val OPERATION_TYPE = OperationType.ONBOARDING
-
 ```
 
+> IMPORTANT: the `bundleId` of the application must match the one requested in the license.
 
-- IMPORTANT: The bundleId of the application must match the one requested in the license
+## Run the demo
 
-### 2.4 Steps to start the demo
+1. In `build.gradle`, set `applicationId` to the app id requested in the license.
+2. In `local.properties`, add the artifactory users provided by Facephi:
+   `artifactory.user=user`  
+   `artifactory.token=token`
+3. In `SdkData`, add either licensing service data or a license String.
+4. Depending on how the license was added, set:
+   `const val LICENSE_ONLINE = false`
 
-The steps to follow to start the demo are:
+## Links
 
-1. In the build.gradle file, fill in the applicationId field with the id of the application for which the license has been requested.
-
-2. In the local.properties file add the artifactory users provided by Facephi:
-   artifactory.user=user
-   artifactory.token=token
-
-3. In the SdkData file add either the data of the service from which the license is to be obtained or the license in String:
-   val environmentLicensingData: EnvironmentLicensingData = EnvironmentLicensingData(
-   apiKey = "..."
-   )
-
-   o
-
-   const val LICENSE = ""
-
-4. Depending on how the license was added, adapt the value of the variable:
-   const val LICENSE_ONLINE = false
+- SDK docs: https://facephi.github.io/sdk-mobile-documentation/
