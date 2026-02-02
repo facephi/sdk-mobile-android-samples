@@ -71,6 +71,7 @@ class MainViewModel : ViewModel() {
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
         liveness: Boolean,
+        showPreviousFingerSelector: Boolean,
         captureOrientation: CaptureOrientation,
         fingerFilter: FingerFilter,
         onResult: (UIComponentResult) -> Unit
@@ -84,7 +85,8 @@ class MainViewModel : ViewModel() {
                             liveness = liveness,
                             captureOrientation = captureOrientation,
                             showDiagnostic = showDiagnostic,
-                            fingerFilter = fingerFilter
+                            fingerFilter = fingerFilter,
+                            showPreviousFingerSelector = showPreviousFingerSelector
                         )
                     )
                 )) {

@@ -47,4 +47,7 @@
     <string name="onboarding_result_ok">Resultado correcto</string>
     <string name="onboarding_result_error">Resultado erróneo</string>
     <string name="onboarding_configuration">Configuración avanzada</string>
+    <string name="onboarding_title_operation" >Operación</string>
+    <string name="onboarding_desc_operation" >Nueva operación del SDK</string>
+    <string name="onboarding_init_operation" >Crear</string>
 </resources>

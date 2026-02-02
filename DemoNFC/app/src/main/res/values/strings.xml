@@ -47,4 +47,7 @@
     <string name="onboarding_result_ok">Result OK</string>
     <string name="onboarding_result_error">Result error</string>
     <string name="onboarding_configuration">Advanced configuration</string>
+    <string name="onboarding_title_operation" >Operation</string>
+    <string name="onboarding_desc_operation" >Create a new operation</string>
+    <string name="onboarding_init_operation" >Create</string>
 </resources>

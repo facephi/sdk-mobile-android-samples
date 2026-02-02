@@ -44,8 +44,10 @@ object SdkData {
         liveness: Boolean,
         captureOrientation: CaptureOrientation,
         fingerFilter: FingerFilter,
+        showPreviousFingerSelector: Boolean
     ) = PhingersConfigurationData(
         showPreviousTip = showPreviousTip,
+        showPreviousFingerSelector = showPreviousFingerSelector,
         useLiveness = liveness,
         showDiagnostic = showDiagnostic,
         reticleOrientation = captureOrientation,

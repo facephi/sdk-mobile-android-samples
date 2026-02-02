@@ -48,11 +48,13 @@ fun BaseComponentCard(
         showDiagnostic: Boolean,
         liveness: Boolean,
         captureOrientation: CaptureOrientation,
-        fingerFilter: FingerFilter
+        fingerFilter: FingerFilter,
+        showPreviousFingerSelector: Boolean
     ) -> Unit,
 ) {
     var showPreviousTip by rememberSaveable { mutableStateOf(true) }
     var showDiagnostic by rememberSaveable { mutableStateOf(true) }
+    var showPreviousFingerSelector by rememberSaveable { mutableStateOf(false) }
     var liveness by rememberSaveable { mutableStateOf(true) }
 
     var captureOrientation by rememberSaveable {
@@ -102,7 +104,7 @@ fun BaseComponentCard(
                 BaseCheckView(
                     modifier = Modifier.weight(1f),
                     checkValue = showDiagnostic,
-                    text = stringResource(id = R.string.onboarding_show_tutorial),
+                    text = stringResource(id = R.string.onboarding_show_diagnostic),
                 ) { showDiagnostic = it }
             }
 
@@ -111,12 +113,19 @@ fun BaseComponentCard(
                     .fillMaxWidth()
                     .alpha(if (enabled) 1f else 0.6f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 BaseCheckView(
+                    modifier = Modifier.weight(1f),
                     checkValue = liveness,
-                    text = stringResource(id = R.string.onboarding_show_diagnostic),
-                ) { showDiagnostic = it }
+                    text = "Liveness",
+                ) { liveness = it }
+
+                BaseCheckView(
+                    modifier = Modifier.weight(1f),
+                    checkValue = showPreviousFingerSelector,
+                    text = stringResource(id = R.string.onboarding_show_selector_screen),
+                ) { showPreviousFingerSelector = it }
             }
 
             Column(
@@ -202,7 +211,8 @@ fun BaseComponentCard(
                         showDiagnostic,
                         liveness,
                         captureOrientation,
-                        fingerFilter
+                        fingerFilter,
+                        showPreviousFingerSelector
                     )
                 }
             )

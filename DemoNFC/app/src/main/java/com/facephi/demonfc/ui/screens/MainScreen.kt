@@ -39,6 +39,7 @@ import com.facephi.demonfc.Images
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.model.DocumentType
+import com.facephi.demonfc.ui.composables.ButtonCard
 import com.facephi.demonfc.ui.composables.SelphIDNfcComponentCard
 import com.facephi.demonfc.ui.composables.base.BaseButton
 import com.facephi.demonfc.ui.composables.base.BaseTextButton
@@ -67,9 +68,12 @@ fun MainScreen(
             .verticalScroll(rememberScrollState())
     ) {
 
-        BaseButton(
-            modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.nfc_new_operation), onClick = {
+        ButtonCard(
+            title = stringResource(id = R.string.onboarding_title_operation),
+            desc = stringResource(id = R.string.onboarding_desc_operation),
+            enabled = true,
+            buttonText = stringResource(id = R.string.onboarding_init_operation),
+            onClick = {
                 Log.i("APP", "LAUNCH NEW OPERATION")
                 logs.clear()
                 viewModel.clearData()
@@ -77,9 +81,10 @@ fun MainScreen(
                 viewModel.newOperation {
                     logs.add(it)
                 }
-            })
+            },
+        )
 
-        Spacer(modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
         SelphIDNfcComponentCard(
             enabled = true,
