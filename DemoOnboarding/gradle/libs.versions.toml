@@ -1,17 +1,17 @@
 # Facephi SDK Dependencies
 [versions]
 kotlin = "2.2.20"
-androidGradlePlugin = "8.13.0"
-composePlugin = "1.9.0"
-activityComposeVersion = "1.11.0"
+androidGradlePlugin = "8.13.2"
+composePlugin = "1.10.0"
+activityComposeVersion = "1.12.3"
 coreKtxVersion = "1.17.0"
-lifecycleRuntimeKtxVersion = "2.9.4"
-lifecycle_viewmodel_version = '2.9.4'
+lifecycleRuntimeKtxVersion = "2.10.0"
+lifecycle_viewmodel_version = '2.10.0'
 kotlinxDatetime = "0.7.1"
 materialIconsExtendedVersion = "1.7.3"
 
 # FACEPHI SDK VERSION
-facephiVersion = "2.5.0"
+facephiVersion = "2.6.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
