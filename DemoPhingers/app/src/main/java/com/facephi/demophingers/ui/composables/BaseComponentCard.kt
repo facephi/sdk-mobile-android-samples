@@ -33,6 +33,7 @@ import com.facephi.demophingers.R
 import com.facephi.demophingers.ui.data.UIComponentResult
 import com.facephi.phingers_tf_component.data.configuration.CaptureOrientation
 import com.facephi.phingers_tf_component.data.configuration.FingerFilter
+import com.facephi.phingers_tf_component.data.configuration.ReticleOrientation
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,7 +48,7 @@ fun BaseComponentCard(
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
         liveness: Boolean,
-        captureOrientation: CaptureOrientation,
+        captureOrientation: ReticleOrientation,
         fingerFilter: FingerFilter,
         showPreviousFingerSelector: Boolean
     ) -> Unit,
@@ -58,7 +59,7 @@ fun BaseComponentCard(
     var liveness by rememberSaveable { mutableStateOf(true) }
 
     var captureOrientation by rememberSaveable {
-        mutableStateOf(CaptureOrientation.LEFT)
+        mutableStateOf(ReticleOrientation.LEFT)
     }
 
     var fingerFilter by rememberSaveable {
@@ -142,13 +143,13 @@ fun BaseComponentCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FilterChip(
-                        selected = captureOrientation == CaptureOrientation.LEFT,
-                        onClick = { if (enabled) captureOrientation = CaptureOrientation.LEFT },
+                        selected = captureOrientation == ReticleOrientation.LEFT,
+                        onClick = { if (enabled) captureOrientation = ReticleOrientation.LEFT },
                         label = { Text(stringResource(id = R.string.onboarding_left)) }
                     )
                     FilterChip(
-                        selected = captureOrientation == CaptureOrientation.RIGHT,
-                        onClick = { if (enabled) captureOrientation = CaptureOrientation.RIGHT },
+                        selected = captureOrientation == ReticleOrientation.RIGHT,
+                        onClick = { if (enabled) captureOrientation = ReticleOrientation.RIGHT },
                         label = { Text(stringResource(id = R.string.onboarding_right)) }
                     )
                 }
