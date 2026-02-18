@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Demo Phingers</string>
     <string name="onboarding_title_operation" >Operation</string>
-    <string name="onboarding_desc_operation" >Create a new operation and finish it</string>
+    <string name="onboarding_desc_operation" >Create a new operation</string>
     <string name="onboarding_init_operation" >Create</string>
     <string name="onboarding_launch_phinger">Launch</string>
     <string name="onboarding_title_phinger">Phingers</string>
@@ -9,6 +9,7 @@
     <string name="onboarding_show_previous_tip">Previous tip</string>
     <string name="onboarding_show_tutorial">Tutorial</string>
     <string name="onboarding_show_diagnostic">Diagnostic</string>
+    <string name="onboarding_show_selector_screen">Show selection screen</string>
     <string name="onboarding_left">Left</string>
     <string name="onboarding_right">Right</string>
     <string name="onboarding_choose_hand">Choose hand</string>

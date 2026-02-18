@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.facephi.demonfc.R
 import com.facephi.demonfc.model.AlertDialogData
-import com.facephi.demonfc.ui.composables.AlertDialog
-import com.facephi.demonfc.ui.composables.BaseButton
-import com.facephi.demonfc.ui.composables.HtmlTextView
-import com.facephi.demonfc.ui.composables.OutlinedButton
+import com.facephi.demonfc.ui.composables.disclaimer.AlertDialog
+import com.facephi.demonfc.ui.composables.base.BaseButton
+import com.facephi.demonfc.ui.composables.disclaimer.HtmlTextView
+import com.facephi.demonfc.ui.composables.base.OutlinedButton
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
 
 @Composable
@@ -62,7 +62,7 @@ fun DisclaimerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
-            text = stringResource(id = com.facephi.demonfc.R.string.nfc_rgpd_title),
+            text = stringResource(id = com.facephi.demonfc.R.string.nfc_gdpr_title),
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
             fontSize = 18.sp
@@ -85,13 +85,13 @@ fun DisclaimerScreen(
 
             HtmlTextView(
                 modifier = Modifier.padding(8.dp),
-                html = stringResource(id = R.string.nfc_rgpd_text)
+                html = stringResource(id = R.string.nfc_gdpr_text)
             )
 
         }
 
         BaseButton(
-            text = stringResource(id = com.facephi.demonfc.R.string.nfc_agree),
+            text = stringResource(id = R.string.nfc_agree),
             onClick = onAgree,
             enabled = enableButton,
             modifier = Modifier
@@ -100,7 +100,7 @@ fun DisclaimerScreen(
         )
 
         OutlinedButton(
-            text = stringResource(id = com.facephi.demonfc.R.string.nfc_cancel),
+            text = stringResource(id = R.string.nfc_cancel),
             onClick = {
                 showAlert = true
             },

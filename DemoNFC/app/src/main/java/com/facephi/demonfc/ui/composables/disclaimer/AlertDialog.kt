@@ -1,7 +1,9 @@
-package com.facephi.demonfc.ui.composables
+package com.facephi.demonfc.ui.composables.disclaimer
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -11,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.facephi.demonfc.model.AlertDialogData
+import com.facephi.demonfc.ui.composables.base.BaseTextButton
 
 
 @Composable
@@ -21,14 +24,14 @@ fun AlertDialog(
     onConfirm: () -> Unit
 ) {
     if (show) {
-        androidx.compose.material3.AlertDialog(
+        AlertDialog(
             onDismissRequest = onDismiss,
             properties = DialogProperties(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false
             ),
             title = {
-                androidx.compose.material3.Text(
+                Text(
                     modifier = Modifier
                         .fillMaxWidth(),
                     text = dialogData.title,
@@ -39,7 +42,7 @@ fun AlertDialog(
 
             },
             text = {
-                androidx.compose.material3.Text(
+                Text(
                     modifier = Modifier
                         .fillMaxWidth(),
                     text = dialogData.description,

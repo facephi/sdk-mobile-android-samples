@@ -9,6 +9,7 @@
     <string name="onboarding_show_previous_tip">Pantalla previa</string>
     <string name="onboarding_show_tutorial">Tutorial</string>
     <string name="onboarding_show_diagnostic">Diagnóstico</string>
+    <string name="onboarding_show_selector_screen">Pantalla de selección</string>
     <string name="onboarding_left">Izquierda</string>
     <string name="onboarding_right">Derecha</string>
     <string name="onboarding_choose_hand">Elige mano</string>

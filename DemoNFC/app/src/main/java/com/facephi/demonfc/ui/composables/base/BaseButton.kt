@@ -1,4 +1,4 @@
-package com.facephi.demonfc.ui.composables
+package com.facephi.demonfc.ui.composables.base
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -97,7 +98,7 @@ fun OutlinedButton(
     onClick: () -> Unit,
     textColor: Color = Color.DarkGray
 ) {
-    androidx.compose.material3.OutlinedButton(
+    OutlinedButton(
         onClick = { onClick() },
         enabled = enabled,
         shape = shape,

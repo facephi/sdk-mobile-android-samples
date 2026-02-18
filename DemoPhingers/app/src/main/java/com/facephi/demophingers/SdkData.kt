@@ -6,6 +6,7 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.phingers_tf_component.data.configuration.CaptureOrientation
 import com.facephi.phingers_tf_component.data.configuration.FingerFilter
 import com.facephi.phingers_tf_component.data.configuration.PhingersConfigurationData
+import com.facephi.phingers_tf_component.data.configuration.ReticleOrientation
 import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
@@ -42,10 +43,12 @@ object SdkData {
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
         liveness: Boolean,
-        captureOrientation: CaptureOrientation,
+        captureOrientation: ReticleOrientation,
         fingerFilter: FingerFilter,
+        showPreviousFingerSelector: Boolean
     ) = PhingersConfigurationData(
         showPreviousTip = showPreviousTip,
+        showPreviousFingerSelector = showPreviousFingerSelector,
         useLiveness = liveness,
         showDiagnostic = showDiagnostic,
         reticleOrientation = captureOrientation,

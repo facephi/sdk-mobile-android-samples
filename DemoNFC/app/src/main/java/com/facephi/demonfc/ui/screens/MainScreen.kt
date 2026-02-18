@@ -4,37 +4,29 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,14 +35,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.facephi.demonfc.BuildConfig
+import com.facephi.demonfc.Images
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
 import com.facephi.demonfc.model.DocumentType
-import com.facephi.demonfc.ui.composables.BaseButton
-import com.facephi.demonfc.ui.composables.BaseCheckView
-import com.facephi.demonfc.ui.composables.BaseTextButton
-import com.facephi.demonfc.ui.composables.DropdownDocumentMenuBox
+import com.facephi.demonfc.ui.composables.ButtonCard
+import com.facephi.demonfc.ui.composables.SelphIDNfcComponentCard
+import com.facephi.demonfc.ui.composables.base.BaseButton
+import com.facephi.demonfc.ui.composables.base.BaseTextButton
+import com.facephi.demonfc.ui.composables.result.PersonalInfoCard
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
+import com.facephi.nfc_component.data.configuration.ReadingProgressStyle
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,23 +58,8 @@ fun MainScreen(
 
     val context = LocalContext.current
     val logs = remember { mutableStateListOf<String>() }
-    val focusManager = LocalFocusManager.current
-
-    var documentType by rememberSaveable {
-        mutableStateOf(DocumentType.ID_CARD)
-    }
-
-    var showPreviousTip by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showTutorial by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    var showDiagnostic by rememberSaveable {
-        mutableStateOf(true)
-    }
+    val nfcResult by viewModel.nfcResult.collectAsState()
+    val personalData by viewModel.personalData.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -88,128 +68,101 @@ fun MainScreen(
             .verticalScroll(rememberScrollState())
     ) {
 
-        BaseButton(modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.nfc_new_operation), onClick = {
-                Log.i ( "APP", "LAUNCH NEW OPERATION")
-                focusManager.clearFocus()
-
+        ButtonCard(
+            title = stringResource(id = R.string.onboarding_title_operation),
+            desc = stringResource(id = R.string.onboarding_desc_operation),
+            enabled = true,
+            buttonText = stringResource(id = R.string.onboarding_init_operation),
+            onClick = {
+                Log.i("APP", "LAUNCH NEW OPERATION")
                 logs.clear()
+                viewModel.clearData()
 
                 viewModel.newOperation {
                     logs.add(it)
                 }
-            })
-
-        Spacer(Modifier.height(8.dp))
-
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showPreviousTip,
-                text = stringResource(id = R.string.nfc_show_previous_tip)
-            ) {
-                showPreviousTip = it
-            }
-            BaseCheckView(
-                modifier = Modifier.weight(1f),
-                checkValue = showTutorial,
-                text = stringResource(id = R.string.nfc_show_tutorial)
-            ) {
-                showTutorial = it
-            }
-
-        }
-
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            BaseCheckView(
-                checkValue = showDiagnostic,
-                text = stringResource(id = R.string.nfc_show_diagnostic)
-            ) {
-                showDiagnostic = it
-            }
-        }
-
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.nfc_select_document),
-            color = colorResource(id = R.color.sdkBodyTextColor)
+            },
         )
 
-        DropdownDocumentMenuBox(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-        ) {
-            documentType = it
-        }
+        Spacer(modifier = Modifier.size(8.dp))
 
-        BaseButton(modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.nfc_complex_launch),
-            image = R.drawable.ic_nfc_id_back_id,
-            onClick = {
-                logs.clear()
+        SelphIDNfcComponentCard(
+            enabled = true,
+            title = "SELPHID + NFC",
+            resultValue = nfcResult,
+            onLaunch = { showPreviousTip: Boolean,
+                         showTutorial: Boolean,
+                         showDiagnostic: Boolean,
+                         extractFace: Boolean,
+                         extractSignature: Boolean,
+                         documentType: DocumentType,
+                         skipPace: Boolean,
+                         readingProgressStyle: ReadingProgressStyle ->
+
+                Images.clear()
+                viewModel.clearData()
 
                 viewModel.launchSelphidAndNfc(
-                    skipPACE = false,
+                    skipPACE = skipPace,
                     docType = documentType,
-                    showDiagnostic = showDiagnostic,
+                    extractFace = extractFace,
+                    extractSignature = extractSignature,
                     showPreviousTip = showPreviousTip,
-                    showTutorial = showTutorial
+                    showDiagnostic = showDiagnostic,
+                    showTutorial = showTutorial,
+                    readingProgressStyle = readingProgressStyle
                 ) {
                     logs.add(it)
                 }
             }
         )
 
-        BaseButton(modifier = Modifier.padding(bottom = 16.dp),
-            text = stringResource(id = R.string.nfc_simple_launch),
-            image = R.drawable.ic_nfc_id_back_id,
-            onClick = {
-                logs.clear()
-
-                viewModel.launchSelphidAndNfc(
-                    skipPACE = true,
-                    docType = documentType,
-                    showDiagnostic = showDiagnostic,
-                    showPreviousTip = showPreviousTip,
-                    showTutorial = showTutorial
-                ) {
-                    logs.add(it)
-                }
-            }
-        )
+        Spacer(Modifier.size(8.dp))
 
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .fillMaxWidth(),
             text = BuildConfig.LIBRARY_VERSION,
             style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
-            ),
-            color = colorResource(id = R.color.sdkBodyTextColor)
+            )
         )
 
+        Spacer(Modifier.size(16.dp))
+
+        personalData?.let {
+            PersonalInfoCard(it)
+        }
+
+
         if (!logs.isEmpty()) {
-            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
             BaseTextButton(
                 enabled = true,
                 text = "Clear logs",
                 onClick = {
                     logs.clear()
+                    Images.clear()
+                    viewModel.clearData()
                 })
+        }
+
+        Images.faceImage?.bitmap?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "Face",
+                contentScale = ContentScale.Fit,
+            )
+        }
+
+        Images.signatureImage?.bitmap?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "Signature",
+                contentScale = ContentScale.Fit,
+            )
         }
 
         Text(
@@ -219,8 +172,7 @@ fun MainScreen(
                     copyToClipboard(context, logs.joinToString(separator = "\n"))
                     onSendEmail(logs.joinToString(separator = "\n"))
                 },
-            text = logs.joinToString(separator = "\n"),
-            color = colorResource(id = R.color.sdkBodyTextColor),
+            text = logs.joinToString(separator = "\n")
         )
     }
 

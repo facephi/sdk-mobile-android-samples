@@ -7,8 +7,8 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.demophingers.ui.data.UIComponentResult
 import com.facephi.phingers_tf_component.PhingersTFController
-import com.facephi.phingers_tf_component.data.configuration.CaptureOrientation
 import com.facephi.phingers_tf_component.data.configuration.FingerFilter
+import com.facephi.phingers_tf_component.data.configuration.ReticleOrientation
 import com.facephi.sdk.SDKController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -71,7 +71,8 @@ class MainViewModel : ViewModel() {
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
         liveness: Boolean,
-        captureOrientation: CaptureOrientation,
+        showPreviousFingerSelector: Boolean,
+        captureOrientation: ReticleOrientation,
         fingerFilter: FingerFilter,
         onResult: (UIComponentResult) -> Unit
     ) {
@@ -84,7 +85,8 @@ class MainViewModel : ViewModel() {
                             liveness = liveness,
                             captureOrientation = captureOrientation,
                             showDiagnostic = showDiagnostic,
-                            fingerFilter = fingerFilter
+                            fingerFilter = fingerFilter,
+                            showPreviousFingerSelector = showPreviousFingerSelector
                         )
                     )
                 )) {

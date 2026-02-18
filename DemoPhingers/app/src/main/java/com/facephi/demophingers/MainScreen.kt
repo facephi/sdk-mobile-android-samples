@@ -90,13 +90,15 @@ fun MainScreen(
                          showDiagnostic,
                          liveness,
                          captureOrientation,
-                         fingerFilter ->
+                         fingerFilter,
+                         showPreviousFingerSelector ->
                 viewModel.launchPhingers(
                     showPreviousTip = showPreviousTip,
                     liveness = liveness,
                     captureOrientation = captureOrientation,
                     fingerFilter = fingerFilter,
-                    showDiagnostic = showDiagnostic
+                    showDiagnostic = showDiagnostic,
+                    showPreviousFingerSelector = showPreviousFingerSelector
                 ) {
                     phingerResult = it
                 }

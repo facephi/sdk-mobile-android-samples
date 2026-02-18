@@ -67,6 +67,7 @@ dependencies {
     implementation(compose.preview)
     implementation(compose.material3)
     debugImplementation(compose.uiTooling)
+    implementation(libs.material.icons.extended)
 
     // SDK Facephi
     implementation (libs.facephi.sdk)
