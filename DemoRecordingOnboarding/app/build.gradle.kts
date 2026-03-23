@@ -11,10 +11,6 @@ android {
     namespace = "com.facephi.onboarding"
     compileSdk = 36
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
         applicationId = "..."
         minSdk = 24
@@ -48,6 +44,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     packaging {
@@ -62,12 +59,12 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(libs.lifecycle.viewmodel.compose)
-    implementation(compose.ui)
-    implementation(compose.preview)
-    implementation(compose.material3)
     implementation(libs.kotlinx.datetime)
     implementation(libs.material.icons.extended)
-    debugImplementation(compose.uiTooling)
+    implementation(libs.ui)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+    debugImplementation(libs.ui.tooling)
 
     // SDK Facephi
     implementation (libs.facephi.sdk)
