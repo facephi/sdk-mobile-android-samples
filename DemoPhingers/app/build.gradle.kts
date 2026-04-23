@@ -11,10 +11,6 @@ android {
     namespace = "com.facephi.demophingers"
     compileSdk = 36
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
         applicationId = "..."
         minSdk = 24
@@ -48,6 +44,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     packaging {
@@ -61,13 +58,13 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
-    implementation(libs.kotlinx.datetime)
-    implementation(compose.ui)
-    implementation(compose.preview)
-    implementation(compose.material3)
-    debugImplementation(compose.uiTooling)
     implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.material.icons.extended)
+    implementation(libs.ui)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+    debugImplementation(libs.ui.tooling)
 
     // SDK Facephi
     implementation (libs.facephi.sdk)
