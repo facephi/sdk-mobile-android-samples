@@ -45,6 +45,7 @@ import com.facephi.demonfc.ui.composables.base.BaseButton
 import com.facephi.demonfc.ui.composables.base.BaseTextButton
 import com.facephi.demonfc.ui.composables.result.PersonalInfoCard
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
+import com.facephi.demonfc.ui.theme.sdkColorResource
 import com.facephi.nfc_component.data.configuration.ReadingProgressStyle
 
 
@@ -127,7 +128,8 @@ fun MainScreen(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
-            )
+            ),
+            color = sdkColorResource(R.color.sdkBodyTextColor)
         )
 
         Spacer(Modifier.size(16.dp))
@@ -172,7 +174,8 @@ fun MainScreen(
                     copyToClipboard(context, logs.joinToString(separator = "\n"))
                     onSendEmail(logs.joinToString(separator = "\n"))
                 },
-            text = logs.joinToString(separator = "\n")
+            text = logs.joinToString(separator = "\n"),
+            color = sdkColorResource(R.color.sdkBodyTextColor)
         )
     }
 

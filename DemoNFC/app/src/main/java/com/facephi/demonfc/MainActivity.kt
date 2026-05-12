@@ -28,7 +28,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.facephi.core.data.SdkApplication
@@ -60,6 +59,7 @@ class MainActivity : ComponentActivity() {
             DemoNFCTheme {
                 Scaffold(
                     containerColor = sdkColorResource(R.color.sdkBackgroundColor),
+                    contentColor = sdkColorResource(R.color.sdkBodyTextColor),
                     topBar = {
                         Column {
                             Spacer(Modifier.size(48.dp))
@@ -138,4 +138,3 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
     }
 }
-
