@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="demoNfcPrimaryColor" format="color|reference" />
+
     <!-- SdkTheme -->
-    <color name="sdkPrimaryColor">#3167FC</color>
+    <color name="demo_nfc_primary_color">#245BDB</color>
+    <color name="sdkPrimaryColor">?attr/demoNfcPrimaryColor</color>
     <color name="sdkSecondaryColor">#03DAC5</color>
     <color name="sdkBackgroundColor">#FFFFFF</color>
     <color name="sdkErrorColor">#DD3631</color>

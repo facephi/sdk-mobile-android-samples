@@ -17,7 +17,7 @@ fun sdkColorResource(@ColorRes id: Int): Color {
     return context.resolveSdkColorResource(id) ?: context.defaultSdkColor(id)
 }
 
-private fun Context.resolveSdkColorResource(@ColorRes id: Int, depth: Int = 0): Color? {
+internal fun Context.resolveSdkColorResource(@ColorRes id: Int, depth: Int = 0): Color? {
     if (depth > MAX_COLOR_RESOLUTION_DEPTH) return null
 
     val typedValue = TypedValue()
