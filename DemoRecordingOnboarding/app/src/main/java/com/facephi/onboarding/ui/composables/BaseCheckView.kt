@@ -1,5 +1,9 @@
 package com.facephi.onboarding.ui.composables
 
+import com.facephi.onboarding.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,9 +34,7 @@ fun BaseCheckView(
 ) {
     val containerColor by animateColorAsState(
         if (checkValue)
-            (colorResource(
-                id = R.color.sdkPrimaryColor
-            )).copy(alpha = 0.08f)
+            (sdkColorResource(R.color.sdkPrimaryColor)).copy(alpha = 0.08f)
         else
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
         label = "checkContainerColor"
@@ -64,9 +66,7 @@ fun BaseCheckView(
                 checked = checkValue,
                 onCheckedChange = { onCheckedChange(it) },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(
-                        id = R.color.sdkPrimaryColor
-                    ),
+                    checkedColor = sdkColorResource(R.color.sdkPrimaryColor),
                     uncheckedColor = MaterialTheme.colorScheme.outline,
                     checkmarkColor = MaterialTheme.colorScheme.onPrimary
                 )

@@ -1,5 +1,9 @@
 package com.facephi.demonfc
 
+import com.facephi.demonfc.ui.theme.sdkColorResource
+
+
+
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -55,9 +59,7 @@ class MainActivity : ComponentActivity() {
 
             DemoNFCTheme {
                 Scaffold(
-                    containerColor = colorResource(
-                        id = R.color.sdkBackgroundColor
-                    ),
+                    containerColor = sdkColorResource(R.color.sdkBackgroundColor),
                     topBar = {
                         Column {
                             Spacer(Modifier.size(48.dp))

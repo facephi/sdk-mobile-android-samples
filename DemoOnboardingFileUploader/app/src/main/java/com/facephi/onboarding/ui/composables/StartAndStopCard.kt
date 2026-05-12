@@ -1,5 +1,9 @@
 package com.facephi.onboarding.ui.composables
 
+import com.facephi.onboarding.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,7 +40,7 @@ fun StartAndStopCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.sdkBackgroundColor)
+            containerColor = sdkColorResource(R.color.sdkBackgroundColor)
         ),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
     ) {

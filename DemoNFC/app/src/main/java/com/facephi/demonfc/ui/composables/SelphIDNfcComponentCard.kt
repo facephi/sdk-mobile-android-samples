@@ -1,5 +1,9 @@
 package com.facephi.demonfc.ui.composables
 
+import com.facephi.demonfc.ui.theme.sdkColorResource
+
+
+
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -83,7 +87,7 @@ fun SelphIDNfcComponentCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.sdkBackgroundColor)
+            containerColor = sdkColorResource(R.color.sdkBackgroundColor)
         ),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
     ) {
@@ -110,7 +114,7 @@ fun SelphIDNfcComponentCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(4.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = colorResource(R.color.sdkBackgroundColor)
+                    containerColor = sdkColorResource(R.color.sdkBackgroundColor)
                 ),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
             ) {

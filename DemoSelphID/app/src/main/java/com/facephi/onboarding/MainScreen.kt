@@ -1,5 +1,9 @@
 package com.facephi.onboarding
 
+import com.facephi.onboarding.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -137,7 +141,7 @@ fun MainScreen(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp),
                 text = logs.value,
-                color = colorResource(id = R.color.sdkBodyTextColor),
+                color = sdkColorResource(R.color.sdkBodyTextColor),
             )
         }
 

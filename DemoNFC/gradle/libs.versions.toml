@@ -12,7 +12,7 @@ materialIconsExtendedVersion = "1.7.3"
 uiVersion = "1.10.3"
 
 # FACEPHI SDK VERSION
-facephiVersion = "2.7.0"
+facephiVersion = "2.8.0"
 
 
 [libraries]
