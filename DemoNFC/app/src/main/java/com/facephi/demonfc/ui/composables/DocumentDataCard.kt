@@ -104,15 +104,14 @@ fun DocumentDataCard(
             onValueChange = { incoming ->
                 if (!birthTouched) birthTouched = true
 
-                val digits = incoming.text.filter(Char::isDigit).take(8)
-                val formatted = digits.formatAsDate()
+                val formatted = incoming.text.formatAsDate()
 
                 val newValue = TextFieldValue(
                     text = formatted,
                     selection = TextRange(formatted.length) // cursor al final
                 )
                 birthTfv = newValue
-                onBirthDateChange(formatted) // <- String con “/”
+                onBirthDateChange(formatted)
             },
             label = { Text(stringResource(id = R.string.nfc_birth_date)) },
             singleLine = true,
@@ -142,15 +141,14 @@ fun DocumentDataCard(
             onValueChange = { incoming ->
                 if (!expiryTouched) expiryTouched = true
 
-                val digits = incoming.text.filter(Char::isDigit).take(8)
-                val formatted = digits.formatAsDate()
+                val formatted = incoming.text.formatAsDate()
 
                 val newValue = TextFieldValue(
                     text = formatted,
                     selection = TextRange(formatted.length) // cursor al final
                 )
                 expiryTfv = newValue
-                onExpirationDateChange(formatted) // <- String con “/”
+                onExpirationDateChange(formatted)
             },
             label = { Text(stringResource(id = R.string.nfc_expiry_date)) },
             singleLine = true,
@@ -177,15 +175,12 @@ fun DocumentDataCard(
 }
 
 fun String.formatAsDate(): String {
-    val s = this
+    val s = filter(Char::isDigit).take(8)
     return when {
-        s.length < 2 -> s
-        s.length == 2 -> "${s}/"
-        s.length < 4 -> "${s.take(2)}/${s.substring(2)}"
-        s.length == 4 -> "${s.take(2)}/${s.substring(2)}/"
+        s.length <= 2 -> s
+        s.length <= 4 -> "${s.take(2)}/${s.substring(2)}"
         s.length <= 8 -> "${s.take(2)}/${s.substring(2, 4)}/${s.substring(4)}"
         else -> s
     }
 }
-
 

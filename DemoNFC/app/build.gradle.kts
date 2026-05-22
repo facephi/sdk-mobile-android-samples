@@ -12,7 +12,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "..."
+        applicationId = "com.facephi.demonfc"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -35,6 +35,9 @@ android {
             )
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -74,4 +77,8 @@ dependencies {
         exclude(group = "org.bouncycastle", module = "jetified-bcprov-jdk15on-1.68")
     }
     //implementation (libs.facephi.tracking)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }

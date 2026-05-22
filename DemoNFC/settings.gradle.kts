@@ -32,4 +32,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "DemoNFC"
 include(":app")
- 

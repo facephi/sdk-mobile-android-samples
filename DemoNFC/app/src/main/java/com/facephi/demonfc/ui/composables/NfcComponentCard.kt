@@ -1,5 +1,9 @@
 package com.facephi.demonfc.ui.composables
 
+import com.facephi.demonfc.ui.theme.sdkColorResource
+
+
+
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -30,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.facephi.demonfc.model.UIComponentResult
@@ -86,7 +89,8 @@ fun NfcComponentCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.sdkBackgroundColor)
+            containerColor = sdkColorResource(R.color.sdkBackgroundColor),
+            contentColor = sdkColorResource(R.color.sdkTitleTextColor)
         ),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
     ) {

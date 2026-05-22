@@ -1,5 +1,9 @@
 package com.facephi.demonfc.ui.composables
 
+import com.facephi.demonfc.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.facephi.demonfc.R
 import com.facephi.demonfc.ui.composables.base.BaseButton
@@ -31,7 +34,8 @@ fun ButtonCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.sdkBackgroundColor)
+            containerColor = sdkColorResource(R.color.sdkBackgroundColor),
+            contentColor = sdkColorResource(R.color.sdkTitleTextColor)
         ),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
     ){

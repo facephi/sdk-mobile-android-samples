@@ -2,6 +2,7 @@ package com.facephi.demonfc.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -11,7 +12,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.facephi.demonfc.MainViewModel
 import com.facephi.demonfc.R
@@ -32,12 +32,8 @@ fun TabScreen(viewModel: MainViewModel,
     Column(modifier = modifier.fillMaxWidth()) {
         TabRow(
             selectedTabIndex = tabIndex,
-            containerColor = colorResource(
-                id = R.color.sdkPrimaryColor
-            ).copy(alpha = 0.1f),
-            contentColor = colorResource(
-                id = R.color.sdkPrimaryColor
-            )
+            containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+            contentColor = MaterialTheme.colorScheme.primary
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(text = { Text(title) },

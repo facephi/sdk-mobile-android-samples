@@ -1,5 +1,9 @@
 package com.facephi.demovoice.ui.composables
 
+import com.facephi.demovoice.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -25,9 +29,7 @@ fun BaseButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        containerColor = colorResource(
-            id = R.color.sdkPrimaryColor
-        )
+        containerColor = sdkColorResource(R.color.sdkPrimaryColor)
     ),
     enabled: Boolean = true,
     shape: Shape = MaterialTheme.shapes.small,
@@ -62,9 +64,7 @@ fun BaseTextButton(
             text = text,
             fontFamily = appFontFamily,
             fontSize = 18.sp,
-            color = colorResource(
-                id = R.color.sdkPrimaryColor
-            ),
+            color = sdkColorResource(R.color.sdkPrimaryColor),
             fontWeight = FontWeight.Bold,
             style = TextStyle(textDecoration = TextDecoration.Underline)
         )

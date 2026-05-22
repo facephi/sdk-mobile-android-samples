@@ -41,6 +41,7 @@ import com.facephi.demonfc.ui.composables.base.BaseButton
 import com.facephi.demonfc.ui.composables.base.BaseTextButton
 import com.facephi.demonfc.ui.composables.NfcComponentCard
 import com.facephi.demonfc.ui.composables.result.PersonalInfoCard
+import com.facephi.demonfc.ui.theme.sdkColorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -108,7 +109,8 @@ fun DataScreen(
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
-            )
+            ),
+            color = sdkColorResource(R.color.sdkBodyTextColor)
         )
 
         Spacer(Modifier.height(16.dp))
@@ -152,7 +154,8 @@ fun DataScreen(
                     copyToClipboard(context, logs.joinToString(separator = "\n"))
                     onSendEmail(logs.joinToString(separator = "\n"))
                 },
-            text = logs.joinToString(separator = "\n")
+            text = logs.joinToString(separator = "\n"),
+            color = sdkColorResource(R.color.sdkBodyTextColor)
         )
     }
 

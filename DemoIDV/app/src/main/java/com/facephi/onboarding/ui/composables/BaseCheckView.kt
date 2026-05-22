@@ -1,5 +1,9 @@
 package com.facephi.onboarding.ui.composables
 
+import com.facephi.onboarding.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Checkbox
@@ -27,13 +31,13 @@ fun BaseCheckView(
             checked = checkValue,
             onCheckedChange = onCheckedChange,
             colors = CheckboxDefaults.colors(
-                checkedColor = colorResource(id = R.color.sdkPrimaryColor),
-                uncheckedColor = colorResource(id = R.color.sdkPrimaryColor)
+                checkedColor = sdkColorResource(R.color.sdkPrimaryColor),
+                uncheckedColor = sdkColorResource(R.color.sdkPrimaryColor)
             )
         )
         Text(
             text = text,
-            color = colorResource(id = R.color.sdkBodyTextColor)
+            color = sdkColorResource(R.color.sdkBodyTextColor)
         )
     }
 

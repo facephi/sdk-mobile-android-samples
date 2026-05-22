@@ -1,5 +1,9 @@
 package com.facephi.demovoice
 
+import com.facephi.demovoice.ui.theme.sdkColorResource
+
+
+
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -173,7 +177,7 @@ fun MainScreen(
         Text(
             modifier = Modifier.padding(16.dp),
             text = BuildConfig.LIBRARY_VERSION,
-            color = colorResource(id = R.color.sdkBodyTextColor)
+            color = sdkColorResource(R.color.sdkBodyTextColor)
         )
 
         if (logs.value.isNotEmpty()) {
@@ -191,7 +195,7 @@ fun MainScreen(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp),
                 text = logs.value,
-                color = colorResource(id = R.color.sdkBodyTextColor),
+                color = sdkColorResource(R.color.sdkBodyTextColor),
             )
         }
 

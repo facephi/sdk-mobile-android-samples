@@ -1,4 +1,8 @@
-package com.facephi.demovideoid.ui.composables
+package com.facephi.demovideocall.ui.composables
+
+import com.facephi.demovideocall.ui.theme.sdkColorResource
+
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,9 +35,7 @@ fun BaseButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        containerColor = colorResource(
-            id = R.color.sdkPrimaryColor
-        )
+        containerColor = sdkColorResource(R.color.sdkPrimaryColor)
     ),
     enabled: Boolean = true,
     image: Int? = null,
@@ -79,12 +81,9 @@ fun BaseTextButton(
             text = text,
             fontFamily = appFontFamily,
             fontSize = 18.sp,
-            color = colorResource(
-                id = R.color.sdkPrimaryColor
-            ),
+            color = sdkColorResource(R.color.sdkPrimaryColor),
             fontWeight = FontWeight.Bold,
             style = TextStyle(textDecoration = TextDecoration.Underline)
         )
     }
 }
-

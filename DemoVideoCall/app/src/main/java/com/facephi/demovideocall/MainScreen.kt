@@ -1,5 +1,9 @@
 package com.facephi.demovideocall
 
+import com.facephi.demovideocall.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,8 +38,8 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.demovideocall.ui.composables.ButtonCard
 import com.facephi.demovideocall.ui.composables.StartAndStopCard
 import com.facephi.demovideocall.ui.data.UIComponentResult
-import com.facephi.demovideoid.ui.composables.BaseButton
-import com.facephi.demovideoid.ui.composables.BaseTextButton
+import com.facephi.demovideocall.ui.composables.BaseButton
+import com.facephi.demovideocall.ui.composables.BaseTextButton
 
 @Composable
 fun MainScreen(
@@ -126,7 +130,7 @@ fun MainScreen(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp),
                 text = logs.value,
-                color = colorResource(id = R.color.sdkBodyTextColor),
+                color = sdkColorResource(R.color.sdkBodyTextColor),
             )
         }
     }

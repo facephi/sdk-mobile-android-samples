@@ -1,5 +1,9 @@
 package com.facephi.onboarding
 
+import com.facephi.onboarding.ui.theme.sdkColorResource
+
+
+
 import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -50,9 +54,7 @@ class MainActivity : ComponentActivity() {
             DemoOnboardingTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = colorResource(
-                        id = R.color.sdkBackgroundColor
-                    )
+                    color = sdkColorResource(R.color.sdkBackgroundColor)
                 ) {
                     MainScreen(
                         sdkApplication = SdkApplication(application),

@@ -1,5 +1,9 @@
 package com.facephi.demovoice.ui.composables
 
+import com.facephi.demovoice.ui.theme.sdkColorResource
+
+
+
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,7 +53,7 @@ fun MediaCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.sdkBackgroundColor)
+            containerColor = sdkColorResource(R.color.sdkBackgroundColor)
         ),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
     ) {
@@ -109,9 +113,7 @@ fun MediaCard(
                             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                             .weight(1f),
                         text = "AUDIO $audioIndex",
-                        color = colorResource(
-                            id = R.color.sdkPrimaryColor
-                        ),
+                        color = sdkColorResource(R.color.sdkPrimaryColor),
                         textAlign = TextAlign.Center,
                     )
 

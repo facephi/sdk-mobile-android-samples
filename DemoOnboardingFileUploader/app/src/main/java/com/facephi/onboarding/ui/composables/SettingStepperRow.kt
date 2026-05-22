@@ -1,5 +1,9 @@
 package com.facephi.onboarding.ui.composables
 
+import com.facephi.onboarding.ui.theme.sdkColorResource
+
+
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,7 +61,7 @@ fun SettingStepperRow(
         Column(Modifier
             .weight(1f)
             .padding(horizontal = 16.dp)) {
-            Text(text = text, color = colorResource(id = R.color.sdkBodyTextColor))
+            Text(text = text, color = sdkColorResource(R.color.sdkBodyTextColor))
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
