@@ -1,0 +1,9 @@
+# CODEOWNERS for FacePhi Core repositories
+#
+# The last matching pattern takes precedence (see GitHub docs).
+# Owners must have write access to the repository.
+#
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# The core team owns the entire repository.
+*  @facephi/core
