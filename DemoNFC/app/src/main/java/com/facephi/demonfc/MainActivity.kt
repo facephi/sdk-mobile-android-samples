@@ -1,8 +1,5 @@
 package com.facephi.demonfc
 
-import com.facephi.demonfc.ui.theme.sdkColorResource
-
-
 
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,113 +20,147 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.facephi.core.data.SdkApplication
+import com.facephi.demonfc.ui.UIState
 import com.facephi.demonfc.ui.composables.result.ErrorRow
-import com.facephi.demonfc.ui.screens.DisclaimerScreen
+import com.facephi.demonfc.ui.composables.result.LoadingRow
 import com.facephi.demonfc.ui.screens.TabScreen
 import com.facephi.demonfc.ui.theme.DemoNFCTheme
+import com.facephi.demonfc.ui.theme.sdkColorResource
 import com.facephi.sdk.SDKController
 
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
-    private var error: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Log.d("APP", "LAUNCH INIT SDK")
-        viewModel.initSdk(SdkApplication(application), onError = {
-            error = it
-        })
 
         setContent {
-            var showTabs by rememberSaveable {
-                mutableStateOf(false)
+            var state by rememberSaveable {
+                mutableStateOf(UIState.INITIAL)
+            }
+
+            var error by rememberSaveable {
+                mutableStateOf("")
+            }
+
+            LaunchedEffect(Unit) {
+                viewModel.initSdk(SdkApplication(application), onFinish = { data ->
+                    if (!data.isNullOrEmpty()) {
+                        state = UIState.ERROR
+                        error = data
+                    } else {
+                        state = UIState.DISCLAIMER
+                    }
+                })
             }
 
             DemoNFCTheme {
-                Scaffold(
-                    containerColor = sdkColorResource(R.color.sdkBackgroundColor),
-                    contentColor = sdkColorResource(R.color.sdkBodyTextColor),
-                    topBar = {
-                        Column {
-                            Spacer(Modifier.size(48.dp))
-                            Row(
-                                horizontalArrangement = Arrangement.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_demo_logo),
-                                    contentDescription = "Logo",
-                                    contentScale = ContentScale.None,
+                when (state) {
+                    UIState.INITIAL -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingRow()
+                        }
+                    }
+
+                    UIState.ERROR -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ErrorRow(error)
+                        }
+
+                    }
+
+                    UIState.DISCLAIMER -> {
+                        val text = stringResource(id = R.string.nfc_gdpr_text)
+                        viewModel.launchDisclaimer(text) { accepted ->
+                            if (accepted) {
+                                state = UIState.NFC_CAPTURE
+                            }
+                        }
+                    }
+
+                    UIState.NFC_CAPTURE -> {
+                        Scaffold(
+                            containerColor = sdkColorResource(R.color.sdkBackgroundColor),
+                            contentColor = sdkColorResource(R.color.sdkBodyTextColor),
+                            topBar = {
+                                Column {
+                                    Spacer(Modifier.size(48.dp))
+                                    Row(
+                                        horizontalArrangement = Arrangement.Center,
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.ic_demo_logo),
+                                            contentDescription = "Logo",
+                                            contentScale = ContentScale.None,
+                                            modifier = Modifier
+                                                .padding(8.dp)
+                                                .height(75.dp)
+                                        )
+                                    }
+                                }
+
+                            },
+                            content = {
+                                TabScreen(
+                                    viewModel = viewModel,
                                     modifier = Modifier
-                                        .padding(8.dp)
-                                        .height(75.dp)
-                                )
-                            }
-                            error?.let {
-                                ErrorRow(it)
-                                Spacer(Modifier.size(8.dp))
-                            }
-                        }
+                                        .fillMaxSize()
+                                        .padding(it)
+                                ) { message ->
 
-                    },
-                    content = {
+                                    val currentTimestamp = System.currentTimeMillis()
 
-                        if (showTabs) {
-                            TabScreen(
-                                viewModel = viewModel,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(it)
-                            ) { message ->
+                                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                        data = Uri.parse("mailto:")
+                                        putExtra(
+                                            Intent.EXTRA_EMAIL,
+                                            arrayOf("sdkmobile@facephi.com")
+                                        )
+                                        putExtra(
+                                            Intent.EXTRA_SUBJECT,
+                                            "Prueba NFC Samples Android (${viewModel.formatEpochMillis()})"
+                                        )
+                                        putExtra(Intent.EXTRA_TEXT, message)
+                                    }
 
-                                val currentTimestamp = System.currentTimeMillis()
-
-                                val intent = Intent(Intent.ACTION_SENDTO).apply {
-                                    data = Uri.parse("mailto:")
-                                    putExtra(
-                                        Intent.EXTRA_EMAIL,
-                                        arrayOf("sdkmobile@facephi.com")
-                                    )
-                                    putExtra(
-                                        Intent.EXTRA_SUBJECT,
-                                        "Prueba NFC Samples Android (${viewModel.formatEpochMillis()})"
-                                    )
-                                    putExtra(Intent.EXTRA_TEXT, message)
+                                    try {
+                                        this.startActivity(intent)
+                                    } catch (e: Exception) {
+                                        Log.e("APP", "EMAIL ERROR $e")
+                                    }
                                 }
 
-                                try {
-                                    this.startActivity(intent)
-                                } catch (e: Exception) {
-                                    Log.e("APP", "EMAIL ERROR $e")
-                                }
-                            }
-                        } else {
-                            DisclaimerScreen(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(it),
-                                onCancel = {
-                                    this@MainActivity.finish()
+                            })
+                    }
 
-                                }, onAgree = {
-                                    showTabs = true
-
-                                })
-                        }
-
-                    })
+                }
             }
         }
     }

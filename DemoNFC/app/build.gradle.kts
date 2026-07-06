@@ -12,7 +12,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.facephi.demonfc"
+        applicationId = "..."
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -72,6 +72,7 @@ dependencies {
     // SDK Facephi
     implementation (libs.facephi.sdk)
     implementation (libs.facephi.selphid)
+    implementation (libs.facephi.disclaimer)
     implementation (libs.facephi.nfc){
         exclude(group = "org.bouncycastle", module = "bcprov-jdk15on")
         exclude(group = "org.bouncycastle", module = "jetified-bcprov-jdk15on-1.68")
