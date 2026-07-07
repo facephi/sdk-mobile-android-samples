@@ -7,6 +7,8 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.demonfc.model.DocumentType
 import com.facephi.demonfc.model.UIComponentResult
+import com.facephi.disclaimer_component.DisclaimerController
+import com.facephi.disclaimer_component.data.configuration.DisclaimerConfigurationData
 import com.facephi.nfc_component.NfcController
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import com.facephi.nfc_component.data.configuration.ReadingProgressStyle
@@ -32,7 +34,7 @@ class MainViewModel : ViewModel() {
     private val _nfcResult = MutableStateFlow(UIComponentResult.PENDING)
     val nfcResult: StateFlow<UIComponentResult> = _nfcResult.asStateFlow()
 
-    fun initSdk(sdkApplication: SdkApplication, onError: (String) -> Unit) {
+    fun initSdk(sdkApplication: SdkApplication, onFinish: (String?) -> Unit) {
         viewModelScope.launch {
             SDKController.getAnalyticsEvents { time, componentName, eventType, info ->
                 Log.i(
@@ -47,10 +49,27 @@ class MainViewModel : ViewModel() {
 
             val sdkConfig = SdkData.getInitConfiguration(sdkApplication)
             when (val result = SDKController.initSdk(sdkConfig)) {
-                is SdkResult.Success -> Log.i("APP", "INIT SDK OK")
+                is SdkResult.Success -> {
+                    Log.i("APP", "INIT SDK OK")
+                    val result = SDKController.newOperation(
+                        operationType = SdkData.OPERATION_TYPE,
+                        customerId = SdkData.CUSTOMER_ID,
+                    )
+                    when (result) {
+                        is SdkResult.Success -> {
+                            Log.i("APP", "NEW OPERATION: OK")
+                            onFinish(null)
+                        }
+                        is SdkResult.Error -> {
+                            Log.i("APP", "NEW OPERATION: Error - ${result.error.name}")
+                            onFinish(result.error.name)
+                        }
+                    }
+
+                }
                 is SdkResult.Error -> {
                     Log.i("APP", "INIT SDK ERROR: ${result.error}")
-                    onError(result.error.name)
+                    onFinish(result.error.name)
                 }
             }
 
@@ -191,6 +210,32 @@ class MainViewModel : ViewModel() {
                     Log.d("APP", " NFC ERROR - ${result.error}")
                     returnLogWithDate("NFC: ERROR - ${result.error}", debugLogs)
                     _nfcResult.update { UIComponentResult.ERROR }
+                }
+            }
+        }
+    }
+
+    fun launchDisclaimer(
+        text: String,
+        output: (Boolean) -> Unit
+    ) {
+        Log.d("APP", "Launch Disclaimer")
+
+        viewModelScope.launch {
+            val result = SDKController.launch(
+                DisclaimerController(DisclaimerConfigurationData(
+                    disclaimerText = text,
+                ))
+            )
+            when (result) {
+                is SdkResult.Success -> {
+                    Log.d("APP", " DISCLAIMER OK")
+                    output(result.data.accepted)
+                }
+
+                is SdkResult.Error -> {
+                    Log.d("APP", " DISCLAIMER ERROR - ${result.error}")
+                    output(false)
                 }
             }
         }

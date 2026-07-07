@@ -3,19 +3,26 @@
     <attr name="demoNfcPrimaryColor" format="color|reference" />
 
     <!-- SdkTheme -->
-    <color name="demo_nfc_primary_color">#245BDB</color>
-    <color name="sdkPrimaryColor">?attr/demoNfcPrimaryColor</color>
+    <color name="sdkPrimaryColor">#3167FC</color>
     <color name="sdkSecondaryColor">#03DAC5</color>
     <color name="sdkBackgroundColor">#FFFFFF</color>
+    <color name="sdkBackgroundPrimaryColor">#FFFFFF</color>
+    <color name="sdkBackgroundSecondaryColor">#F4F5F8</color>
     <color name="sdkErrorColor">#DD3631</color>
+    <color name="sdkTextInverseColor">#FFFFFF</color>
     <!-- SdkColorsPalette -->
     <color name="sdkTitleTextColor">#1D2C4D</color>
     <color name="sdkBodyTextColor">#526080</color>
     <color name="sdkSuccessColor">#07A13A</color>
+    <color name="sdkWarningColor">#F5A623</color>
     <color name="sdkNeutralColor">#202C4B</color>
     <color name="sdkAccentColor">#EA7547</color>
     <color name="sdkTopIconsColor">#243760</color>
+    <color name="sdkButtonBackgroundColor">#3167FC</color>
     <color name="sdkButtonTextColor">#FFFFFF</color>
+    <color name="sdkButtonBorderColor">#3167FC</color>
+    <color name="sdkIconColor">#243760</color>
+    <color name="sdkAnimationColor">#3167FC</color>
     <!-- SDK BUTTONS -->
     <dimen name="sdk_buttons_corner_dimen">32dp</dimen>
     <!-- SDK LOGO -->
