@@ -2,6 +2,6 @@
 <resources>
 
     <style name="Theme.DemoNFC" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="demoNfcPrimaryColor">@color/demo_nfc_primary_color</item>
+        <item name="demoNfcPrimaryColor">@color/sdkPrimaryColor</item>
     </style>
 </resources>
