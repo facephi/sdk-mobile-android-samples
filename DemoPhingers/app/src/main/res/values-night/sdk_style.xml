@@ -4,6 +4,8 @@
     <color name="sdkPrimaryColor">#3167FC</color>
     <color name="sdkSecondaryColor">#03DAC5</color>
     <color name="sdkBackgroundColor">#1E1E1E</color>
+    <color name="sdkBackgroundPrimaryColor">#1E1E1E</color>
+    <color name="sdkBackgroundSecondaryColor">#FF0F0F0F</color>
     <color name="sdkErrorColor">#DD3631</color>
     <!-- SdkColorsPalette -->
     <color name="sdkTitleTextColor">#FFFFFF</color>
