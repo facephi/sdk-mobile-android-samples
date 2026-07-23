@@ -36,7 +36,7 @@ androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTes
 facephi-sdk = { module = "com.facephi.androidsdk:sdk", version.ref = "facephiVersion" }
 facephi-selphid = { module = "com.facephi.androidsdk:selphid_component", version.ref = "facephiVersion" }
 facephi-nfc = { module = "com.facephi.androidsdk:nfc_component", version.ref = "facephiVersion" }
-facephi-disclaimer = { module = "com.facephi.androidsdk:disclaimer_component", version.ref = "facephiVersion" }
+facephi-disclaimer = { module = "com.facephi.androidsdk:terms_conditions_component", version.ref = "facephiVersion" }
 facephi-tracking = { module = "com.facephi.androidsdk:tracking_component", version.ref = "facephiVersion" }
 
 

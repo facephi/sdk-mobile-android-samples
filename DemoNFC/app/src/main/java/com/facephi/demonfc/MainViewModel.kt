@@ -7,14 +7,14 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.demonfc.model.DocumentType
 import com.facephi.demonfc.model.UIComponentResult
-import com.facephi.disclaimer_component.DisclaimerController
-import com.facephi.disclaimer_component.data.configuration.DisclaimerConfigurationData
 import com.facephi.nfc_component.NfcController
 import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import com.facephi.nfc_component.data.configuration.ReadingProgressStyle
 import com.facephi.nfc_component.data.result.NfcSdkPersonalInformation
 import com.facephi.sdk.SDKController
 import com.facephi.selphid_component.SelphIDController
+import com.facephi.terms_conditions_component.TermsConditionsController
+import com.facephi.terms_conditions_component.data.configuration.TermsConditionsConfigurationData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -60,6 +60,7 @@ class MainViewModel : ViewModel() {
                             Log.i("APP", "NEW OPERATION: OK")
                             onFinish(null)
                         }
+
                         is SdkResult.Error -> {
                             Log.i("APP", "NEW OPERATION: Error - ${result.error.name}")
                             onFinish(result.error.name)
@@ -67,6 +68,7 @@ class MainViewModel : ViewModel() {
                     }
 
                 }
+
                 is SdkResult.Error -> {
                     Log.i("APP", "INIT SDK ERROR: ${result.error}")
                     onFinish(result.error.name)
@@ -125,7 +127,7 @@ class MainViewModel : ViewModel() {
                     val nfcKey = result.data.personalData?.nfcKey.orEmpty()
 
                     if (birthDate.isNotEmpty() && expirationDate.isNotEmpty() && nfcKey.isNotEmpty()) {
-                        launchNfc(
+                        launchNfcController(
                             nfcConfigurationData = NfcConfigurationData(
                                 documentNumber = nfcKey, // Num support.
                                 birthDate = birthDate, // "dd/MM/yyyy"
@@ -156,85 +158,100 @@ class MainViewModel : ViewModel() {
         nfcConfigurationData: NfcConfigurationData,
         debugLogs: (String) -> Unit
     ) {
+        viewModelScope.launch {
+            launchNfcController(
+                nfcConfigurationData = nfcConfigurationData,
+                debugLogs = debugLogs
+            )
+        }
+
+    }
+
+    private suspend fun launchNfcController(
+        nfcConfigurationData: NfcConfigurationData,
+        debugLogs: (String) -> Unit
+    ) {
         returnLogWithDate("APP: Launch NFC", debugLogs)
         debugLogs("NFC - Configuration: Extract Facial image :${nfcConfigurationData.extractFacialImage}")
         debugLogs("NFC - Configuration: Extract Signature image :${nfcConfigurationData.extractSignatureImage}")
         debugLogs("NFC - Configuration: SkipPace :${nfcConfigurationData.skipPACE}")
-        viewModelScope.launch {
-            val result = SDKController.launch(
-                NfcController(
-                    componentData = nfcConfigurationData,
-                    debugLogs = {
-                        returnLogWithDate(it, debugLogs)
-                    },
-                    state = { state ->
-                        Log.d("APP", "NFC  State: ${state.name}")
-                        returnLogWithDate("NFC: State: ${state.name}", debugLogs)
-                    })
-            )
-            when (result) {
-                is SdkResult.Success -> {
-                    Log.d("APP", " NFC OK")
-                    returnLogWithDate("NFC finish OK", debugLogs)
-                    debugLogs("VALIDATIONS: ${result.data.nfcValidations}")
-                    result.data.nfcDocumentInformation?.type?.let {
-                        debugLogs("TYPE: $it")
-                    }
-                    result.data.nfcDocumentInformation?.issuer?.let {
-                        debugLogs("ISSUER: $it")
-                    }
-                    result.data.nfcPersonalInformation?.nationality?.let {
-                        debugLogs("NATIONALITY: $it")
-                    }
 
-                    result.data.nfcImages?.facialImage?.let {
-                        Images.faceImage = it
-                        debugLogs("FACIAL image extracted")
-                    } ?: run {
-                        debugLogs("FACIAL image NULL")
-                    }
-
-                    result.data.nfcImages?.signatureImage?.let {
-                        Images.signatureImage = it
-                        debugLogs("SIGNATURE image extracted")
-                    } ?: run {
-                        debugLogs("SIGNATURE image NULL")
-                    }
-
-                    _personalData.value = result.data.nfcPersonalInformation
-                    _nfcResult.update { UIComponentResult.OK }
-
+        val result = SDKController.launch(
+            NfcController(
+                componentData = nfcConfigurationData,
+                debugLogs = {
+                    returnLogWithDate(it, debugLogs)
+                },
+                state = { state ->
+                    Log.d("APP", "NFC  State: ${state.name}")
+                    returnLogWithDate("NFC: State: ${state.name}", debugLogs)
+                })
+        )
+        when (result) {
+            is SdkResult.Success -> {
+                Log.d("APP", " NFC OK")
+                returnLogWithDate("NFC finish OK", debugLogs)
+                debugLogs("VALIDATIONS: ${result.data.nfcValidations}")
+                result.data.nfcDocumentInformation?.type?.let {
+                    debugLogs("TYPE: $it")
+                }
+                result.data.nfcDocumentInformation?.issuer?.let {
+                    debugLogs("ISSUER: $it")
+                }
+                result.data.nfcPersonalInformation?.nationality?.let {
+                    debugLogs("NATIONALITY: $it")
                 }
 
-                is SdkResult.Error -> {
-                    Log.d("APP", " NFC ERROR - ${result.error}")
-                    returnLogWithDate("NFC: ERROR - ${result.error}", debugLogs)
-                    _nfcResult.update { UIComponentResult.ERROR }
+                result.data.nfcImages?.facialImage?.let {
+                    Images.faceImage = it
+                    debugLogs("FACIAL image extracted")
+                } ?: run {
+                    debugLogs("FACIAL image NULL")
                 }
+
+                result.data.nfcImages?.signatureImage?.let {
+                    Images.signatureImage = it
+                    debugLogs("SIGNATURE image extracted")
+                } ?: run {
+                    debugLogs("SIGNATURE image NULL")
+                }
+
+                _personalData.value = result.data.nfcPersonalInformation
+                _nfcResult.update { UIComponentResult.OK }
+
+            }
+
+            is SdkResult.Error -> {
+                Log.d("APP", " NFC ERROR - ${result.error}")
+                returnLogWithDate("NFC: ERROR - ${result.error}", debugLogs)
+                _nfcResult.update { UIComponentResult.ERROR }
             }
         }
+
     }
 
-    fun launchDisclaimer(
+    fun launchTermsAndConditions(
         text: String,
         output: (Boolean) -> Unit
     ) {
-        Log.d("APP", "Launch Disclaimer")
+        Log.d("APP", "Launch Terms and Conditions")
 
         viewModelScope.launch {
             val result = SDKController.launch(
-                DisclaimerController(DisclaimerConfigurationData(
-                    disclaimerText = text,
-                ))
+                TermsConditionsController(
+                    TermsConditionsConfigurationData(
+                        termsConditions = text,
+                    )
+                )
             )
             when (result) {
                 is SdkResult.Success -> {
-                    Log.d("APP", " DISCLAIMER OK")
-                    output(result.data.accepted)
+                    Log.d("APP", "TERMS ACCEPTED")
+                    output(true)
                 }
 
                 is SdkResult.Error -> {
-                    Log.d("APP", " DISCLAIMER ERROR - ${result.error}")
+                    Log.d("APP", "TERMS ERROR - ${result.error}")
                     output(false)
                 }
             }
