@@ -97,9 +97,12 @@ class MainActivity : ComponentActivity() {
 
                     UIState.DISCLAIMER -> {
                         val text = stringResource(id = R.string.nfc_gdpr_text)
-                        viewModel.launchDisclaimer(text) { accepted ->
+                        viewModel.launchTermsAndConditions(text) { accepted ->
                             if (accepted) {
                                 state = UIState.NFC_CAPTURE
+                            } else {
+                                state = UIState.ERROR
+                                error = "Terms and Conditions not accepted"
                             }
                         }
                     }
@@ -134,8 +137,6 @@ class MainActivity : ComponentActivity() {
                                         .fillMaxSize()
                                         .padding(it)
                                 ) { message ->
-
-                                    val currentTimestamp = System.currentTimeMillis()
 
                                     val intent = Intent(Intent.ACTION_SENDTO).apply {
                                         data = Uri.parse("mailto:")
