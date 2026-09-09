@@ -7,7 +7,7 @@
     <string name="onboarding_desc_operation" >Nueva operación del SDK</string>
     <string name="onboarding_init_operation" >Crear</string>
     <string name="onboarding_launch_video">Lanzar</string>
-    <string name="onboarding_title_video">Selphi</string>
+    <string name="onboarding_title_video">Video ID</string>
     <string name="onboarding_desc_video">Captura facial</string>
     <string name="onboarding_show_auto_face">Detección de cara automática</string>
     <string name="onboarding_result_ok">Resultado correcto</string>
