@@ -9,8 +9,8 @@ import com.facephi.core.data.SdkImage
 import com.facephi.core.data.SdkResult
 import com.facephi.onboarding.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
-import com.facephi.selphi_component.RawTemplateController
-import com.facephi.selphi_component.SelphiController
+import com.facephi.selphi_classic_component.RawTemplateController
+import com.facephi.selphi_classic_component.SelphiController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

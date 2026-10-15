@@ -6,7 +6,7 @@ import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
 import com.facephi.sdk.data.SdkConfigurationData
-import com.facephi.selphi_component.data.configuration.SelphiConfigurationData
+import com.facephi.selphi_classic_component.data.configuration.SelphiConfigurationData
 
 object SdkData {
 
