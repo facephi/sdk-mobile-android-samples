@@ -43,10 +43,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.facephi.onboarding.R
 import com.facephi.onboarding.ui.data.UIComponentResult
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
-import com.facephi.selphid_component.data.configuration.SelphIDScanMode
-import kotlin.collections.forEach
+
+enum class DocumentSideOption { FRONT, BACK }
+
+private val MAX_ATTEMPTS_OPTIONS = listOf(1, 3, 5, 0)
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -60,14 +61,12 @@ fun SelphIDComponentCard(
         showPreviousTip: Boolean,
         showTutorial: Boolean,
         showDiagnostic: Boolean,
-        wizardMode: Boolean,
+        showDocumentSelector: Boolean,
         showResultAfterCapture: Boolean,
-        scanMode: SelphIDScanMode,
-        specificData: String,
-        fullscreen: Boolean,
         documentType: SelphIDDocumentType,
-        documentSide: SelphIDDocumentSide,
+        documentSide: DocumentSideOption,
         generateRawImages: Boolean,
+        maxAttempts: Int,
     ) -> Unit,
 ) {
     var showPreviousTip by rememberSaveable { mutableStateOf(true) }
@@ -75,16 +74,13 @@ fun SelphIDComponentCard(
     var showDiagnostic by rememberSaveable { mutableStateOf(true) }
     var expanded by rememberSaveable { mutableStateOf(false) }
 
-    var wizardMode by rememberSaveable { mutableStateOf(true) }
+    var showDocumentSelector by rememberSaveable { mutableStateOf(true) }
     var showResultAfterCapture by rememberSaveable { mutableStateOf(true) }
-    var scanMode by rememberSaveable { mutableStateOf(SelphIDScanMode.MODE_SEARCH) }
-    var specificData by rememberSaveable { mutableStateOf("ES|<ALL>") }
-    var fullscreen by rememberSaveable { mutableStateOf(true) }
     var documentType by rememberSaveable { mutableStateOf(SelphIDDocumentType.ID_CARD) }
-    var documentSide by rememberSaveable { mutableStateOf(SelphIDDocumentSide.FRONT) }
+    var documentSide by rememberSaveable { mutableStateOf(DocumentSideOption.FRONT) }
     var generateRawImages by rememberSaveable { mutableStateOf(false) }
+    var maxAttempts by rememberSaveable { mutableStateOf(3) }
 
-    var scanMenuExpanded by remember { mutableStateOf(false) }
     var docTypeMenuExpanded by remember { mutableStateOf(false) }
 
     ElevatedCard(
@@ -178,12 +174,6 @@ fun SelphIDComponentCard(
                             checkValue = showDiagnostic,
                             text = stringResource(id = R.string.onboarding_show_diagnostic),
                         ) { showDiagnostic = it }
-
-                        BaseCheckView(
-                            modifier = Modifier.weight(1f),
-                            checkValue = fullscreen,
-                            text = "Fullscreen",
-                        ) { fullscreen = it }
                     }
 
                     Row(
@@ -195,9 +185,9 @@ fun SelphIDComponentCard(
                     ) {
                         BaseCheckView(
                             modifier = Modifier.weight(1f),
-                            checkValue = wizardMode,
-                            text = "Wizard mode",
-                        ) { wizardMode = it }
+                            checkValue = showDocumentSelector,
+                            text = "Show document selector",
+                        ) { showDocumentSelector = it }
 
                         BaseCheckView(
                             modifier = Modifier.weight(1f),
@@ -221,53 +211,6 @@ fun SelphIDComponentCard(
                             text = "Generate raw images",
                         ) { generateRawImages = it }
                     }
-
-                    ExposedDropdownMenuBox(
-                        expanded = scanMenuExpanded,
-                        onExpandedChange = {
-                            if (enabled) scanMenuExpanded = !scanMenuExpanded
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        OutlinedTextField(
-                            value = scanMode.name,
-                            onValueChange = {},
-                            readOnly = true,
-                            enabled = enabled,
-                            label = { Text("Select scan mode") },
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = scanMenuExpanded)
-                            },
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth()
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = scanMenuExpanded,
-                            onDismissRequest = { scanMenuExpanded = false }
-                        ) {
-                            SelphIDScanMode.entries.forEach { mode ->
-                                DropdownMenuItem(
-                                    text = { Text(mode.name) },
-                                    onClick = {
-                                        scanMode = mode
-                                        scanMenuExpanded = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    OutlinedTextField(
-                        value = specificData,
-                        onValueChange = { specificData = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = enabled,
-                        label = { Text("Specific data") },
-                        placeholder = { Text("ES|<ALL>") },
-                        singleLine = true
-                    )
 
                     ExposedDropdownMenuBox(
                         expanded = docTypeMenuExpanded,
@@ -317,11 +260,31 @@ fun SelphIDComponentCard(
                             .alpha(if (enabled) 1f else 0.6f),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        SelphIDDocumentSide.entries.forEach { side ->
+                        DocumentSideOption.entries.forEach { side ->
                             FilterChip(
                                 selected = documentSide == side,
                                 onClick = { if (enabled) documentSide = side },
                                 label = { Text(side.name) }
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = "Max attempts (0 = unlimited)",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .alpha(if (enabled) 1f else 0.6f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        MAX_ATTEMPTS_OPTIONS.forEach { attempts ->
+                            FilterChip(
+                                selected = maxAttempts == attempts,
+                                onClick = { if (enabled) maxAttempts = attempts },
+                                label = { Text(if (attempts == 0) "Unlimited" else attempts.toString()) }
                             )
                         }
                     }
@@ -337,14 +300,12 @@ fun SelphIDComponentCard(
                         showPreviousTip,
                         showTutorial,
                         showDiagnostic,
-                        wizardMode,
+                        showDocumentSelector,
                         showResultAfterCapture,
-                        scanMode,
-                        specificData,
-                        fullscreen,
                         documentType,
                         documentSide,
-                        generateRawImages
+                        generateRawImages,
+                        maxAttempts,
                     )
                 }
             )

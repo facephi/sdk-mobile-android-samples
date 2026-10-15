@@ -6,7 +6,12 @@ import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
 import com.facephi.sdk.data.SdkConfigurationData
+import com.facephi.selphi_component.data.configuration.SelphiCamera
+import com.facephi.selphi_component.data.configuration.SelphiCameraConfiguration
 import com.facephi.selphi_component.data.configuration.SelphiConfigurationData
+import com.facephi.selphi_component.data.configuration.SelphiFacialConfiguration
+import com.facephi.selphi_component.data.configuration.SelphiFaceLivenessMode
+import com.facephi.selphi_component.data.configuration.SelphiIadConfigurationData
 
 object SdkData {
 
@@ -24,7 +29,6 @@ object SdkData {
 
     const val CUSTOMER_ID = "demo_selphi@email.com"
     val OPERATION_TYPE = OperationType.ONBOARDING
-    const val SELPHI_RESOURCES = "resources-selphi-2-0.zip"
 
     fun getInitConfiguration(sdkApplication: SdkApplication) = SdkConfigurationData(
         sdkApplication = sdkApplication,
@@ -41,11 +45,22 @@ object SdkData {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        cameraPreferred: SelphiCamera,
+        livenessMode: SelphiFaceLivenessMode,
+        maxAttempts: Int,
+        iadEnabled: Boolean,
     ) = SelphiConfigurationData(
-        showTutorial = showTutorial,
-        showPreviousTip = showPreviousTip,
-        showDiagnostic = showDiagnostic,
-        resourcesPath = SELPHI_RESOURCES
+        livenessMode = livenessMode,
+        maxAttempts = maxAttempts,
+        facialConfiguration = SelphiFacialConfiguration(
+            selphiCameraConfiguration = SelphiCameraConfiguration(
+                cameraPreferred = cameraPreferred,
+                showTutorial = showTutorial,
+                showPreviousTip = showPreviousTip,
+                showDiagnostic = showDiagnostic,
+            )
+        ),
+        iadConfiguration = SelphiIadConfigurationData(enabled = iadEnabled)
     )
 
 }

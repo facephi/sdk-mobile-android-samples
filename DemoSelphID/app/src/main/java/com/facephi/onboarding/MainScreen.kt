@@ -93,21 +93,19 @@ fun MainScreen(
             enabled = newOperationClicked,
             resultValue = selphIdResult,
             onLaunch = { showPreviousTip, showTutorial, showDiagnostic,
-                         wizardMode, showResultAfterCapture, scanMode, specificData,
-                         fullscreen, documentType, documentSide, generateRawImages
+                         showDocumentSelector, showResultAfterCapture, documentType, documentSide,
+                         generateRawImages, maxAttempts
                 ->
                 viewModel.launchSelphId(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic,
-                    wizardMode = wizardMode,
+                    showDocumentSelector = showDocumentSelector,
                     showResultAfterCapture = showResultAfterCapture,
-                    scanMode = scanMode,
-                    specificData = specificData,
-                    fullscreen = fullscreen,
                     documentType = documentType,
                     documentSide = documentSide,
-                    generateRawImages = generateRawImages
+                    generateRawImages = generateRawImages,
+                    maxAttempts = maxAttempts,
                 ){
                     selphIdResult = it
                 }
