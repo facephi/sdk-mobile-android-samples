@@ -7,14 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkImage
 import com.facephi.core.data.SdkResult
+import com.facephi.onboarding.ui.composables.DocumentSideOption
+import com.facephi.onboarding.ui.composables.LivenessModeOption
+import com.facephi.onboarding.ui.composables.toSdkValue
 import com.facephi.onboarding.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
 import com.facephi.selphi_component.RawTemplateController
 import com.facephi.selphi_component.SelphiController
+import com.facephi.selphi_component.data.configuration.SelphiCamera
 import com.facephi.selphid_component.SelphIDController
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
-import com.facephi.selphid_component.data.configuration.SelphIDScanMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -70,6 +72,12 @@ class MainViewModel : ViewModel() {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        cameraPreferred: SelphiCamera,
+        livenessMode: LivenessModeOption,
+        moveSuccessfulAttempts: Int,
+        moveFailedAttempts: Int,
+        maxAttempts: Int,
+        iadEnabled: Boolean,
         onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
@@ -79,7 +87,11 @@ class MainViewModel : ViewModel() {
                         SdkData.getSelphiConfiguration(
                             showTutorial = showTutorial,
                             showPreviousTip = showPreviousTip,
-                            showDiagnostic = showDiagnostic
+                            showDiagnostic = showDiagnostic,
+                            cameraPreferred = cameraPreferred,
+                            livenessMode = livenessMode.toSdkValue(moveSuccessfulAttempts, moveFailedAttempts),
+                            maxAttempts = maxAttempts,
+                            iadEnabled = iadEnabled,
                         )
                     )
                 )) {
@@ -107,33 +119,30 @@ class MainViewModel : ViewModel() {
         showPreviousTip: Boolean,
         showTutorial: Boolean,
         showDiagnostic: Boolean,
-        wizardMode: Boolean,
+        showDocumentSelector: Boolean,
         showResultAfterCapture: Boolean,
-        scanMode: SelphIDScanMode,
-        specificData: String,
-        fullscreen: Boolean,
         documentType: SelphIDDocumentType,
-        documentSide: SelphIDDocumentSide,
+        documentSide: DocumentSideOption,
         generateRawImages: Boolean,
+        maxAttempts: Int,
         onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
             when (val result =
                 SDKController.launch(
                     SelphIDController(
-                        SdkData.getSelphIDConfiguration(
+                        componentData = SdkData.getSelphIDConfiguration(
                             showTutorial = showTutorial,
                             showPreviousTip = showPreviousTip,
                             showDiagnostic = showDiagnostic,
-                            wizardMode = wizardMode,
+                            showDocumentSelector = showDocumentSelector,
                             showResultAfterCapture = showResultAfterCapture,
-                            scanMode = scanMode,
-                            specificData = specificData,
-                            fullscreen = fullscreen,
                             documentType = documentType,
                             documentSide = documentSide,
-                            generateRawImages = generateRawImages
-                        )
+                            generateRawImages = generateRawImages,
+                            maxAttempts = maxAttempts,
+                        ),
+                        extractors = SdkData.selphIdExtractors,
                     )
                 )) {
                 is SdkResult.Success -> {
