@@ -7,10 +7,10 @@ import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
 import com.facephi.onboarding.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
-import com.facephi.selphid_component.SelphIDController
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
-import com.facephi.selphid_component.data.configuration.SelphIDScanMode
+import com.facephi.selphid_classic_component.SelphIDController
+import com.facephi.selphid_classic_component.data.configuration.SelphIDDocumentSide
+import com.facephi.selphid_classic_component.data.configuration.SelphIDDocumentType
+import com.facephi.selphid_classic_component.data.configuration.SelphIDScanMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

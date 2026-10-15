@@ -6,11 +6,11 @@ import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
 import com.facephi.sdk.data.SdkConfigurationData
-import com.facephi.selphid_component.data.configuration.SelphIDConfigurationData
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
-import com.facephi.selphid_component.data.configuration.SelphIDScanMode
-import com.facephi.selphid_component.data.configuration.SelphIDTimeout
+import com.facephi.selphid_classic_component.data.configuration.SelphIDConfigurationData
+import com.facephi.selphid_classic_component.data.configuration.SelphIDDocumentSide
+import com.facephi.selphid_classic_component.data.configuration.SelphIDDocumentType
+import com.facephi.selphid_classic_component.data.configuration.SelphIDScanMode
+import com.facephi.selphid_classic_component.data.configuration.SelphIDTimeout
 
 object SdkData {
 

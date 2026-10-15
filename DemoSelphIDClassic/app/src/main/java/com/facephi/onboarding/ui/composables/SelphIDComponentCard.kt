@@ -43,9 +43,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.facephi.onboarding.R
 import com.facephi.onboarding.ui.data.UIComponentResult
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentSide
-import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
-import com.facephi.selphid_component.data.configuration.SelphIDScanMode
+import com.facephi.selphid_classic_component.data.configuration.SelphIDDocumentSide
+import com.facephi.selphid_classic_component.data.configuration.SelphIDDocumentType
+import com.facephi.selphid_classic_component.data.configuration.SelphIDScanMode
 import kotlin.collections.forEach
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
