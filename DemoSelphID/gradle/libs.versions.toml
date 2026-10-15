@@ -13,7 +13,12 @@ uiVersion = "1.10.3"
 material3Version = "1.9.0"
 
 # FACEPHI SDK VERSION
-facephiVersion = "2.12.0"
+facephiVersion = "4.0.0"
+
+# FACEPHI SELPHID EXTRACTORS (defaults: EXTRACTOR_V3, EXTRACTOR_V1)
+selphidExtractorcoreVersion = "1.3.3"
+selphidExtractorv1Version = "1.3.2"
+selphidExtractorv3Version = "1.3.3"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -31,6 +36,9 @@ ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", v
 facephi-sdk = { module = "com.facephi.androidsdk:sdk", version.ref = "facephiVersion" }
 facephi-selphid = { module = "com.facephi.androidsdk:selphid_component", version.ref = "facephiVersion" }
 facephi-tracking = { module = "com.facephi.androidsdk:tracking_component", version.ref = "facephiVersion" }
+facephi-selphid-extractorcore = { module = "com.facephi.selphid.extractorcore:extractorcore", version.ref = "selphidExtractorcoreVersion" }
+facephi-selphid-extractorv1 = { module = "com.facephi.selphid.extractorv1:extractorv1", version.ref = "selphidExtractorv1Version" }
+facephi-selphid-extractorv3 = { module = "com.facephi.selphid.extractorv3:extractorv3", version.ref = "selphidExtractorv3Version" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }

@@ -7,10 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkImage
 import com.facephi.core.data.SdkResult
+import com.facephi.onboarding.ui.composables.LivenessModeOption
+import com.facephi.onboarding.ui.composables.toSdkValue
 import com.facephi.onboarding.ui.data.UIComponentResult
 import com.facephi.sdk.SDKController
 import com.facephi.selphi_component.RawTemplateController
 import com.facephi.selphi_component.SelphiController
+import com.facephi.selphi_component.data.configuration.SelphiCamera
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -65,6 +68,12 @@ class MainViewModel : ViewModel() {
         showTutorial: Boolean,
         showPreviousTip: Boolean,
         showDiagnostic: Boolean,
+        cameraPreferred: SelphiCamera,
+        livenessMode: LivenessModeOption,
+        moveSuccessfulAttempts: Int,
+        moveFailedAttempts: Int,
+        maxAttempts: Int,
+        iadEnabled: Boolean,
         onResult: (UIComponentResult) -> Unit
     ) {
         viewModelScope.launch {
@@ -74,7 +83,11 @@ class MainViewModel : ViewModel() {
                         SdkData.getSelphiConfiguration(
                             showPreviousTip = showPreviousTip,
                             showTutorial = showTutorial,
-                            showDiagnostic = showDiagnostic
+                            showDiagnostic = showDiagnostic,
+                            cameraPreferred = cameraPreferred,
+                            livenessMode = livenessMode.toSdkValue(moveSuccessfulAttempts, moveFailedAttempts),
+                            maxAttempts = maxAttempts,
+                            iadEnabled = iadEnabled,
                         )
 
                     )

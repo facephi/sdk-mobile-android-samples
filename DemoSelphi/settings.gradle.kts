@@ -30,6 +30,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DemoOnboarding"
+rootProject.name = "DemoSelphi"
 include(":app")
  
