@@ -48,6 +48,12 @@ artifactory.user=TUS_CREDENCIALES_USER
 artifactory.token=TUS_CREDENCIALES_TOKEN
 ```
 
+Desde el SDK 4.0.0, VideoRecording arrastra una dependencia transitiva (`livekit` -> `audioswitch`) que solo está publicada en JitPack, por lo que hay que añadir también este repositorio junto al de Facephi:
+
+```
+maven { url = uri("https://jitpack.io") }
+```
+
 Las dependencias de las librerías se podrán importar directamente en el gradle, en este caso desde libs:
 
 ```
