@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Demo Phingers</string>
+    <string name="app_name" translatable="false">DemoPhingers</string>
     <string name="onboarding_title_operation" >Operation</string>
     <string name="onboarding_desc_operation" >Create a new operation</string>
     <string name="onboarding_init_operation" >Create</string>

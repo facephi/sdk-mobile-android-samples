@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Demo NFC</string>
+    <string name="app_name" translatable="false">DemoNFC</string>
     <string name="nfc_new_operation">New operation</string>
     <string name="nfc_simple_launch">Simple reading</string>
     <string name="nfc_complex_launch">Complex reading</string>
