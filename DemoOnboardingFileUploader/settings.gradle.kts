@@ -31,6 +31,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DemoOnboarding"
+rootProject.name = "DemoOnboardingFileUploader"
 include(":app")
  

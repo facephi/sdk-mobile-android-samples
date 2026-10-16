@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Demo Voice ID</string>
+    <string name="app_name" translatable="false">DemoVoice</string>
     <string name="onboarding_title_operation" >Operation</string>
     <string name="onboarding_desc_operation" >Create a new operation and finish it</string>
     <string name="onboarding_init_operation" >Create</string>
