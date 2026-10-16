@@ -106,7 +106,7 @@ fun MainScreen(
             enabled = newOperationClicked,
             resultFirstValue = enrollResult,
             resultSecondValue = authResult,
-            onLaunchFirst = { showPreviousTip, showTutorial, showDiagnostic ->
+            onLaunchFirst = { showPreviousTip, showTutorial, showDiagnostic, maxAttempts ->
                 audios.clear()
                 viewModel.launchVoiceEnroll(
                     VoiceConfigurationData(
@@ -114,6 +114,7 @@ fun MainScreen(
                         showPreviousTip = showPreviousTip,
                         showDiagnostic = showDiagnostic,
                         phrases = enrollPhrases,
+                        maxAttempts = maxAttempts,
                     ),
                     output = { audioArray ->
                         audios.clear()
@@ -139,13 +140,14 @@ fun MainScreen(
                     }
                 )
             },
-            onLaunchSecond = { showPreviousTip, showTutorial, showDiagnostic ->
+            onLaunchSecond = { showPreviousTip, showTutorial, showDiagnostic, maxAttempts ->
                 viewModel.launchVoiceAuth(
                     VoiceConfigurationData(
                         phrases = authPhrases,
                         showTutorial = showTutorial,
                         showPreviousTip = showPreviousTip,
                         showDiagnostic = showDiagnostic,
+                        maxAttempts = maxAttempts,
                     )
                 ) {
                     authResult = it
