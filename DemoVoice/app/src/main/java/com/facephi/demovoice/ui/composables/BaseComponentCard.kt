@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.facephi.demovoice.ui.data.UIComponentResult
 import com.facephi.demovoice.R
 
+private val MAX_ATTEMPTS_OPTIONS = listOf(1, 3, 5, 0)
+
 @Composable
 fun BaseComponentCard(
     enabled: Boolean,
@@ -39,17 +42,20 @@ fun BaseComponentCard(
     onLaunchFirst: (
         showPreviousTip: Boolean,
         showTutorial: Boolean,
-        showDiagnostic: Boolean
+        showDiagnostic: Boolean,
+        maxAttempts: Int,
     ) -> Unit,
     onLaunchSecond: (
         showPreviousTip: Boolean,
         showTutorial: Boolean,
-        showDiagnostic: Boolean
+        showDiagnostic: Boolean,
+        maxAttempts: Int,
     ) -> Unit,
 ) {
     var showPreviousTip by rememberSaveable { mutableStateOf(true) }
     var showTutorial by rememberSaveable { mutableStateOf(true) }
     var showDiagnostic by rememberSaveable { mutableStateOf(true) }
+    var maxAttempts by rememberSaveable { mutableStateOf(3) }
 
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -107,12 +113,32 @@ fun BaseComponentCard(
                 ) { showDiagnostic = it }
             }
 
+            Text(
+                text = "Max attempts (0 = unlimited)",
+                style = MaterialTheme.typography.labelLarge
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .alpha(if (enabled) 1f else 0.6f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                MAX_ATTEMPTS_OPTIONS.forEach { attempts ->
+                    FilterChip(
+                        selected = maxAttempts == attempts,
+                        onClick = { if (enabled) maxAttempts = attempts },
+                        label = { Text(if (attempts == 0) "Unlimited" else attempts.toString()) }
+                    )
+                }
+            }
+
             BaseButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.onboarding_launch_enroll),
                 enabled = enabled,
                 onClick = {
-                    onLaunchFirst(showPreviousTip, showTutorial, showDiagnostic)
+                    onLaunchFirst(showPreviousTip, showTutorial, showDiagnostic, maxAttempts)
                 }
             )
 
@@ -129,7 +155,7 @@ fun BaseComponentCard(
                 text = stringResource(id = R.string.onboarding_launch_auth),
                 enabled = enabled,
                 onClick = {
-                    onLaunchSecond(showPreviousTip, showTutorial, showDiagnostic)
+                    onLaunchSecond(showPreviousTip, showTutorial, showDiagnostic, maxAttempts)
                 }
             )
 
