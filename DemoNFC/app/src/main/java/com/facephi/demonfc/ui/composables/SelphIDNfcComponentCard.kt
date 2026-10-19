@@ -21,6 +21,7 @@ import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +50,7 @@ import com.facephi.demonfc.ui.composables.base.DropdownReadingProgress
 import com.facephi.demonfc.ui.composables.result.ResultRow
 import com.facephi.nfc_component.data.configuration.ReadingProgressStyle
 
+private val MAX_ATTEMPTS_OPTIONS = listOf(1, 3, 5, 0)
 
 @Composable
 fun SelphIDNfcComponentCard(
@@ -63,7 +65,8 @@ fun SelphIDNfcComponentCard(
         extractSignature: Boolean,
         documentType: DocumentType,
         skipPace: Boolean,
-        readingProgressStyle: ReadingProgressStyle
+        readingProgressStyle: ReadingProgressStyle,
+        maxAttempts: Int,
 
     ) -> Unit,
 ) {
@@ -72,6 +75,7 @@ fun SelphIDNfcComponentCard(
     var showDiagnostic by rememberSaveable { mutableStateOf(true) }
     var extractFace by rememberSaveable { mutableStateOf(true) }
     var extractSignature by rememberSaveable { mutableStateOf(true) }
+    var maxAttempts by rememberSaveable { mutableStateOf(3) }
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     var documentType by rememberSaveable {
@@ -234,6 +238,26 @@ fun SelphIDNfcComponentCard(
                             modifier = Modifier.weight(1f)
                         )
                     }
+
+                    Text(
+                        text = "Max attempts (0 = unlimited)",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .alpha(if (enabled) 1f else 0.6f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        MAX_ATTEMPTS_OPTIONS.forEach { attempts ->
+                            FilterChip(
+                                selected = maxAttempts == attempts,
+                                onClick = { if (enabled) maxAttempts = attempts },
+                                label = { Text(if (attempts == 0) "Unlimited" else attempts.toString()) }
+                            )
+                        }
+                    }
                 }
             }
 
@@ -261,7 +285,8 @@ fun SelphIDNfcComponentCard(
                             extractSignature,
                             documentType,
                             true,
-                            readingProgressStyle
+                            readingProgressStyle,
+                            maxAttempts,
                         )
                     }
 
@@ -286,7 +311,8 @@ fun SelphIDNfcComponentCard(
                             extractSignature,
                             documentType,
                             false,
-                            readingProgressStyle
+                            readingProgressStyle,
+                            maxAttempts,
                         )
 
 

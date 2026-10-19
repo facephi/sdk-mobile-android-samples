@@ -20,6 +20,7 @@ import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +50,7 @@ import com.facephi.nfc_component.data.configuration.NfcConfigurationData
 import com.facephi.nfc_component.data.configuration.ReadingProgressStyle
 import kotlin.text.isNotEmpty
 
+private val MAX_ATTEMPTS_OPTIONS = listOf(1, 3, 5, 0)
 
 @Composable
 fun NfcComponentCard(
@@ -84,6 +86,8 @@ fun NfcComponentCard(
     var readingProgressStyle by rememberSaveable {
         mutableStateOf(ReadingProgressStyle.DOTS)
     }
+
+    var maxAttempts by rememberSaveable { mutableStateOf(3) }
 
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -221,6 +225,26 @@ fun NfcComponentCard(
                             modifier = Modifier.weight(1f)
                         )
                     }
+
+                    Text(
+                        text = "Max attempts (0 = unlimited)",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .alpha(if (enabled) 1f else 0.6f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        MAX_ATTEMPTS_OPTIONS.forEach { attempts ->
+                            FilterChip(
+                                selected = maxAttempts == attempts,
+                                onClick = { if (enabled) maxAttempts = attempts },
+                                label = { Text(if (attempts == 0) "Unlimited" else attempts.toString()) }
+                            )
+                        }
+                    }
                 }
             }
 
@@ -251,8 +275,8 @@ fun NfcComponentCard(
                             extractFace = extractFace,
                             extractSignature = extractSignature,
                             docType = documentType,
-                            readingProgressStyle = readingProgressStyle
-
+                            readingProgressStyle = readingProgressStyle,
+                            maxAttempts = maxAttempts,
                         )
                         onLaunch.invoke(nfcConfigurationData)
                     }
@@ -281,7 +305,8 @@ fun NfcComponentCard(
                             extractFace = extractFace,
                             extractSignature = extractSignature,
                             docType = documentType,
-                            readingProgressStyle = readingProgressStyle
+                            readingProgressStyle = readingProgressStyle,
+                            maxAttempts = maxAttempts,
                         )
                         onLaunch.invoke(nfcConfigurationData)
 

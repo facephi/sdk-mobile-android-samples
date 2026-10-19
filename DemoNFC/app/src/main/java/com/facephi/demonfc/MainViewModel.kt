@@ -105,11 +105,17 @@ class MainViewModel : ViewModel() {
         showTutorial: Boolean,
         showDiagnostic: Boolean,
         readingProgressStyle: ReadingProgressStyle,
+        maxAttempts: Int,
         debugLogs: (String) -> Unit
     ) {
         viewModelScope.launch {
             returnLogWithDate("APP: Launch SelphID", debugLogs)
-            val result = SDKController.launch(SelphIDController(SdkData.getSelphIdConfig(docType)))
+            val result = SDKController.launch(
+                SelphIDController(
+                    componentData = SdkData.getSelphIdConfig(docType),
+                    extractors = SdkData.selphIdExtractors,
+                )
+            )
             when (result) {
                 is SdkResult.Error -> {
                     returnLogWithDate("SelphID: KO - ${result.error}", debugLogs)
@@ -139,7 +145,8 @@ class MainViewModel : ViewModel() {
                                 extractSignatureImage = extractSignature,
                                 extractFacialImage = extractFace,
                                 documentType = SdkData.getNfcDocType(docType),
-                                readingProgressStyle = readingProgressStyle
+                                readingProgressStyle = readingProgressStyle,
+                                maxAttempts = maxAttempts,
                             ),
                             debugLogs = debugLogs,
 

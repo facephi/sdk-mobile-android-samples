@@ -98,7 +98,8 @@ fun MainScreen(
                          extractSignature: Boolean,
                          documentType: DocumentType,
                          skipPace: Boolean,
-                         readingProgressStyle: ReadingProgressStyle ->
+                         readingProgressStyle: ReadingProgressStyle,
+                         maxAttempts: Int ->
 
                 Images.clear()
                 viewModel.clearData()
@@ -111,7 +112,8 @@ fun MainScreen(
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic,
                     showTutorial = showTutorial,
-                    readingProgressStyle = readingProgressStyle
+                    readingProgressStyle = readingProgressStyle,
+                    maxAttempts = maxAttempts,
                 ) {
                     logs.add(it)
                 }

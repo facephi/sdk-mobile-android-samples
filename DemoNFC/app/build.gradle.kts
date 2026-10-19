@@ -79,6 +79,11 @@ dependencies {
     }
     //implementation (libs.facephi.tracking)
 
+    // SelphID extractors (required at launch: SelphIDController needs the DocumentExtractor list)
+    implementation (libs.facephi.selphid.extractorcore)
+    implementation (libs.facephi.selphid.extractorv1)
+    implementation (libs.facephi.selphid.extractorv3)
+
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
