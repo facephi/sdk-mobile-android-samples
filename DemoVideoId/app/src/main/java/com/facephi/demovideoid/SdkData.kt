@@ -39,6 +39,7 @@ object SdkData {
     fun getVideoIdConfiguration(autoFace: Boolean) = VideoIdConfigurationData(
         sectionTimeout = 20000,
         autoFaceDetection = autoFace,
-        mode = VideoIdMode.FACE_DOCUMENT_FRONT_BACK
+        mode = VideoIdMode.FACE_DOCUMENT_FRONT_BACK,
+        customerId = CUSTOMER_ID,
     )
 }

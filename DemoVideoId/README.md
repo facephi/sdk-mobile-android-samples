@@ -48,6 +48,12 @@ artifactory.user=TUS_CREDENCIALES_USER
 artifactory.token=TUS_CREDENCIALES_TOKEN
 ```
 
+Since SDK 4.0.0, VideoID pulls a transitive dependency that is only published on JitPack, so this repository must also be added next to the Facephi one:
+
+```
+maven { url = uri("https://jitpack.io") }
+```
+
 The library dependencies can be imported directly into gradle (from libs):
 
 ```
