@@ -46,9 +46,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.facephi.core.data.SdkApplication
 import com.facephi.onboarding.ui.composables.BaseButton
 import com.facephi.onboarding.ui.composables.BaseCheckView
-import com.facephi.onboarding.ui.composables.BaseComponentCard
 import com.facephi.onboarding.ui.composables.BaseTextButton
 import com.facephi.onboarding.ui.composables.ButtonCard
+import com.facephi.onboarding.ui.composables.SelphiComponentCard
 import com.facephi.onboarding.ui.composables.SelphIDComponentCard
 import com.facephi.onboarding.ui.composables.StartAndStopCard
 import com.facephi.onboarding.ui.data.UIComponentResult
@@ -120,17 +120,24 @@ fun MainScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        BaseComponentCard(
+        SelphiComponentCard(
             title = stringResource(id = R.string.onboarding_title_selphi),
             desc = stringResource(id = R.string.onboarding_desc_selphi),
             buttonText = stringResource(id = R.string.onboarding_launch_selphi),
             enabled = newOperationClicked,
             resultValue = selphiResult,
-            onLaunch = { showPreviousTip, showTutorial, showDiagnostic ->
+            onLaunch = { showPreviousTip, showTutorial, showDiagnostic, cameraPreferred, livenessMode,
+                         moveSuccessfulAttempts, moveFailedAttempts, maxAttempts, iadEnabled ->
                 viewModel.launchSelphi(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
-                    showDiagnostic = showDiagnostic
+                    showDiagnostic = showDiagnostic,
+                    cameraPreferred = cameraPreferred,
+                    livenessMode = livenessMode,
+                    moveSuccessfulAttempts = moveSuccessfulAttempts,
+                    moveFailedAttempts = moveFailedAttempts,
+                    maxAttempts = maxAttempts,
+                    iadEnabled = iadEnabled,
                 ){
                     selphiResult = it
                 }
@@ -146,21 +153,19 @@ fun MainScreen(
             enabled = newOperationClicked,
             resultValue = selphIdResult,
             onLaunch = { showPreviousTip, showTutorial, showDiagnostic,
-                         wizardMode, showResultAfterCapture, scanMode, specificData,
-                         fullscreen, documentType, documentSide, generateRawImages
+                         showDocumentSelector, showResultAfterCapture, documentType, documentSide,
+                         generateRawImages, maxAttempts
                 ->
                 viewModel.launchSelphId(
                     showTutorial = showTutorial,
                     showPreviousTip = showPreviousTip,
                     showDiagnostic = showDiagnostic,
-                    wizardMode = wizardMode,
+                    showDocumentSelector = showDocumentSelector,
                     showResultAfterCapture = showResultAfterCapture,
-                    scanMode = scanMode,
-                    specificData = specificData,
-                    fullscreen = fullscreen,
                     documentType = documentType,
                     documentSide = documentSide,
-                    generateRawImages = generateRawImages
+                    generateRawImages = generateRawImages,
+                    maxAttempts = maxAttempts,
                 ){
                     selphIdResult = it
                 }
