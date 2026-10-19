@@ -35,5 +35,8 @@ object SdkData {
         trackingController = null // or TrackingController()
     )
 
-    val videoCallConfiguration = VideoCallConfigurationData()
+    val videoCallConfiguration = VideoCallConfigurationData(
+        customerId = CUSTOMER_ID,
+        email = CUSTOMER_ID,
+    )
 }

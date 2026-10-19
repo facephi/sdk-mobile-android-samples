@@ -74,6 +74,9 @@ class MainViewModel : ViewModel() {
                     if (result.data.sharingScreen){
                         log("Video Call: Activate screen sharing")
                     }
+                    if (result.data.sessionInBackground) {
+                        log("Video Call: Session still active in background")
+                    }
 
                     onResult.invoke(UIComponentResult.OK)
 
