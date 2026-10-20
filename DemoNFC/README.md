@@ -108,4 +108,4 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ## Links
 
-- SDK docs: https://facephi.github.io/sdk-mobile-documentation/
+- SDK docs: https://docs.facephi.com/sdks/sdk-mobile/android-sdk
