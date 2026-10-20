@@ -64,7 +64,7 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 Documentación del SDK:
 
-https://facephi.github.io/sdk-mobile-documentation/
+https://docs.facephi.com/sdks/sdk-mobile/android-sdk
 
 #### 2.2.1 Inicialización del SDK
 

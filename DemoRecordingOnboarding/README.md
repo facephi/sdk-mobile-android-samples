@@ -67,7 +67,7 @@ The library dependencies can be imported directly into gradle (from libs):
 
 The SDK documentation:
 
-https://facephi.github.io/sdk-mobile-documentation/
+https://docs.facephi.com/sdks/sdk-mobile/android-sdk
 
 #### 2.2.1 SDK Initialization
 
