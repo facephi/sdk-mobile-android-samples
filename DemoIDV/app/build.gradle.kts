@@ -76,7 +76,6 @@ dependencies {
     implementation (libs.facephi.tracking)
 
     // SelphID extractors (required by FSelphIDController)
-    implementation (libs.facephi.selphid.extractorcore)
     implementation (libs.facephi.selphid.extractorv1)
     implementation (libs.facephi.selphid.extractorv3)
 

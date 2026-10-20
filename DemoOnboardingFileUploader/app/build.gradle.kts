@@ -75,7 +75,6 @@ dependencies {
     implementation (libs.facephi.videorecording)
 
     // SelphID extractors (required at launch: SelphIDController needs the DocumentExtractor list)
-    implementation (libs.facephi.selphid.extractorcore)
     implementation (libs.facephi.selphid.extractorv1)
     implementation (libs.facephi.selphid.extractorv3)
 
