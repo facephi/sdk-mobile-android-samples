@@ -45,7 +45,6 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.tracking)
     implementation (libs.facephi.voice)
 
@@ -115,15 +114,21 @@ viewModelScope.launch {
 
 #### 2.2.3 Voice capture
 
-Voice capture is done through VoiceController.
+Voice capture is done through VoiceController. Since SDK 4.0.0, `VoiceConfigurationData` also accepts
+an optional `maxAttempts` (default 3, `0` for unlimited retries after a timeout).
 In this demo the process is carried out in a button:
 
 ```
 viewModelScope.launch {
-    val data = SdkData.voiceAuthConfigurationData
-    data.showTutorial = showTutorial
+    val voiceConfig = VoiceConfigurationData(
+        phrases = phrases,
+        showTutorial = showTutorial,
+        showPreviousTip = showPreviousTip,
+        showDiagnostic = showDiagnostic,
+        maxAttempts = maxAttempts,
+    )
     when (val result =
-        SDKController.launch(VoiceController(data))) {
+        SDKController.launch(VoiceController(voiceConfig))) {
         is SdkResult.Success -> {
             log("Voice Auth: OK")
         }

@@ -58,7 +58,6 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.videocall)
     implementation (libs.facephi.tracking)
 
@@ -128,7 +127,10 @@ viewModelScope.launch {
 
 #### 2.2.3 Call
 
-Video capture is done through VideoCallController.
+Video capture is done through VideoCallController. Since SDK 4.0.0, `VideoCallConfigurationData`
+also accepts `customerId` and `email` to identify the customer and the user in front of the video
+backend; in a standard installation `url`/`apiKey`/`tenantId` are not set, since the SDK gets the
+connection data from the license.
 In this demo the process is carried out in a button:
 
 ```
@@ -137,8 +139,12 @@ viewModelScope.launch {
         VideoCallController(SdkData.videoCallConfiguration))) {
         is SdkResult.Success -> {
             log("Video Call: OK")
-            if (result.data.sharingScreen){
-                activateScreenSharing()
+            if (result.data.sharingScreen) {
+                log("Video Call: Activate screen sharing")
+            }
+            // New in 4.0.0: whether the session stays active while the app is in the background
+            if (result.data.sessionInBackground) {
+                log("Video Call: Session still active in background")
             }
         }
         is SdkResult.Error -> log("Video Call: Error - ${result.error.name}")
@@ -146,25 +152,17 @@ viewModelScope.launch {
 }
 ```
 
-Screen sharing:
+Stop screen sharing:
 
 ```
-val videoCallScreenSharingManager = VideoCallScreenSharingManager(sdkApplication)
-
-videoCallScreenSharingManager.setOutput {
+val stopVideoCallController = StopVideoCallController()
+stopVideoCallController.setOutput {
     log("Screen sharing state: ${it.name}")
 }
 
-fun activateScreenSharing(){
-     log("Video Call: Activate screen sharing")
-     videoCallScreenSharingManager.startScreenSharingService()
+viewModelScope.launch {
+    SDKController.launch(stopVideoCallController)
 }
-
-fun stopScreenSharing(){
-     log("Video Call: Stop screen sharing")
-     videoCallScreenSharingManager.stopScreenSharingService()
-}
-
 ```
 
 #### 2.2.4 Log out

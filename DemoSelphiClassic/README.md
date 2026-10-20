@@ -52,18 +52,21 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
 
 ```
+
+Note: since SDK 4.0.0 this demo uses the **classic** Selphi artifact (`selphi_classic_component`),
+which keeps the same configuration and result shape as 2.12.0. Only the artifact name and the
+Kotlin package changed (`com.facephi.selphi_classic_component`).
 
 
 ### 2.2 Using the SDK
 
 The SDK documentation:
 
-https://facephi.github.io/sdk-mobile-documentation/
+https://docs.facephi.com/sdks/sdk-mobile/android-sdk
 
 #### 2.2.1 SDK Initialization
 
@@ -128,7 +131,7 @@ In this demo the process is carried out in a Fragment button:
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(SelphiController(SdkData.selphiConfiguration))) {
+        SDKController.launch(SelphiController(SdkData.getSelphiConfiguration(...)))) {
         is SdkResult.Success -> {
             log("Selphi: OK")
         }

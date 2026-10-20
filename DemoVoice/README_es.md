@@ -49,7 +49,6 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.tracking)
     implementation (libs.facephi.voice)
 
@@ -112,17 +111,23 @@ viewModelScope.launch {
 ```
 
 
-#### 2.2.3 Captura de VOZ
+#### 2.2.3 Captura de voz
 
-La captura facial se realiza a través de Selphi. 
+La captura de voz se realiza a través de VoiceController. Desde el SDK 4.0.0, `VoiceConfigurationData`
+también acepta un `maxAttempts` opcional (por defecto 3; `0` para reintentos ilimitados tras un timeout).
 En esta demo el proceso se realiza en un botón del Fragment:
 
 ```
 viewModelScope.launch {
-    val data = SdkData.voiceAuthConfigurationData
-    data.showTutorial = showTutorial
+    val voiceConfig = VoiceConfigurationData(
+        phrases = phrases,
+        showTutorial = showTutorial,
+        showPreviousTip = showPreviousTip,
+        showDiagnostic = showDiagnostic,
+        maxAttempts = maxAttempts,
+    )
     when (val result =
-        SDKController.launch(VoiceController(data))) {
+        SDKController.launch(VoiceController(voiceConfig))) {
         is SdkResult.Success -> {
             log("Voice Auth: OK")
         }

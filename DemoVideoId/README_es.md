@@ -57,7 +57,6 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.videoid)
     implementation (libs.facephi.tracking)
 
@@ -127,13 +126,16 @@ viewModelScope.launch {
 
 #### 2.2.3 Captura de video
 
-La captura se realiza a través de VideoIdController. 
+La captura se realiza a través de VideoIdController. Desde el SDK 4.0.0, `VideoIdConfigurationData`
+también acepta `customerId` para identificar al cliente ante el backend de vídeo; en una instalación
+estándar no se informan `url`/`apiKey`/`tenantId`, ya que el SDK obtiene los datos de conexión de la
+licencia.
 En esta demo el proceso se realiza en un botón:
 
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(VideoIdController(SdkData.videoIdConfiguration))) {
+        SDKController.launch(VideoIdController(SdkData.getVideoIdConfiguration(autoFace)))) {
         is SdkResult.Success -> {
             log("Video ID: OK")
         }

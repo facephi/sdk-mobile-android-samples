@@ -51,9 +51,12 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.tracking)
+
+    // SelphID necesita una lista de extractores de documento (el SDK los distribuye como artefactos separados)
+    implementation (libs.facephi.selphid.extractorv1)
+    implementation (libs.facephi.selphid.extractorv3)
 
 ```
 
@@ -119,18 +122,25 @@ viewModelScope.launch {
 
 #### 2.2.3 Captura del documento
 
-La captura del documento se realiza a través de SelphID. 
+La captura del documento se realiza a través de SelphID. Desde el SDK 4.0.0, `SelphIDController`
+necesita además la lista de extractores de documento a utilizar (`SdkData.selphIdExtractors`).
 En esta demo el proceso se realiza en un botón del Fragment:
 
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(SelphIDController(SdkData.selphIDConfiguration))) 
+        SDKController.launch(
+            SelphIDController(
+                componentData = SdkData.getSelphIDConfiguration(...),
+                extractors = SdkData.selphIdExtractors,
+            )
+        )) {
         is SdkResult.Success -> {
             log("SelphID: OK")
         }
         is SdkResult.Error -> log("SelphID: Error - ${result.error.name}")
- }
+    }
+}
 ```
 
 #### 2.2.4 Cierre de sesión
@@ -166,15 +176,13 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ```
 
-- Para SelphID el nombre del fichero ZIP de recursos (que estará en la carpeta assets de la aplicación) y los datos de configuración:
-```
-const val SELPHID_RESOURCES = "...zip"
-
-val selphIDConfiguration = SelphIDConfigurationData(
-       ...,
-        resourcesPath = SELPHID_RESOURCES
-    )
-```
+- Desde el SDK 4.0.0, `SelphIDConfigurationData` se organiza en bloques (`uiConfiguration`,
+  `extractionConfiguration`, `extractorSelection`) en vez de una lista plana de campos. Ya no usa
+  ZIP de recursos: la personalización visual se hace mediante el sistema general de personalización
+  del SDK.
+- SelphID necesita además la lista de implementaciones `DocumentExtractor` a utilizar, que se pasa
+  al controlador como `extractors`. Esta demo usa `selphid.extractorv1` y `selphid.extractorv3`
+  (`SdkData.selphIdExtractors`), que coincide con el orden de prioridad por defecto del SDK.
 
 - En el caso de utilizar los servicios de verificación (liveness y matching) habrá que introducir la llamada al servicio
 

@@ -58,7 +58,6 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.videoid)
     implementation (libs.facephi.tracking)
 
@@ -129,13 +128,15 @@ viewModelScope.launch {
 
 #### 2.2.3 Video capture
 
-Video capture is done through VideoIdController.
+Video capture is done through VideoIdController. Since SDK 4.0.0, `VideoIdConfigurationData` also
+accepts `customerId` to identify the customer against the video backend; in a standard installation
+`url`/`apiKey`/`tenantId` are not set, since the SDK gets the connection data from the license.
 In this demo the process is carried out in a button:
 
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(VideoIdController(SdkData.videoIdConfiguration))) {
+        SDKController.launch(VideoIdController(SdkData.getVideoIdConfiguration(autoFace)))) {
         is SdkResult.Success -> {
             log("Video ID: OK")
         }

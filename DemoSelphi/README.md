@@ -52,7 +52,6 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
 
@@ -128,7 +127,7 @@ In this demo the process is carried out in a Fragment button:
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(SelphiController(SdkData.selphiConfiguration))) {
+        SDKController.launch(SelphiController(SdkData.getSelphiConfiguration(...)))) {
         is SdkResult.Success -> {
             log("Selphi: OK")
         }
@@ -170,15 +169,10 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ```
 
-- For Selphi the name of the resource ZIP file (which will be in the application's assets folder) and the configuration data:
-```
-const val SELPHI_RESOURCES = ".....zip"
-
-val selphiConfiguration = SelphiConfigurationData(
-        ...,
-        resourcesPath = SELPHI_RESOURCES
-    )
-```
+- Since SDK 4.0.0, `SelphiConfigurationData` is grouped in blocks (`facialConfiguration`,
+  `extractionConfiguration`, `qrConfiguration`...) instead of a flat list of fields. It no longer
+  uses a resources ZIP: visual customization is done through the SDK's general personalization
+  system.
 
 - In the case of using the verification services (liveness and matching), the call to the service must be entered
 

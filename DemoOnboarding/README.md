@@ -53,10 +53,13 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
+
+    // SelphID needs a list of document extractors (the SDK ships them as separate artifacts)
+    implementation (libs.facephi.selphid.extractorv1)
+    implementation (libs.facephi.selphid.extractorv3)
 
 ```
 
@@ -130,7 +133,7 @@ In this demo the process is carried out in a Fragment button:
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(SelphiController(SdkData.selphiConfiguration))) {
+        SDKController.launch(SelphiController(SdkData.getSelphiConfiguration(...)))) {
         is SdkResult.Success -> {
             log("Selphi: OK")
         }
@@ -141,19 +144,25 @@ viewModelScope.launch {
 
 #### 2.2.3 Document Capture
 
-Document capture is done through SelphID.
+Document capture is done through SelphID. Since SDK 4.0.0, `SelphIDController` also needs the list of
+document extractors to use (`SdkData.selphIdExtractors`).
 In this demo the process is carried out in a Fragment button:
 
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(SelphIDController(SdkData.selphIDConfiguration))) 
+        SDKController.launch(
+            SelphIDController(
+                componentData = SdkData.getSelphIDConfiguration(...),
+                extractors = SdkData.selphIdExtractors,
+            )
+        )) {
         is SdkResult.Success -> {
             log("SelphID: OK")
         }
         is SdkResult.Error -> log("SelphID: Error - ${result.error.name}")
- }
-
+    }
+}
 ```
 
 #### 2.2.4 Log out
@@ -189,25 +198,13 @@ val OPERATION_TYPE = OperationType.ONBOARDING
 
 ```
 
-- For Selphi the name of the resource ZIP file (which will be in the application's assets folder) and the configuration data:
-```
-const val SELPHI_RESOURCES = ".....zip"
-
-val selphiConfiguration = SelphiConfigurationData(
-        ...,
-        resourcesPath = SELPHI_RESOURCES
-    )
-```
-
-- For SelphID the name of the resource ZIP file (which will be in the application's assets folder) and the configuration data:
-```
-const val SELPHID_RESOURCES = "...zip"
-
-val selphIDConfiguration = SelphIDConfigurationData(
-       ...,
-        resourcesPath = SELPHID_RESOURCES
-    )
-```
+- Since SDK 4.0.0, `SelphiConfigurationData` and `SelphIDConfigurationData` are grouped in blocks
+  (`facialConfiguration`/`extractionConfiguration` for Selphi, `uiConfiguration`/`extractionConfiguration`/`extractorSelection`
+  for SelphID) instead of a flat list of fields. Neither uses a resources ZIP anymore: visual
+  customization is done through the SDK's general personalization system.
+- SelphID also needs the list of `DocumentExtractor` implementations to use, passed to the controller
+  as `extractors`. This demo uses `selphid.extractorv1` and `selphid.extractorv3` (`SdkData.selphIdExtractors`),
+  matching the SDK's default vendor priority.
 
 - In the case of using the verification services (liveness and matching), the call to the service must be entered
 

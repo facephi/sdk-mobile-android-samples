@@ -47,7 +47,6 @@ The library dependencies can be imported directly into gradle (from libs):
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.phingers)
     implementation (libs.facephi.tracking)
 

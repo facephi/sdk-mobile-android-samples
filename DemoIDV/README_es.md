@@ -10,7 +10,13 @@ Los componentes utilizados son:
 - Sdk
 - Selphi
 - SelphID
+- VideoRecording
 - Tracking
+
+Esta demo no configura cada componente por separado: todo el flujo (Selphi, SelphID, inicio/parada
+de VideoRecording) lo define una única `FlowConfigurationData`, que el backend resuelve a partir de
+su `flowId` (`SDKController.getFlowIntegrationData()`). No hay pantallas locales de configuración de
+Selphi/SelphID/VideoRecording.
 
 ## 2. Detalle de la aplicación demo
 
@@ -58,10 +64,14 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.selphi)
     implementation (libs.facephi.tracking)
+    implementation (libs.facephi.video.recording)
+
+    // FSelphIDController necesita una lista de extractores de documento (el SDK los distribuye como artefactos separados)
+    implementation (libs.facephi.selphid.extractorv1)
+    implementation (libs.facephi.selphid.extractorv3)
 
 ```
 
@@ -105,7 +115,15 @@ La clase **SdkData** almacena todos los datos necesarios en el SDK. (Apartado 2.
 #### 2.2.2 Lanzamiento del proceso de onboarding IDV
 
 ```
-SDKController.launch(FlowController(SdkData.getIDVFlowConfigurationData()))
+SDKController.launch(FlowController(SdkData.getIDVFlowConfigurationData(flowId)))
+```
+
+La lista de controladores del flujo usa la variante "flow" de cada componente
+(`FSelphiController`, `FSelphIDController`, `FVideoRecordingController`, `FStopVideoRecordingController`).
+Desde el SDK 4.0.0, `FSelphIDController` necesita además la lista de extractores de documento a utilizar:
+
+```
+FSelphIDController(extractors = SdkData.selphIdExtractors)
 ```
 
 #### 2.2.3 Datos necesarios para el uso del SDK

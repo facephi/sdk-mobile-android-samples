@@ -57,7 +57,6 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.videocall)
     implementation (libs.facephi.tracking)
 
@@ -127,7 +126,10 @@ viewModelScope.launch {
 
 #### 2.2.3 Llamada
 
-La captura se realiza a través de VideoCallController. 
+La captura se realiza a través de VideoCallController. Desde el SDK 4.0.0, `VideoCallConfigurationData`
+también acepta `customerId` y `email` para identificar al cliente y al usuario ante el backend de
+vídeo; en una instalación estándar no se informan `url`/`apiKey`/`tenantId`, ya que el SDK obtiene
+los datos de conexión de la licencia.
 En esta demo el proceso se realiza en un botón:
 
 ```
@@ -136,33 +138,30 @@ viewModelScope.launch {
         VideoCallController(SdkData.videoCallConfiguration))) {
         is SdkResult.Success -> {
             log("Video Call: OK")
-            if (result.data.sharingScreen){
-                activateScreenSharing()
+            if (result.data.sharingScreen) {
+                log("Video Call: Activate screen sharing")
+            }
+            // Nuevo en 4.0.0: si la sesión sigue activa con la app en segundo plano
+            if (result.data.sessionInBackground) {
+                log("Video Call: Session still active in background")
             }
         }
         is SdkResult.Error -> log("Video Call: Error - ${result.error.name}")
     }
 }
 ```
-Compartir pantalla:
+
+Detener el compartir pantalla:
 
 ```
-val videoCallScreenSharingManager = VideoCallScreenSharingManager(sdkApplication)
-
-videoCallScreenSharingManager.setOutput {
+val stopVideoCallController = StopVideoCallController()
+stopVideoCallController.setOutput {
     log("Screen sharing state: ${it.name}")
 }
 
-fun activateScreenSharing(){
-     log("Video Call: Activate screen sharing")
-     videoCallScreenSharingManager.startScreenSharingService()
+viewModelScope.launch {
+    SDKController.launch(stopVideoCallController)
 }
-
-fun stopScreenSharing(){
-     log("Video Call: Stop screen sharing")
-     videoCallScreenSharingManager.stopScreenSharingService()
-}
-
 ```
 
 #### 2.2.4 Cierre de sesión

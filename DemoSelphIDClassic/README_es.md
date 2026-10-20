@@ -51,18 +51,22 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.selphid)
     implementation (libs.facephi.tracking)
 
 ```
+
+Nota: desde el SDK 4.0.0 esta demo usa el artefacto **classic** de SelphID (`selphid_classic_component`),
+que mantiene la misma configuración y resultado que en 2.12.0. Solo cambian el nombre del artefacto
+y el paquete Kotlin (`com.facephi.selphid_classic_component`); no hacen falta dependencias de
+extractores (esas solo aplican al SelphID nuevo, reestructurado).
 
 
 ### 2.2 Uso del SDK
 
 Documentación del SDK:
 
-https://facephi.github.io/sdk-mobile-documentation/
+https://docs.facephi.com/sdks/sdk-mobile/android-sdk
 
 #### 2.2.1 Inicialización del SDK
 
@@ -125,7 +129,7 @@ En esta demo el proceso se realiza en un botón del Fragment:
 ```
 viewModelScope.launch {
     when (val result =
-        SDKController.launch(SelphIDController(SdkData.selphIDConfiguration))) 
+        SDKController.launch(SelphIDController(SdkData.getSelphIDConfiguration(...)))) 
         is SdkResult.Success -> {
             log("SelphID: OK")
         }

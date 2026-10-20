@@ -14,6 +14,12 @@ Aplicación demo para validar un flujo de onboarding con el SDK de Facephi.
 - Captura de datos del documento con SelphID (MRZ)
 - Lectura del chip NFC con datos capturados o manuales
 
+Desde el SDK 4.0.0, la configuración de SelphID se organiza en bloques (`uiConfiguration`,
+`extractionConfiguration`...) en vez de una lista plana de campos, y `SelphIDController` necesita
+una lista de implementaciones `DocumentExtractor` (`extractorv1`/`extractorv3` en esta demo). Ambos
+flujos de esta demo (y el propio NFC) también aceptan un `maxAttempts` opcional para los reintentos
+tras un timeout.
+
 ## Flujo de la aplicación
 
 1. **Términos y condiciones**: se muestra una pantalla con los términos de uso. Es necesario deslizar hasta el final para habilitar el botón **Aceptar** y continuar.
@@ -54,12 +60,15 @@ artifactory.token=TUS_CREDENCIALES_TOKEN
 
 ```
 implementation (libs.facephi.sdk)
-implementation (libs.facephi.core)
 implementation (libs.facephi.selphid)
 implementation (libs.facephi.nfc){
     exclude group : "org.bouncycastle", module : "bcprov-jdk15on"
     exclude group : "org.bouncycastle", module : "jetified-bcprov-jdk15on-1.68"
 }
+
+// SelphID necesita una lista de extractores de documento (el SDK los distribuye como artefactos separados)
+implementation (libs.facephi.selphid.extractorv1)
+implementation (libs.facephi.selphid.extractorv3)
 ```
 
 Para el componente NFC añade:

@@ -46,7 +46,6 @@ Las dependencias de las librerías se podrán importar directamente en el gradle
 
 ```
     implementation (libs.facephi.sdk)
-    implementation (libs.facephi.core)
     implementation (libs.facephi.phingers)
     implementation (libs.facephi.tracking)
 
