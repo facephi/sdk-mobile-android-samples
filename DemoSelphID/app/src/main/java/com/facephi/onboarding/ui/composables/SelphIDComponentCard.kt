@@ -84,7 +84,7 @@ fun SelphIDComponentCard(
 
     var showDocumentSelector by rememberSaveable { mutableStateOf(true) }
     var showResultAfterCapture by rememberSaveable { mutableStateOf(true) }
-    var documentType by rememberSaveable { mutableStateOf(SelphIDDocumentType.ID_CARD) }
+    var documentType by rememberSaveable { mutableStateOf(SelphIDDocumentType.ALL) }
     var captureMode by rememberSaveable { mutableStateOf(CaptureModeOption.STANDARD) }
     var generateRawImages by rememberSaveable { mutableStateOf(false) }
     var maxAttempts by rememberSaveable { mutableStateOf(3) }
