@@ -43,9 +43,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.facephi.onboarding.R
 import com.facephi.onboarding.ui.data.UIComponentResult
+import com.facephi.selphid_component.data.configuration.SelphIDCaptureMode
 import com.facephi.selphid_component.data.configuration.SelphIDDocumentType
 
-enum class DocumentSideOption { FRONT, BACK }
+enum class CaptureModeOption { STANDARD, FRONT, MRZ, STEP_SIDE }
+
+fun CaptureModeOption.toSdkValue(): SelphIDCaptureMode = when (this) {
+    CaptureModeOption.STANDARD -> SelphIDCaptureMode.Standard
+    CaptureModeOption.FRONT -> SelphIDCaptureMode.Front
+    CaptureModeOption.MRZ -> SelphIDCaptureMode.Mrz
+    CaptureModeOption.STEP_SIDE -> SelphIDCaptureMode.StepSide(clean = false)
+}
 
 private val MAX_ATTEMPTS_OPTIONS = listOf(1, 3, 5, 0)
 
@@ -64,7 +72,7 @@ fun SelphIDComponentCard(
         showDocumentSelector: Boolean,
         showResultAfterCapture: Boolean,
         documentType: SelphIDDocumentType,
-        documentSide: DocumentSideOption,
+        captureMode: CaptureModeOption,
         generateRawImages: Boolean,
         maxAttempts: Int,
     ) -> Unit,
@@ -77,11 +85,12 @@ fun SelphIDComponentCard(
     var showDocumentSelector by rememberSaveable { mutableStateOf(true) }
     var showResultAfterCapture by rememberSaveable { mutableStateOf(true) }
     var documentType by rememberSaveable { mutableStateOf(SelphIDDocumentType.ID_CARD) }
-    var documentSide by rememberSaveable { mutableStateOf(DocumentSideOption.FRONT) }
+    var captureMode by rememberSaveable { mutableStateOf(CaptureModeOption.STANDARD) }
     var generateRawImages by rememberSaveable { mutableStateOf(false) }
     var maxAttempts by rememberSaveable { mutableStateOf(3) }
 
     var docTypeMenuExpanded by remember { mutableStateOf(false) }
+    var captureModeMenuExpanded by remember { mutableStateOf(false) }
 
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -249,23 +258,40 @@ fun SelphIDComponentCard(
                         }
                     }
 
-                    Text(
-                        text = "Document side",
-                        style = MaterialTheme.typography.labelLarge
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .alpha(if (enabled) 1f else 0.6f),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ExposedDropdownMenuBox(
+                        expanded = captureModeMenuExpanded,
+                        onExpandedChange = {
+                            if (enabled) captureModeMenuExpanded = !captureModeMenuExpanded
+                        },
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        DocumentSideOption.entries.forEach { side ->
-                            FilterChip(
-                                selected = documentSide == side,
-                                onClick = { if (enabled) documentSide = side },
-                                label = { Text(side.name) }
-                            )
+                        OutlinedTextField(
+                            value = captureMode.name,
+                            onValueChange = {},
+                            readOnly = true,
+                            enabled = enabled,
+                            label = { Text("Select capture mode") },
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = captureModeMenuExpanded)
+                            },
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth()
+                        )
+
+                        ExposedDropdownMenu(
+                            expanded = captureModeMenuExpanded,
+                            onDismissRequest = { captureModeMenuExpanded = false }
+                        ) {
+                            CaptureModeOption.entries.forEach { mode ->
+                                DropdownMenuItem(
+                                    text = { Text(mode.name) },
+                                    onClick = {
+                                        captureMode = mode
+                                        captureModeMenuExpanded = false
+                                    }
+                                )
+                            }
                         }
                     }
 
@@ -303,7 +329,7 @@ fun SelphIDComponentCard(
                         showDocumentSelector,
                         showResultAfterCapture,
                         documentType,
-                        documentSide,
+                        captureMode,
                         generateRawImages,
                         maxAttempts,
                     )

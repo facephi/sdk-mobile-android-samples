@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facephi.core.data.SdkApplication
 import com.facephi.core.data.SdkResult
-import com.facephi.onboarding.ui.composables.DocumentSideOption
+import com.facephi.onboarding.ui.composables.CaptureModeOption
 import com.facephi.onboarding.ui.composables.LivenessModeOption
 import com.facephi.onboarding.ui.composables.toSdkValue
 import com.facephi.onboarding.ui.data.UIComponentResult
@@ -123,7 +123,7 @@ class MainViewModel : ViewModel() {
         showDocumentSelector: Boolean,
         showResultAfterCapture: Boolean,
         documentType: SelphIDDocumentType,
-        documentSide: DocumentSideOption,
+        captureMode: CaptureModeOption,
         generateRawImages: Boolean,
         maxAttempts: Int,
         onResult: (UIComponentResult) -> Unit
@@ -139,7 +139,7 @@ class MainViewModel : ViewModel() {
                             showDocumentSelector = showDocumentSelector,
                             showResultAfterCapture = showResultAfterCapture,
                             documentType = documentType,
-                            documentSide = documentSide,
+                            captureMode = captureMode.toSdkValue(),
                             generateRawImages = generateRawImages,
                             maxAttempts = maxAttempts,
                         ),

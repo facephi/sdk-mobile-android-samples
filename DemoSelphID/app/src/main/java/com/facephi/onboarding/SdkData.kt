@@ -6,7 +6,6 @@ import com.facephi.sdk.data.EnvironmentLicensingData
 import com.facephi.sdk.data.LicensingOffline
 import com.facephi.sdk.data.LicensingOnline
 import com.facephi.sdk.data.SdkConfigurationData
-import com.facephi.onboarding.ui.composables.DocumentSideOption
 import com.facephi.selphid.extractorcore.DocumentExtractor
 import com.facephi.selphid.extractorv1.DocumentExtractorV1
 import com.facephi.selphid.extractorv3.DocumentExtractorV3
@@ -55,7 +54,7 @@ object SdkData {
         showDocumentSelector: Boolean,
         showResultAfterCapture: Boolean,
         documentType: SelphIDDocumentType,
-        documentSide: DocumentSideOption,
+        captureMode: SelphIDCaptureMode,
         generateRawImages: Boolean,
         maxAttempts: Int,
     ) = SelphIDConfigurationData(
@@ -72,10 +71,7 @@ object SdkData {
             defaultDocumentType = documentType,
         ),
         extractionConfiguration = SelphIDExtractionConfiguration(
-            captureMode = when (documentSide) {
-                DocumentSideOption.FRONT -> SelphIDCaptureMode.Front
-                DocumentSideOption.BACK -> SelphIDCaptureMode.Mrz
-            },
+            captureMode = captureMode,
             documentTypes = listOf(documentType),
             generateRawImages = generateRawImages,
         ),

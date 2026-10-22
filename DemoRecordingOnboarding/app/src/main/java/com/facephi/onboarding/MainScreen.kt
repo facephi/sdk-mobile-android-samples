@@ -153,7 +153,7 @@ fun MainScreen(
             enabled = newOperationClicked,
             resultValue = selphIdResult,
             onLaunch = { showPreviousTip, showTutorial, showDiagnostic,
-                         showDocumentSelector, showResultAfterCapture, documentType, documentSide,
+                         showDocumentSelector, showResultAfterCapture, documentType, captureMode,
                          generateRawImages, maxAttempts
                 ->
                 viewModel.launchSelphId(
@@ -163,7 +163,7 @@ fun MainScreen(
                     showDocumentSelector = showDocumentSelector,
                     showResultAfterCapture = showResultAfterCapture,
                     documentType = documentType,
-                    documentSide = documentSide,
+                    captureMode = captureMode,
                     generateRawImages = generateRawImages,
                     maxAttempts = maxAttempts,
                 ){
